@@ -67,15 +67,79 @@ class LoginPage extends StatelessWidget {
                 ),
                 VerticalSpace(height: HeightsManager.h6),
                 CustomTextFormField(
-                  suffix: IconButton(
+                  obscureText: true,
+                  suffixIcon: IconButton(
                     onPressed: () {},
-                    icon: Icon(CupertinoIcons.eye),
+                    icon: Icon(
+                      CupertinoIcons.eye,
+                      color: ColorManager.kGrey2Color,
+                    ),
                   ),
                   hintText: ConstsValuesManager.enterYourPassword,
+                ),
+                Align(
+                  alignment: AlignmentDirectional.centerEnd,
+                  child: TextButton(
+                    onPressed: () {},
+                    child: Text(
+                      ConstsValuesManager.forgotPassword,
+                      style: TextStyle(
+                        color: ColorManager.kPrimaryColor,
+                        fontSize: FontSizeManager.s10,
+                        decoration: TextDecoration.underline,
+                        fontFamily: FontsManager.poppinsFontFamily,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+                VerticalSpace(height: HeightsManager.h31),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () {},
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: ColorManager.kPrimaryColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(
+                          BorderRadiusManager.br10,
+                        ),
+                      ),
+                    ),
+                    child: Text(
+                      ConstsValuesManager.login,
+                      style: TextStyle(
+                        color: ColorManager.kWhiteColor,
+                        fontFamily: FontsManager.poppinsFontFamily,
+                        fontSize: FontSizeManager.s14,
+                      ),
+                    ),
+                  ),
                 ),
               ],
             ),
           ),
+        ),
+      ),
+      bottomNavigationBar: RichText(
+        textAlign: TextAlign.center,
+        text: TextSpan(
+          style: TextStyle(
+            fontFamily: FontsManager.poppinsFontFamily,
+            fontSize: FontSizeManager.s14,
+          ),
+          children: [
+
+            TextSpan(
+              text: ConstsValuesManager.dontHaveAnAccount,
+              style: TextStyle(color: ColorManager.kGrey3Color,fontWeight: FontWeight.w300),
+            ),
+            TextSpan(text: ConstsValuesManager.signUpNow, style: TextStyle(
+              color: ColorManager.kPrimaryColor,
+              decoration: TextDecoration.underline,
+              fontWeight: FontWeight.bold
+            )),
+          ],
         ),
       ),
     );
