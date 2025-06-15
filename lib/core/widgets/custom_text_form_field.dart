@@ -1,3 +1,4 @@
+import 'package:animooo/core/resources/conts_values.dart';
 import 'package:animooo/core/resources/fonts_size_manager.dart';
 import 'package:flutter/material.dart';
 
@@ -11,22 +12,28 @@ class CustomTextFormField extends StatelessWidget {
     this.borderRadius,
     this.suffixIcon,
     this.obscureText = false,
+    this.validator,
+    required this.keyboardType,
   });
 
   final String? hintText;
   final double? borderRadius;
   final Widget? suffixIcon;
   final bool obscureText;
+  final TextInputType keyboardType;
+  final String? Function(String? value)? validator;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       obscuringCharacter: '*',
       obscureText: obscureText,
+      keyboardType: keyboardType,
       style: TextStyle(
         color: ColorManager.kPrimaryColor,
         fontSize: FontSizeManager.s14,
       ),
+      validator: validator,
       decoration: InputDecoration(
         filled: true,
         fillColor: ColorManager.kLightWhiteColor,

@@ -12,4 +12,6 @@ class ConstsValuesManager {
   static const String dontHaveAnAccount='Don\'t have an account?';
 
   static const String signUpNow='Sign up now';
+
+  static const String thisFieldIsRequired='This field is required';
 }
