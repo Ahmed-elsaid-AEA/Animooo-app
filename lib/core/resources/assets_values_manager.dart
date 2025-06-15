@@ -8,4 +8,5 @@ class FontsManager {
   FontsManager._();
   static const String originalSurferFontFamily = "OriginalSurfer";
   static const String otamaEpFontFamily = "Otama-ep";
+  static const String poppinsFontFamily = "Poppins";
 }
