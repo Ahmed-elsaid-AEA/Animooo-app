@@ -34,7 +34,7 @@ class LoginPage extends StatelessWidget {
                   visible: true, //TODO:: add form key
                 ),
                 ForgetPasswordLogin(onPressedAtForgetPassword: () {}),
-                VerticalSpace(height: HeightsManager.h31),
+                VerticalSpace(height: HeightsManager.h61),
                 AppButton(text: ConstsValuesManager.login, onTap: () {}),
               ],
             ),

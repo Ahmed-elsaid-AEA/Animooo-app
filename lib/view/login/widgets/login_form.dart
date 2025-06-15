@@ -86,6 +86,7 @@ class LoginForm extends StatelessWidget {
             ),
             hintText: ConstsValuesManager.enterYourPassword,
           ),
+
         ],
       ),
     );

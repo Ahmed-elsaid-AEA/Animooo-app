@@ -8,7 +8,7 @@ class ConstsValuesManager {
   static const String enterYourEmailAddress = 'Enter your email address';
   static const String enterYourPassword = 'Enter your password';
 
-  static const String forgotPassword='Forgot Password?';
+  static const String forgotPassword='Forget Password....?';
   static const String dontHaveAnAccount='Don\'t have an account?';
 
   static const String signUpNow='Sign up now';
