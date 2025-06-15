@@ -33,6 +33,9 @@ class CustomTextFormField extends StatelessWidget {
         color: ColorManager.kPrimaryColor,
         fontSize: FontSizeManager.s14,
       ),
+      onTapOutside: (event) {
+        FocusScope.of(context).unfocus();
+      },
       validator: validator,
       decoration: InputDecoration(
         filled: true,
@@ -43,6 +46,7 @@ class CustomTextFormField extends StatelessWidget {
           padding: EdgeInsetsGeometry.zero,
           child: suffixIcon,
         ),
+
         suffixIconConstraints: BoxConstraints(minHeight: 0, minWidth: 0),
         isDense: true,
 
@@ -52,6 +56,13 @@ class CustomTextFormField extends StatelessWidget {
           ),
           borderSide: BorderSide(color: ColorManager.kLightGreyColor),
         ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(
+            borderRadius ?? BorderRadiusManager.br10,
+          ),
+          borderSide: BorderSide(color: ColorManager.kLightGreyColor),
+        ),
+
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(
             borderRadius ?? BorderRadiusManager.br10,

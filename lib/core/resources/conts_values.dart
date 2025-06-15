@@ -1,6 +1,17 @@
 class ConstsValuesManager {
   static const String animooo = 'Animooo';
   static const String login = 'Log in';
+  static const String firstName = 'First name';
+  static const String lastName = 'Last name';
+
+  static const String enterYourFirstName = 'Enter your first name';
+  static const String enterYourLastName = 'Enter your last name';
+
+  static const String phone= 'Phone';
+
+  static const String enterYourPhone = 'Enter your phone';
+
+  static const String confirmPassword = 'Confirm password';
 
   static const String email = 'Email';
   static const String password = 'Password';
@@ -12,6 +23,7 @@ class ConstsValuesManager {
   static const String dontHaveAnAccount='Don\'t have an account?';
 
   static const String signUpNow='Sign up now';
+  static const String signUp='Sign up';
 
   static const String thisFieldIsRequired='This field is required';
 }
