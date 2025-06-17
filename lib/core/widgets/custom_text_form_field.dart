@@ -15,7 +15,11 @@ class CustomTextFormField extends StatelessWidget {
     this.obscureText = false,
     this.validator,
     required this.keyboardType,
-    required this.controller,
+    this.controller,
+    this.fillColor,
+    this.textAlign,
+    this.focusNode,
+    this.onChanged,
   });
 
   final String? hintText;
@@ -23,16 +27,23 @@ class CustomTextFormField extends StatelessWidget {
   final Widget? suffixIcon;
   final bool obscureText;
   final TextInputType keyboardType;
-  final TextEditingController controller;
+  final TextEditingController? controller;
   final String? Function(String? value)? validator;
+  final Color? fillColor;
+  final TextAlign? textAlign;
+  final FocusNode? focusNode;
+  final ValueChanged<String>? onChanged;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: HeightsManager.h44,
       child: TextFormField(
+        focusNode: focusNode,
+        textAlign: textAlign ?? TextAlign.start,
         controller: controller,
         obscuringCharacter: '*',
+        onChanged: onChanged,
         obscureText: obscureText,
         keyboardType: keyboardType,
         style: TextStyle(
@@ -45,7 +56,7 @@ class CustomTextFormField extends StatelessWidget {
         validator: validator,
         decoration: InputDecoration(
           filled: true,
-          fillColor: ColorManager.kLightWhiteColor,
+          fillColor: fillColor ?? ColorManager.kLightWhiteColor,
           hintText: hintText,
           hintStyle: TextStyle(color: ColorManager.kGrey2Color),
           suffixIcon: Padding(

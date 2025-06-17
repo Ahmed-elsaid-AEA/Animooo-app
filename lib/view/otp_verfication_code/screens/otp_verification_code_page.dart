@@ -1,6 +1,8 @@
 import 'package:animooo/core/resources/conts_values.dart';
+import 'package:animooo/core/resources/width_manager.dart';
 import 'package:animooo/core/widgets/app_Bar/simple_app_bar.dart';
 import 'package:animooo/core/widgets/custom_text_form_field.dart';
+import 'package:animooo/core/widgets/spacing/horizontal_space.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -55,30 +57,7 @@ class OtpVerificationPage extends StatelessWidget {
                   ),
                 ),
                 VerticalSpace(HeightsManager.h41),
-                OtpTextField(
-                  numberOfFields: 5,
-                  fillColor: ColorManager.kWhiteColor,
-                  borderColor: ColorManager.kLightGreyColor,
-                  //set to true to show as box or false to show as dash
-                  showFieldAsBox: true,
-                  filled: true,
-                  fieldWidth: 54.w,
-                  fieldHeight: 53.h,
-                  margin: EdgeInsets.only(right: 12.w),
-                  //runs when a code is typed in
-                  onCodeChanged: (String code) {
-                    //handle validation or checks here
-                  },
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(BorderRadiusManager.br10),
-                  ),
-
-                  enabledBorderColor: ColorManager.kLightGreyColor,
-
-                  focusedBorderColor: ColorManager.kPrimaryColor,
-
-                  onSubmit: (String verificationCode) {}, // end onSubmit
-                ),
+                AppOtpVerificationTextField(),
                 VerticalSpace(HeightsManager.h41),
                 AppButton(
                   text: ConstsValuesManager.confirm,
@@ -105,5 +84,170 @@ class OtpVerificationPage extends StatelessWidget {
       ),
     );
     // verification code
+  }
+}
+
+class AppOtpVerificationTextField extends StatefulWidget {
+  const AppOtpVerificationTextField({super.key});
+
+  @override
+  State<AppOtpVerificationTextField> createState() =>
+      _AppOtpVerificationTextFieldState();
+}
+
+class _AppOtpVerificationTextFieldState
+    extends State<AppOtpVerificationTextField> {
+  late TextEditingController controller1;
+  late TextEditingController controller2;
+  late TextEditingController controller3;
+  late TextEditingController controller4;
+  late TextEditingController controller5;
+  late FocusNode focusNode1;
+  late FocusNode focusNode2;
+  late FocusNode focusNode3;
+  late FocusNode focusNode4;
+  late FocusNode focusNode5;
+
+  @override
+  void initState() {
+    super.initState();
+    focusNode1 = FocusNode();
+    focusNode2 = FocusNode();
+    focusNode3 = FocusNode();
+    focusNode4 = FocusNode();
+    focusNode5 = FocusNode();
+
+    controller1 = TextEditingController();
+    controller2 = TextEditingController();
+    controller3 = TextEditingController();
+    controller4 = TextEditingController();
+    controller5 = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    focusNode1.dispose();
+    focusNode2.dispose();
+    focusNode3.dispose();
+    focusNode4.dispose();
+    focusNode5.dispose();
+
+    controller1.dispose();
+    controller2.dispose();
+    controller3.dispose();
+    controller4.dispose();
+    controller5.dispose();
+    super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    FocusScope.of(context).requestFocus(focusNode1);
+  }
+
+  void goToNextFocusNode(
+    String value,
+    FocusNode focusNode,
+    TextEditingController controller,
+  ) {
+    if (value.trim().isNotEmpty) {
+      if (value.length > 1) {
+        controller.text = value[value.length - 1];
+      }
+      FocusScope.of(context).requestFocus(focusNode);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          child: CustomTextFormField(
+            onChanged: (value) {
+              goToNextFocusNode(value, focusNode2, controller1);
+            },
+            controller: controller1,
+            focusNode: focusNode1,
+            textAlign: TextAlign.center,
+            keyboardType: TextInputType.number,
+            fillColor: ColorManager.kWhiteColor,
+          ),
+        ),
+        HorizontalSpace(WidthManager.w18),
+        Expanded(
+          child: CustomTextFormField(
+            onChanged: (value) {
+              goToNextFocusNode(value, focusNode3, controller2);
+            },
+            controller: controller2,
+            focusNode: focusNode2,
+            textAlign: TextAlign.center,
+            keyboardType: TextInputType.number,
+            fillColor: ColorManager.kWhiteColor,
+          ),
+        ),
+        HorizontalSpace(WidthManager.w18),
+        Expanded(
+          child: CustomTextFormField(
+            focusNode: focusNode3,
+            textAlign: TextAlign.center,
+            onChanged: (value) {
+              goToNextFocusNode(value, focusNode4, controller3);
+            },
+            controller: controller3,
+            keyboardType: TextInputType.number,
+            fillColor: ColorManager.kWhiteColor,
+          ),
+        ),
+        HorizontalSpace(WidthManager.w18),
+        Expanded(
+          child: CustomTextFormField(
+            focusNode: focusNode4,
+            textAlign: TextAlign.center,
+            onChanged: (value) {
+              goToNextFocusNode(value, focusNode5, controller4);
+            },
+            controller: controller4,
+            keyboardType: TextInputType.number,
+            fillColor: ColorManager.kWhiteColor,
+          ),
+        ),
+        HorizontalSpace(WidthManager.w18),
+        Expanded(
+          child: CustomTextFormField(
+            onChanged: (value) {
+              if (value.trim().isNotEmpty) {
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: Text('ConstsValuesManager.warning'),
+                      content: Text('ConstsValuesManager.pleaseEnterTheCode'),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: Text('ok'),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              }
+              if (value.length > 1) {
+                controller5.text = value[value.length - 1];
+              }
+            },
+            focusNode: focusNode5,
+            controller: controller5,
+            textAlign: TextAlign.center,
+            keyboardType: TextInputType.number,
+            fillColor: ColorManager.kWhiteColor,
+          ),
+        ),
+      ],
+    );
   }
 }
