@@ -2,16 +2,24 @@ import 'package:flutter/cupertino.dart';
 
 import '../../../core/resources/assets_values_manager.dart';
 import '../../../core/resources/colors_manager.dart';
-import '../../../core/resources/conts_values.dart';
 import '../../../core/resources/fonts_size_manager.dart';
 import '../../../core/resources/heights_manager.dart';
 import '../../../core/widgets/custom_text_form_field.dart';
 import '../../../core/widgets/spacing/vertical_space.dart';
 
-class LastNameFieldSignUpPage extends StatelessWidget {
-  const LastNameFieldSignUpPage({
+class CustomRequiredField extends StatelessWidget {
+  const CustomRequiredField({
     super.key,
+    required this.controller,
+    required this.title,
+    required this.hintText,
+    this.validator,
   });
+
+  final String hintText;
+  final TextEditingController controller;
+  final String title;
+  final String? Function(String?)? validator;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +28,7 @@ class LastNameFieldSignUpPage extends StatelessWidget {
         Align(
           alignment: Alignment.centerLeft,
           child: Text(
-            ConstsValuesManager.lastName,
+            title,
             style: TextStyle(
               fontSize: FontSizeManager.s16,
               color: ColorManager.kGreyColor,
@@ -28,23 +36,13 @@ class LastNameFieldSignUpPage extends StatelessWidget {
             ),
           ),
         ),
-        VerticalSpace( HeightsManager.h6),
+        VerticalSpace(HeightsManager.h6),
         CustomTextFormField(
-          controller: TextEditingController(),
-
-          keyboardType: TextInputType.name,
-          validator: (value) {
-            if (value == null || value.trim().isEmpty) {
-              return ConstsValuesManager.enterYourEmailAddress;
-            }
-            //TODO:: add email validation
-            else {
-              return null;
-            }
-          },
-          hintText: ConstsValuesManager.enterYourEmailAddress,
+          controller: controller,
+          keyboardType: TextInputType.emailAddress,
+          validator: validator,
+          hintText: hintText,
         ),
-        VerticalSpace( HeightsManager.h16),
       ],
     );
   }

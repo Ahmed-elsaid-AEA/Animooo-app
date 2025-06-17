@@ -1,24 +1,29 @@
+import 'package:animooo/core/widgets/spacing/vertical_space.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../../core/resources/assets_values_manager.dart';
-import '../../../core/resources/colors_manager.dart';
-import '../../../core/resources/conts_values.dart';
-import '../../../core/resources/fonts_size_manager.dart';
-import '../../../core/resources/heights_manager.dart';
-import '../../../core/widgets/custom_text_form_field.dart';
-import '../../../core/widgets/spacing/vertical_space.dart';
+import '../resources/assets_values_manager.dart';
+import '../resources/colors_manager.dart';
+import '../resources/conts_values.dart';
+import '../resources/fonts_size_manager.dart';
+import '../resources/heights_manager.dart';
+import 'custom_text_form_field.dart';
 
-class ConfirmPasswordFieldSignUpPage extends StatelessWidget {
-  const ConfirmPasswordFieldSignUpPage({
+class CustomRequiredPasswordField extends StatelessWidget {
+  const CustomRequiredPasswordField({
     super.key,
-    required this.visibleConfirmPassword,
+    required this.title,
     required this.onPressedAtEye,
+    required this.visible,
+    required this.controller,
+    required this.hintText,
   });
 
-  final bool visibleConfirmPassword;
-
-  final void Function() onPressedAtEye;
+  final String hintText;
+  final String title;
+  final VoidCallback? onPressedAtEye;
+  final bool visible;
+  final TextEditingController controller;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +32,7 @@ class ConfirmPasswordFieldSignUpPage extends StatelessWidget {
         Align(
           alignment: Alignment.centerLeft,
           child: Text(
-            ConstsValuesManager.confirmPassword,
+            title,
             style: TextStyle(
               fontSize: FontSizeManager.s16,
               color: ColorManager.kGreyColor,
@@ -35,9 +40,9 @@ class ConfirmPasswordFieldSignUpPage extends StatelessWidget {
             ),
           ),
         ),
-        VerticalSpace( HeightsManager.h6),
+        VerticalSpace(HeightsManager.h6),
         CustomTextFormField(
-          controller: TextEditingController(),
+          controller: controller,
 
           validator: (value) {
             if (value == null || value.trim().isEmpty) {
@@ -49,19 +54,16 @@ class ConfirmPasswordFieldSignUpPage extends StatelessWidget {
             }
           },
           keyboardType: TextInputType.visiblePassword,
-          obscureText: !visibleConfirmPassword,
+          obscureText: true,
           suffixIcon: IconButton(
             onPressed: onPressedAtEye,
             icon: Icon(
-              visibleConfirmPassword
-                  ? CupertinoIcons.eye
-                  : CupertinoIcons.eye_slash,
+              visible == true ? CupertinoIcons.eye : CupertinoIcons.eye_slash,
               color: ColorManager.kGrey2Color,
             ),
           ),
-          hintText: ConstsValuesManager.enterYourPassword,
+          hintText: hintText,
         ),
-        VerticalSpace(HeightsManager.h16)
       ],
     );
   }

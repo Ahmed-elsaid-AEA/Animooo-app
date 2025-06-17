@@ -1,9 +1,9 @@
 import 'package:animooo/core/resources/fonts_size_manager.dart';
 import 'package:animooo/core/resources/heights_manager.dart';
+import 'package:animooo/core/widgets/custom_required_field.dart';
+import 'package:animooo/core/widgets/custom_required_password_field.dart';
 import 'package:animooo/core/widgets/custom_text_form_field.dart';
 import 'package:animooo/core/widgets/spacing/vertical_space.dart';
-import 'package:animooo/view/signup/widgets/password_field_sign_up_page.dart';
-import 'package:animooo/view/signup/widgets/phone_field_sign_up_page.dart';
 import 'package:animooo/view/signup/widgets/required_rules_for_password_sign_up_page.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,12 +11,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../core/resources/assets_values_manager.dart';
-import '../../../core/resources/colors_manager.dart' show ColorManager;
-import '../../../core/resources/conts_values.dart' show ConstsValuesManager;
-import 'confirm_password_field_sign_up_page.dart';
-import 'email_field_sign_up_page.dart';
-import 'first_name_field_sign_up_page.dart';
-import 'last_name_field_sign_up_page.dart';
+import '../../../core/resources/colors_manager.dart';
+import '../../../core/resources/conts_values.dart';
+import '../../../core/widgets/custom_select_your_image_widget.dart';
 
 class SignUpForm extends StatelessWidget {
   const SignUpForm({
@@ -37,16 +34,40 @@ class SignUpForm extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          FirstNameFieldSignUpPage(),
-          LastNameFieldSignUpPage(),
-          EmailFieldSignUpPage(),
-          PhoneFieldSignUpPage(),
-          PasswordFieldSignUpPage(visiblePassword: true, onPressedAtEye: () {}),
-          RequiredRulesForPasswordSignUpPage(),
-          ConfirmPasswordFieldSignUpPage(
-            visibleConfirmPassword: true,
-            onPressedAtEye: () {},
+          CustomRequiredField(
+            controller: TextEditingController(),
+            title: ConstsValuesManager.firstName,
+            hintText: ConstsValuesManager.enterYourFirstName,
           ),
+          VerticalSpace(HeightsManager.h16),
+          CustomRequiredField(
+            controller: TextEditingController(),
+            title: ConstsValuesManager.lastName,
+            hintText: ConstsValuesManager.enterYourLastName,
+          ),
+
+          VerticalSpace(HeightsManager.h16),
+
+          CustomRequiredPasswordField(
+            controller: TextEditingController(),
+            onPressedAtEye: () {},
+            title: ConstsValuesManager.password,
+            hintText: ConstsValuesManager.enterYourPassword,
+            visible: true,
+          ),
+
+          VerticalSpace(HeightsManager.h8),
+
+          RequiredRulesForPasswordSignUpPage(),
+          CustomRequiredPasswordField(
+            onPressedAtEye: () {},
+            title: ConstsValuesManager.confirmPassword,
+            visible: true,
+            controller: TextEditingController(),
+            hintText: ConstsValuesManager.enterYourConfirmPassword,
+          ),
+          VerticalSpace(HeightsManager.h16),
+
           Text(
             ConstsValuesManager.uploadImageForYourProfile,
             style: TextStyle(
@@ -57,40 +78,8 @@ class SignUpForm extends StatelessWidget {
             ),
           ),
           VerticalSpace(HeightsManager.h8),
-          SizedBox(
-            width: double.infinity,
-            child: DottedBorder(
-              options: RoundedRectDottedBorderOptions(
-                padding: EdgeInsets.symmetric(vertical: 67.h, horizontal: 20.h),
-                radius: Radius.circular(10),
-                color: ColorManager.kPrimaryColor,
-              ),
-              child: SizedBox(
-                width: double.infinity,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.image,
-                      color: ColorManager.kPrimaryColor,
-                      size: 28.sp,
-                    ),
-                    VerticalSpace(HeightsManager.h16),
-                    Text(
-                      ConstsValuesManager.selectFile,
-                      style: TextStyle(
-                        color: ColorManager.kPrimaryColor,
-                        fontSize: FontSizeManager.s16,
-                        fontFamily: FontsManager.poppinsFontFamily,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
+          CustomSelectImageWidget(),
           VerticalSpace(HeightsManager.h28),
-
         ],
       ),
     );

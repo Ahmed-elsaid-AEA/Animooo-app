@@ -7,6 +7,10 @@ class ConstsValuesManager {
   static const String enterYourFirstName = 'Enter your first name';
   static const String enterYourLastName = 'Enter your last name';
 
+  static const String
+  pleaseEnterTheEmailAddressAssociatedWithYourAccountAndWeWillSendYouOtpToResetYourPassword =
+      'Please enter the email address associated with your account, and we\'ll send you OTP to reset your password.';
+
   static const String phone = 'Phone';
 
   static const String enterYourPhone = 'Enter your phone';
@@ -14,6 +18,7 @@ class ConstsValuesManager {
   static const String confirmPassword = 'Confirm password';
 
   static const String email = 'Email';
+  static const String forgetYourPassword = 'Forget Your Password ?';
   static const String password = 'Password';
 
   static const String enterYourEmailAddress = 'Enter your email address';
@@ -30,11 +35,17 @@ class ConstsValuesManager {
 
   static const String thisFieldIsRequired = 'This field is required';
 
-  static const String uploadImageForYourProfile ='Upload Image For Your Profile';
+  static const String uploadImageForYourProfile =
+      'Upload Image For Your Profile';
 
   static const String selectFile = 'Select File';
+  static const String selectYourImage = 'Select Your Image';
 
-  static const String back='Back';
+  static const String back = 'Back';
+
+  static const String sendCode='Send Code';
+
+  static const String enterYourConfirmPassword= 'Enter your confirm password';
 }
 
 class ConstsListsManager {

@@ -15,6 +15,8 @@ class ForgetPasswordAppBar extends StatelessWidget
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      toolbarHeight: kToolbarHeight,
+      backgroundColor: ColorManager.kWhiteColor,
       titleSpacing: 0,
       leadingWidth: WidthManager.w38,
       leading: Padding(
@@ -33,12 +35,17 @@ class ForgetPasswordAppBar extends StatelessWidget
           ),
         ),
       ),
-      title: Text(
-        ConstsValuesManager.back,
-        style: TextStyle(
-          fontFamily: FontsManager.otamaEpFontFamily,
-          fontSize: FontSizeManager.s20,
-          color: ColorManager.kPrimaryColor,
+      title: InkWell(
+        onTap: (){
+          Navigator.of(context).pop();
+        },
+        child: Text(
+          ConstsValuesManager.back,
+          style: TextStyle(
+            fontFamily: FontsManager.otamaEpFontFamily,
+            fontSize: FontSizeManager.s20,
+            color: ColorManager.kPrimaryColor,
+          ),
         ),
       ),
     );

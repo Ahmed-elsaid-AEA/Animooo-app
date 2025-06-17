@@ -1,7 +1,5 @@
-import 'package:animooo/core/resources/conts_values.dart';
 import 'package:animooo/core/resources/heights_manager.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../resources/assets_values_manager.dart';
 import '../../resources/border_radius_manager.dart';
@@ -19,11 +17,11 @@ class AppButton extends StatelessWidget {
     return ElevatedButton(
       onPressed: onTap,
       style: ElevatedButton.styleFrom(
-        minimumSize:Size(double.infinity, HeightsManager.h44),
+        minimumSize: Size(double.infinity, HeightsManager.h44),
 
         backgroundColor: ColorManager.kPrimaryColor,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(BorderRadiusManager.br10),
+          borderRadius: BorderRadius.circular(BorderRadiusManager.br5),
         ),
       ),
       child: Text(
