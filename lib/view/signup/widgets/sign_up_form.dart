@@ -5,8 +5,10 @@ import 'package:animooo/core/widgets/spacing/vertical_space.dart';
 import 'package:animooo/view/signup/widgets/password_field_sign_up_page.dart';
 import 'package:animooo/view/signup/widgets/phone_field_sign_up_page.dart';
 import 'package:animooo/view/signup/widgets/required_rules_for_password_sign_up_page.dart';
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../core/resources/assets_values_manager.dart';
 import '../../../core/resources/colors_manager.dart' show ColorManager;
@@ -33,6 +35,7 @@ class SignUpForm extends StatelessWidget {
     return Form(
       key: formKey,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           FirstNameFieldSignUpPage(),
           LastNameFieldSignUpPage(),
@@ -44,6 +47,50 @@ class SignUpForm extends StatelessWidget {
             visibleConfirmPassword: true,
             onPressedAtEye: () {},
           ),
+          Text(
+            ConstsValuesManager.uploadImageForYourProfile,
+            style: TextStyle(
+              fontSize: FontSizeManager.s16,
+              color: ColorManager.kGreyColor,
+              fontFamily: FontsManager.poppinsFontFamily,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+          VerticalSpace(HeightsManager.h8),
+          SizedBox(
+            width: double.infinity,
+            child: DottedBorder(
+              options: RoundedRectDottedBorderOptions(
+                padding: EdgeInsets.symmetric(vertical: 67.h, horizontal: 20.h),
+                radius: Radius.circular(10),
+                color: ColorManager.kPrimaryColor,
+              ),
+              child: SizedBox(
+                width: double.infinity,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.image,
+                      color: ColorManager.kPrimaryColor,
+                      size: 28.sp,
+                    ),
+                    VerticalSpace(HeightsManager.h16),
+                    Text(
+                      ConstsValuesManager.selectFile,
+                      style: TextStyle(
+                        color: ColorManager.kPrimaryColor,
+                        fontSize: FontSizeManager.s16,
+                        fontFamily: FontsManager.poppinsFontFamily,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          VerticalSpace(HeightsManager.h28),
+
         ],
       ),
     );

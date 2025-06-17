@@ -37,6 +37,7 @@ dependencies:
   flutter_native_splash: ^2.4.6
   flutter_svg: ^2.1.0
   flutter_screenutil: ^5.9.3
+  dotted_border: ^3.0.1
 
 dev_dependencies:
   flutter_test:

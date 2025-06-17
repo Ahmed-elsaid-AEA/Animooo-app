@@ -23,11 +23,16 @@ class ConstsValuesManager {
   static const String dontHaveAnAccount = 'Don\'t have an account?';
 
   static const String signUpNow = 'Sign up now';
+  static const String haveAnAccountAlready = 'Have an account already?';
   static const String signUp = 'Sign up';
   static const String passwordAddAllNecessaryCharactersToCreateSafePassword =
       'Please add all necessary characters to create safe password.';
 
   static const String thisFieldIsRequired = 'This field is required';
+
+  static const String uploadImageForYourProfile ='Upload Image For Your Profile';
+
+  static const String selectFile = 'Select File';
 }
 
 class ConstsListsManager {

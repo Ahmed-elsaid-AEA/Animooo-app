@@ -8,8 +8,10 @@ import '../../../core/resources/padding_manager.dart';
 import '../../../core/widgets/app_logo_and_title_widget.dart';
 import '../../../core/widgets/buttons/app_button.dart';
 import '../../../core/widgets/spacing/vertical_space.dart';
+import '../../login/widgets/bottom_nav_bar_login_page.dart';
 import '../../login/widgets/title_login_page.dart';
 import '../widgets/required_rules_for_password_sign_up_page.dart';
+import '../widgets/sign_in_now.dart';
 
 class SignUpPage extends StatelessWidget {
   const SignUpPage({super.key});
@@ -34,15 +36,15 @@ class SignUpPage extends StatelessWidget {
                     visible: true,
                   ),
 
-
                   AppButton(text: ConstsValuesManager.signUp, onTap: () {}),
+                  VerticalSpace(HeightsManager.h8),
+                  SignInNow(onPressedSignInNow: () {}),
                 ],
               ),
             ),
           ),
         ),
       ),
-      // bottomNavigationBar: BottomNavBarLoginPage(onPressedSignUpNow: () {}),
     );
   }
 }
