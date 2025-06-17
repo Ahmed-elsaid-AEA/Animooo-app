@@ -2,6 +2,7 @@ import 'package:animooo/core/widgets/unknow_route_page.dart';
 import 'package:animooo/view/signup/screen/sign_up_page.dart';
 import 'package:flutter/material.dart';
 
+import '../../view/create_new_password/screens/create_new_password_page.dart';
 import '../../view/forget_password/screen/forget_password_page.dart';
 import '../../view/login/screen/login_page.dart';
 import '../../view/otp_verfication_code/screens/otp_verification_code_page.dart';
@@ -18,6 +19,8 @@ class RoutesManager {
         widget = ForgetPasswordPage();
       case RoutesName.otpVerification:
         widget = OtpVerificationPage();
+      case RoutesName.createNewPassword:
+        widget = CreateNewPasswordPage();
       default:
         widget = const UnknownRoutePage();
     }
@@ -30,4 +33,5 @@ class RoutesName {
   static const String signupPage = '/signup';
   static const String forgetPassword = '/forgetPassword';
   static const String otpVerification = '/otpVerification';
+  static const String createNewPassword = '/createNewPassword';
 }

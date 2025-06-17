@@ -12,9 +12,20 @@ import '../../../core/resources/padding_manager.dart' show PaddingManager;
 import '../widgets/bottom_nav_bar_login_page.dart';
 import '../widgets/title_login_page.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

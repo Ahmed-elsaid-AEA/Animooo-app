@@ -1,4 +1,5 @@
 class ConstsValuesManager {
+  ConstsValuesManager._();
   static const String animooo = 'Animooo';
   static const String login = 'Log in';
   static const String firstName = 'First name';
@@ -53,6 +54,12 @@ class ConstsValuesManager {
   static const String enterYourConfirmPassword= 'Enter your confirm password';
 
   static const String  cancel='Cancel';
+
+  static const String createNewPassword = 'Create New Password';
+
+  static const String newPassword='New Password';
+
+  static const String submit='Submit';
 }
 
 class ConstsListsManager {
