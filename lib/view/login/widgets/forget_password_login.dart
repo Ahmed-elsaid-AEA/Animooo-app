@@ -5,6 +5,8 @@ import 'package:animooo/core/resources/fonts_size_manager.dart';
 import 'package:animooo/core/resources/heights_manager.dart';
 import 'package:flutter/material.dart';
 
+import '../../../core/widgets/spacing/vertical_space.dart';
+
 class ForgetPasswordLogin extends StatelessWidget {
   const ForgetPasswordLogin({
     super.key,
@@ -16,10 +18,11 @@ class ForgetPasswordLogin extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 0,
+      height: HeightsManager.h61,
       child: Stack(
         clipBehavior: Clip.none,
         children: [
+
           Positioned(
             top: -10,
             right: 0,

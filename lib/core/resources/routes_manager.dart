@@ -2,6 +2,7 @@ import 'package:animooo/core/widgets/unknow_route_page.dart';
 import 'package:animooo/view/signup/screen/sign_up_page.dart';
 import 'package:flutter/material.dart';
 
+import '../../view/forget_password/screen/forget_password_page.dart';
 import '../../view/login/screen/login_page.dart';
 
 class RoutesManager {
@@ -12,6 +13,8 @@ class RoutesManager {
         widget = LoginPage();
       case RoutesName.signupPage:
         widget = SignUpPage();
+      case RoutesName.forgetPassword:
+        widget = ForgetPasswordPage();
       default:
         widget = const UnknownRoutePage();
     }
@@ -22,4 +25,5 @@ class RoutesManager {
 class RoutesName {
   static const String loginPage = '/';
   static const String signupPage = '/signup';
+  static const String forgetPassword = '/forgetPassword';
 }

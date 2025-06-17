@@ -18,9 +18,11 @@ class SignInNow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(
-        vertical: PaddingManager.ph8,
-        horizontal: PaddingManager.ph18,
+      padding: EdgeInsets.only(
+        top: PaddingManager.ph8,
+        bottom: PaddingManager.ph20,
+        left: PaddingManager.pw18,
+        right: PaddingManager.pw18,
       ),
       child: RichText(
         textAlign: TextAlign.center,

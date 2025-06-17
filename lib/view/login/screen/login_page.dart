@@ -6,7 +6,7 @@ import 'package:animooo/core/widgets/buttons/app_button.dart';
 import 'package:animooo/core/widgets/spacing/vertical_space.dart';
 import 'package:animooo/view/login/widgets/forget_password_login.dart';
 import 'package:animooo/view/login/widgets/login_form.dart';
- import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 
 import '../../../core/resources/padding_manager.dart' show PaddingManager;
 import '../widgets/bottom_nav_bar_login_page.dart';
@@ -27,7 +27,7 @@ class LoginPage extends StatelessWidget {
               child: Column(
                 children: [
                   AppLogoAndTitleWidget(),
-                  VerticalSpace( HeightsManager.h9_15),
+                  VerticalSpace(HeightsManager.h9_15),
                   TitleLoginPage(),
 
                   LoginForm(
@@ -35,8 +35,12 @@ class LoginPage extends StatelessWidget {
                     onPressedAtEye: () {},
                     visible: true, //TODO:: add form key
                   ),
-                  ForgetPasswordLogin(onPressedAtForgetPassword: () {}),
-                  VerticalSpace( HeightsManager.h61),
+                  ForgetPasswordLogin(
+                    onPressedAtForgetPassword: () => Navigator.of(
+                      context,
+                    ).pushNamed(RoutesName.forgetPassword),
+                  ),
+
                   AppButton(text: ConstsValuesManager.login, onTap: () {}),
                 ],
               ),
@@ -44,9 +48,11 @@ class LoginPage extends StatelessWidget {
           ),
         ),
       ),
-      bottomNavigationBar: BottomNavBarLoginPage(onPressedSignUpNow: () {
-        Navigator.pushNamed(context, RoutesName.signupPage);
-      }),
+      bottomNavigationBar: BottomNavBarLoginPage(
+        onPressedSignUpNow: () {
+          Navigator.pushNamed(context, RoutesName.signupPage);
+        },
+      ),
     );
   }
 }

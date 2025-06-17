@@ -38,7 +38,11 @@ class SignUpPage extends StatelessWidget {
 
                   AppButton(text: ConstsValuesManager.signUp, onTap: () {}),
                   VerticalSpace(HeightsManager.h8),
-                  SignInNow(onPressedSignInNow: () {}),
+                  SignInNow(
+                    onPressedSignInNow: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
                 ],
               ),
             ),

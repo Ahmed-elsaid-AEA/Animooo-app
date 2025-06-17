@@ -33,6 +33,8 @@ class ConstsValuesManager {
   static const String uploadImageForYourProfile ='Upload Image For Your Profile';
 
   static const String selectFile = 'Select File';
+
+  static const String back='Back';
 }
 
 class ConstsListsManager {
