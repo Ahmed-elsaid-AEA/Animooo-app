@@ -35,8 +35,10 @@ class ConfirmPasswordFieldSignUpPage extends StatelessWidget {
             ),
           ),
         ),
-        VerticalSpace(height: HeightsManager.h6),
+        VerticalSpace( HeightsManager.h6),
         CustomTextFormField(
+          controller: TextEditingController(),
+
           validator: (value) {
             if (value == null || value.trim().isEmpty) {
               return ConstsValuesManager.enterYourPassword;
@@ -59,6 +61,7 @@ class ConfirmPasswordFieldSignUpPage extends StatelessWidget {
           ),
           hintText: ConstsValuesManager.enterYourPassword,
         ),
+        VerticalSpace(HeightsManager.h16)
       ],
     );
   }

@@ -38,8 +38,9 @@ class LoginForm extends StatelessWidget {
               ),
             ),
           ),
-          VerticalSpace(height: HeightsManager.h6),
+          VerticalSpace( HeightsManager.h6),
           CustomTextFormField(
+            controller: TextEditingController(),
             keyboardType: TextInputType.emailAddress,
             validator: (value) {
               if (value == null || value.trim().isEmpty) {
@@ -52,7 +53,7 @@ class LoginForm extends StatelessWidget {
             },
             hintText: ConstsValuesManager.enterYourEmailAddress,
           ),
-          VerticalSpace(height: HeightsManager.h16),
+          VerticalSpace( HeightsManager.h16),
           Align(
             alignment: Alignment.centerLeft,
             child: Text(
@@ -64,8 +65,10 @@ class LoginForm extends StatelessWidget {
               ),
             ),
           ),
-          VerticalSpace(height: HeightsManager.h6),
+          VerticalSpace( HeightsManager.h6),
           CustomTextFormField(
+            controller: TextEditingController(),
+
             validator: (value) {
               if (value == null || value.trim().isEmpty) {
                 return ConstsValuesManager.enterYourPassword;

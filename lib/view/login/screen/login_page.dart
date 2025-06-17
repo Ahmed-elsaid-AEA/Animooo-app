@@ -27,7 +27,7 @@ class LoginPage extends StatelessWidget {
               child: Column(
                 children: [
                   AppLogoAndTitleWidget(),
-                  VerticalSpace(height: HeightsManager.h9_15),
+                  VerticalSpace( HeightsManager.h9_15),
                   TitleLoginPage(),
 
                   LoginForm(
@@ -36,7 +36,7 @@ class LoginPage extends StatelessWidget {
                     visible: true, //TODO:: add form key
                   ),
                   ForgetPasswordLogin(onPressedAtForgetPassword: () {}),
-                  VerticalSpace(height: HeightsManager.h61),
+                  VerticalSpace( HeightsManager.h61),
                   AppButton(text: ConstsValuesManager.login, onTap: () {}),
                 ],
               ),

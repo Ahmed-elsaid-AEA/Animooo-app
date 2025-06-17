@@ -4,6 +4,7 @@ import 'package:animooo/core/widgets/custom_text_form_field.dart';
 import 'package:animooo/core/widgets/spacing/vertical_space.dart';
 import 'package:animooo/view/signup/widgets/password_field_sign_up_page.dart';
 import 'package:animooo/view/signup/widgets/phone_field_sign_up_page.dart';
+import 'package:animooo/view/signup/widgets/required_rules_for_password_sign_up_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -38,6 +39,7 @@ class SignUpForm extends StatelessWidget {
           EmailFieldSignUpPage(),
           PhoneFieldSignUpPage(),
           PasswordFieldSignUpPage(visiblePassword: true, onPressedAtEye: () {}),
+          RequiredRulesForPasswordSignUpPage(),
           ConfirmPasswordFieldSignUpPage(
             visibleConfirmPassword: true,
             onPressedAtEye: () {},

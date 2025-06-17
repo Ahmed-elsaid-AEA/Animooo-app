@@ -26,7 +26,7 @@ class FirstNameFieldSignUpPage extends StatelessWidget {
             ),
           ),
         ),
-        VerticalSpace(height: HeightsManager.h6),
+        VerticalSpace( HeightsManager.h6),
         CustomTextFormField(
           keyboardType: TextInputType.name,
           validator: (value) {
@@ -39,8 +39,9 @@ class FirstNameFieldSignUpPage extends StatelessWidget {
             }
           },
           hintText: ConstsValuesManager.enterYourEmailAddress,
+          controller: TextEditingController(),
         ),
-        VerticalSpace(height: HeightsManager.h16),
+        VerticalSpace( HeightsManager.h16),
       ],
     );
   }

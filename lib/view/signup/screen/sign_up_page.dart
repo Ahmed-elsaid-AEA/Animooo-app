@@ -9,6 +9,7 @@ import '../../../core/widgets/app_logo_and_title_widget.dart';
 import '../../../core/widgets/buttons/app_button.dart';
 import '../../../core/widgets/spacing/vertical_space.dart';
 import '../../login/widgets/title_login_page.dart';
+import '../widgets/required_rules_for_password_sign_up_page.dart';
 
 class SignUpPage extends StatelessWidget {
   const SignUpPage({super.key});
@@ -25,13 +26,14 @@ class SignUpPage extends StatelessWidget {
               child: Column(
                 children: [
                   AppLogoAndTitleWidget(),
-                  VerticalSpace(height: HeightsManager.h9_15),
+                  VerticalSpace(HeightsManager.h9_15),
                   TitleSignUpPage(),
                   SignUpForm(
                     formKey: GlobalKey(),
                     onPressedAtEye: () {},
                     visible: true,
                   ),
+
 
                   AppButton(text: ConstsValuesManager.signUp, onTap: () {}),
                 ],

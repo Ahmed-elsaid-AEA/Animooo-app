@@ -37,7 +37,7 @@ class BottomNavBarLoginPage extends StatelessWidget {
                 fontWeight: FontWeight.w300,
               ),
             ),
-            WidgetSpan(child: HorizontalSpace(width: WidthManager.w4)),
+            WidgetSpan(child: HorizontalSpace( WidthManager.w4)),
             TextSpan(
               text: ConstsValuesManager.signUpNow,
               style: TextStyle(

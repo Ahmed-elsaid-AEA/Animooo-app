@@ -1,5 +1,6 @@
 import 'package:animooo/core/resources/conts_values.dart';
 import 'package:animooo/core/resources/fonts_size_manager.dart';
+import 'package:animooo/core/resources/heights_manager.dart';
 import 'package:flutter/material.dart';
 
 import '../resources/border_radius_manager.dart';
@@ -14,6 +15,7 @@ class CustomTextFormField extends StatelessWidget {
     this.obscureText = false,
     this.validator,
     required this.keyboardType,
+    required this.controller,
   });
 
   final String? hintText;
@@ -21,59 +23,64 @@ class CustomTextFormField extends StatelessWidget {
   final Widget? suffixIcon;
   final bool obscureText;
   final TextInputType keyboardType;
+  final TextEditingController controller;
   final String? Function(String? value)? validator;
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      obscuringCharacter: '*',
-      obscureText: obscureText,
-      keyboardType: keyboardType,
-      style: TextStyle(
-        color: ColorManager.kPrimaryColor,
-        fontSize: FontSizeManager.s14,
-      ),
-      onTapOutside: (event) {
-        FocusScope.of(context).unfocus();
-      },
-      validator: validator,
-      decoration: InputDecoration(
-        filled: true,
-        fillColor: ColorManager.kLightWhiteColor,
-        hintText: hintText,
-        hintStyle: TextStyle(color: ColorManager.kGrey2Color),
-        suffixIcon: Padding(
-          padding: EdgeInsetsGeometry.zero,
-          child: suffixIcon,
+    return SizedBox(
+      height: HeightsManager.h44,
+      child: TextFormField(
+        controller: controller,
+        obscuringCharacter: '*',
+        obscureText: obscureText,
+        keyboardType: keyboardType,
+        style: TextStyle(
+          color: ColorManager.kPrimaryColor,
+          fontSize: FontSizeManager.s14,
         ),
+        onTapOutside: (event) {
+          FocusScope.of(context).unfocus();
+        },
+        validator: validator,
+        decoration: InputDecoration(
+          filled: true,
+          fillColor: ColorManager.kLightWhiteColor,
+          hintText: hintText,
+          hintStyle: TextStyle(color: ColorManager.kGrey2Color),
+          suffixIcon: Padding(
+            padding: EdgeInsetsGeometry.zero,
+            child: suffixIcon,
+          ),
 
-        suffixIconConstraints: BoxConstraints(minHeight: 0, minWidth: 0),
-        isDense: true,
+          suffixIconConstraints: BoxConstraints(minHeight: 0, minWidth: 0),
 
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(
-            borderRadius ?? BorderRadiusManager.br10,
+          // isDense: true,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(
+              borderRadius ?? BorderRadiusManager.br10,
+            ),
+            borderSide: BorderSide(color: ColorManager.kLightGreyColor),
           ),
-          borderSide: BorderSide(color: ColorManager.kLightGreyColor),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(
-            borderRadius ?? BorderRadiusManager.br10,
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(
+              borderRadius ?? BorderRadiusManager.br10,
+            ),
+            borderSide: BorderSide(color: ColorManager.kLightGreyColor),
           ),
-          borderSide: BorderSide(color: ColorManager.kLightGreyColor),
-        ),
 
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(
-            borderRadius ?? BorderRadiusManager.br10,
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(
+              borderRadius ?? BorderRadiusManager.br10,
+            ),
+            borderSide: BorderSide(color: ColorManager.kPrimaryColor),
           ),
-          borderSide: BorderSide(color: ColorManager.kPrimaryColor),
-        ),
-        errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(
-            borderRadius ?? BorderRadiusManager.br10,
+          errorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(
+              borderRadius ?? BorderRadiusManager.br10,
+            ),
+            borderSide: BorderSide(color: ColorManager.kRedColor),
           ),
-          borderSide: BorderSide(color: ColorManager.kRedColor),
         ),
       ),
     );

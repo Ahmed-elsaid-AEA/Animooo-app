@@ -30,8 +30,10 @@ class PasswordFieldSignUpPage extends StatelessWidget {
             ),
           ),
         ),
-        VerticalSpace(height: HeightsManager.h6),
+        VerticalSpace( HeightsManager.h6),
         CustomTextFormField(
+          controller: TextEditingController(),
+
           validator: (value) {
             if (value == null || value.trim().isEmpty) {
               return ConstsValuesManager.enterYourPassword;
@@ -52,7 +54,7 @@ class PasswordFieldSignUpPage extends StatelessWidget {
           ),
           hintText: ConstsValuesManager.enterYourPassword,
         ),
-        VerticalSpace(height: HeightsManager.h16),
+        VerticalSpace( HeightsManager.h8),
       ],
     );
   }
