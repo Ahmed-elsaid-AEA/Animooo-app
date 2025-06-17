@@ -11,6 +11,7 @@ class HeightsManager {
   static   double h25= 25.h;
   static   double h28= 28.h;
   static   double h31= 31.h;
+  static   double h41= 41.h;
   static   double h44= 44.h;
   static   double h58= 58.h;
   static   double h61= 61.h;

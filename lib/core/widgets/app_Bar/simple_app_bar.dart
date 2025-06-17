@@ -8,9 +8,10 @@ import '../../../core/resources/conts_values.dart';
 import '../../../core/resources/fonts_size_manager.dart';
 import '../../../core/resources/padding_manager.dart';
 
-class ForgetPasswordAppBar extends StatelessWidget
-    implements PreferredSizeWidget {
-  const ForgetPasswordAppBar({super.key});
+class SimpleAppBar extends StatelessWidget implements PreferredSizeWidget {
+  final String title;
+
+  const SimpleAppBar({super.key, required this.title});
 
   @override
   Widget build(BuildContext context) {
@@ -36,11 +37,11 @@ class ForgetPasswordAppBar extends StatelessWidget
         ),
       ),
       title: InkWell(
-        onTap: (){
+        onTap: () {
           Navigator.of(context).pop();
         },
         child: Text(
-          ConstsValuesManager.back,
+          title,
           style: TextStyle(
             fontFamily: FontsManager.otamaEpFontFamily,
             fontSize: FontSizeManager.s20,

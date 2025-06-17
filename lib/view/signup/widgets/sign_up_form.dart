@@ -8,7 +8,6 @@ import 'package:animooo/view/signup/widgets/required_rules_for_password_sign_up_
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../core/resources/assets_values_manager.dart';
 import '../../../core/resources/colors_manager.dart';

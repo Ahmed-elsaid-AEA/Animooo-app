@@ -19,7 +19,12 @@ class ConstsValuesManager {
 
   static const String email = 'Email';
   static const String forgetYourPassword = 'Forget Your Password ?';
+  static const String otpVerification = 'OTP Verification';
+  static const String pleaseEnterThe4DigitCodeSentYourPhoneNumber = 'Please enter the 4 digit code sent your phone number';
   static const String password = 'Password';
+  static const String confirm = 'Confirm';
+
+  static const String resendCodeIn = 'Resend Code In';
 
   static const String enterYourEmailAddress = 'Enter your email address';
   static const String enterYourPassword = 'Enter your password';
@@ -46,6 +51,8 @@ class ConstsValuesManager {
   static const String sendCode='Send Code';
 
   static const String enterYourConfirmPassword= 'Enter your confirm password';
+
+  static const String  cancel='Cancel';
 }
 
 class ConstsListsManager {

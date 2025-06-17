@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../../view/forget_password/screen/forget_password_page.dart';
 import '../../view/login/screen/login_page.dart';
+import '../../view/otp_verfication_code/screens/otp_verification_code_page.dart';
 
 class RoutesManager {
   static Route? onGenerateRoute(RouteSettings settings) {
@@ -15,6 +16,8 @@ class RoutesManager {
         widget = SignUpPage();
       case RoutesName.forgetPassword:
         widget = ForgetPasswordPage();
+      case RoutesName.otpVerification:
+        widget = OtpVerificationPage();
       default:
         widget = const UnknownRoutePage();
     }
@@ -26,4 +29,5 @@ class RoutesName {
   static const String loginPage = '/';
   static const String signupPage = '/signup';
   static const String forgetPassword = '/forgetPassword';
+  static const String otpVerification = '/otpVerification';
 }
