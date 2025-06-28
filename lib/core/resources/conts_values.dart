@@ -74,14 +74,30 @@ class ConstsValuesManager {
   static const String
   passwordMustBeAtLeastEightCharactersAndContainAtLeastOneUpperCaseLetterOneLowerCaseLetterAndOneNumber =
       'Password must be at least eight characters and contain at least one upper case letter, one lower case letter, and one number';
+
+  static const String title = 'title';
+  static const String valid = 'valid';
 }
 
 class ConstsListsManager {
   static List<Map<String, dynamic>> passwordRulesRequirements = [
-    {"title": 'Minimum characters 12', 'valid': false},
-    {"title": 'One uppercase character', 'valid': false},
-    {"title": 'One lowercase character', 'valid': false},
-    {"title": 'One special character', 'valid': false},
-    {"title": 'One number', 'valid': false},
+    {
+      ConstsValuesManager.title: 'Minimum characters 8',
+      ConstsValuesManager.valid: false,
+    },
+
+    {
+      ConstsValuesManager.title: 'One uppercase character',
+      ConstsValuesManager.valid: false,
+    },
+    {
+      ConstsValuesManager.title: 'One lowercase character',
+      ConstsValuesManager.valid: false,
+    },
+    {
+      ConstsValuesManager.title: 'One special character',
+      ConstsValuesManager.valid: false,
+    },
+    {ConstsValuesManager.title: 'One number', ConstsValuesManager.valid: false},
   ];
 }

@@ -54,6 +54,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   VerticalSpace(HeightsManager.h9_15),
                   TitleSignUpPage(),
                   SignUpForm(
+                    fileImage: signUpController.fileImage,
                     formKey: signUpController.formKey,
                     confirmPasswordController:
                         signUpController.confirmPasswordController,
@@ -67,51 +68,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         signUpController.visibleConfirmPassword,
                     visiblePassword: signUpController.visiblePassword,
                     onChangedPassword: (String value) {
-                      if (value.length < 12) {
-                        ConstsListsManager
-                                .passwordRulesRequirements[0]['valid'] =
-                            false;
-                      } else {
-                        ConstsListsManager
-                                .passwordRulesRequirements[0]['valid'] =
-                            true;
-                      }
-                      if (!value.contains(RegExp(r"[A-Z]"))) {
-                        ConstsListsManager
-                                .passwordRulesRequirements[1]['valid'] =
-                            false;
-                      } else {
-                        ConstsListsManager
-                                .passwordRulesRequirements[1]['valid'] =
-                            true;
-                      }
-                      if (!value.contains(RegExp(r"[a-z]"))) {
-                        ConstsListsManager
-                                .passwordRulesRequirements[2]['valid'] =
-                            false;
-                      } else {
-                        ConstsListsManager
-                                .passwordRulesRequirements[2]['valid'] =
-                            true;
-                      }
-                      if(!value.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'))){
-                        ConstsListsManager
-                                .passwordRulesRequirements[3]['valid'] =
-                            false;
-                      }else {
-                        ConstsListsManager
-                                .passwordRulesRequirements[3]['valid'] =
-                            true;
-                      }
-                      if (!value.contains(RegExp(r"[0-9]"))) {
-                        ConstsListsManager
-                                .passwordRulesRequirements[4]['valid'] =
-                            false;
-                      } else {
-                        ConstsListsManager
-                                .passwordRulesRequirements[4]['valid'] =
-                            true;
-                      }
+                   signUpController. onChangePassword(value) ;
                       setState(() {});
                     },
                   ),
@@ -138,4 +95,6 @@ class _SignUpPageState extends State<SignUpPage> {
       ),
     );
   }
+
+
 }

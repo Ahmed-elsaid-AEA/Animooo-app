@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:animooo/core/functions/app_validators.dart';
 import 'package:animooo/core/resources/fonts_size_manager.dart';
 import 'package:animooo/core/resources/heights_manager.dart';
@@ -27,11 +29,14 @@ class SignUpForm extends StatelessWidget {
     required this.passwordController,
     required this.confirmPasswordController,
     this.onPressedAtEyeConfirmPassword,
-    required this.visibleConfirmPassword,required this.onChangedPassword,
+    required this.visibleConfirmPassword,
+    required this.onChangedPassword,
+    required this.fileImage,
   });
 
   final GlobalKey<FormState> formKey;
   final VoidCallback? onPressedAtEyePassword;
+  final File? fileImage;
   final bool visiblePassword;
   final bool visibleConfirmPassword;
   final TextEditingController firstNameController;
@@ -41,7 +46,6 @@ class SignUpForm extends StatelessWidget {
   final TextEditingController confirmPasswordController;
   final VoidCallback? onPressedAtEyeConfirmPassword;
   final ValueChanged<String> onChangedPassword;
-
 
   @override
   Widget build(BuildContext context) {
@@ -80,8 +84,7 @@ class SignUpForm extends StatelessWidget {
 
           CustomRequiredPasswordField(
             usedValidate: false,
-            onChanged
-            :onChangedPassword,
+            onChanged: onChangedPassword,
             controller: passwordController,
             onPressedAtEye: onPressedAtEyePassword,
             title: ConstsValuesManager.password,
@@ -111,7 +114,7 @@ class SignUpForm extends StatelessWidget {
             ),
           ),
           VerticalSpace(HeightsManager.h8),
-          CustomSelectImageWidget(),
+          CustomSelectImageWidget(file: fileImage),
           VerticalSpace(HeightsManager.h28),
         ],
       ),

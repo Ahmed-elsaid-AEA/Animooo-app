@@ -19,4 +19,7 @@ class HeightsManager {
   static   double h151= 151.h;
 
   static double h82= 82.h;
+
+  static double h100= 100.h;
+  static double h200= 200.h;
 }

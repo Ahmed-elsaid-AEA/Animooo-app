@@ -29,7 +29,7 @@ class RequiredRulesForPasswordSignUpPage extends StatelessWidget {
           physics: const NeverScrollableScrollPhysics(),
           itemBuilder: (context, index) {
             bool isValid =
-                ConstsListsManager.passwordRulesRequirements[index]['valid'];
+                ConstsListsManager.passwordRulesRequirements[index][ConstsValuesManager.valid];
             return RichText(
               text: TextSpan(
                 children: [
@@ -41,7 +41,7 @@ class RequiredRulesForPasswordSignUpPage extends StatelessWidget {
                   WidgetSpan(child: HorizontalSpace(WidthManager.w2)),
                   TextSpan(
                     text: ConstsListsManager
-                        .passwordRulesRequirements[index]['title'],
+                        .passwordRulesRequirements[index][ConstsValuesManager.title],
                     style: TextStyle(
                       color: isValid == true
                           ? ColorManager.kGreenColor

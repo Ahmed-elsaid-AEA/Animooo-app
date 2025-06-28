@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:animooo/core/resources/border_radius_manager.dart';
 import 'package:animooo/core/widgets/spacing/vertical_space.dart';
 import 'package:dotted_border/dotted_border.dart';
@@ -12,7 +14,9 @@ import '../resources/heights_manager.dart';
 import '../resources/padding_manager.dart';
 
 class CustomSelectImageWidget extends StatelessWidget {
-  const CustomSelectImageWidget({super.key});
+  const CustomSelectImageWidget({super.key, this.file});
+
+  final File? file;
 
   @override
   Widget build(BuildContext context) {
@@ -28,22 +32,29 @@ class CustomSelectImageWidget extends StatelessWidget {
           color: ColorManager.kPrimaryColor,
         ),
         child: SizedBox(
+          height: HeightsManager.h100,
           width: double.infinity,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(Icons.image, color: ColorManager.kPrimaryColor, size: FontSizeManager.s28),
-              VerticalSpace(HeightsManager.h16),
-              Text(
-                ConstsValuesManager.selectYourImage,
-                style: TextStyle(
-                  color: ColorManager.kPrimaryColor,
-                  fontSize: FontSizeManager.s16,
-                  fontFamily: FontsManager.poppinsFontFamily,
+          child: file != null
+              ? Image.file(file!) //TODO // make custom widget for custom image
+              : Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.image,
+                      color: ColorManager.kPrimaryColor,
+                      size: FontSizeManager.s28,
+                    ),
+                    VerticalSpace(HeightsManager.h16),
+                    Text(
+                      ConstsValuesManager.selectYourImage,
+                      style: TextStyle(
+                        color: ColorManager.kPrimaryColor,
+                        fontSize: FontSizeManager.s16,
+                        fontFamily: FontsManager.poppinsFontFamily,
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ],
-          ),
         ),
       ),
     );
