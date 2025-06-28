@@ -14,47 +14,57 @@ import '../resources/heights_manager.dart';
 import '../resources/padding_manager.dart';
 
 class CustomSelectImageWidget extends StatelessWidget {
-  const CustomSelectImageWidget({super.key, this.file});
+  const CustomSelectImageWidget({
+    super.key,
+    this.file,
+    required this.onTapAtSelectImage,
+  });
 
   final File? file;
+  final GestureTapCallback onTapAtSelectImage;
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      child: DottedBorder(
-        options: RoundedRectDottedBorderOptions(
-          padding: EdgeInsets.symmetric(
-            vertical: PaddingManager.ph67,
-            horizontal: PaddingManager.pw20,
+    return InkWell(
+      onTap: onTapAtSelectImage,
+      child: SizedBox(
+        width: double.infinity,
+        child: DottedBorder(
+          options: RoundedRectDottedBorderOptions(
+            padding: EdgeInsets.symmetric(
+              vertical: PaddingManager.ph67,
+              horizontal: PaddingManager.pw20,
+            ),
+            radius: Radius.circular(BorderRadiusManager.br10),
+            color: ColorManager.kPrimaryColor,
           ),
-          radius: Radius.circular(BorderRadiusManager.br10),
-          color: ColorManager.kPrimaryColor,
-        ),
-        child: SizedBox(
-          height: HeightsManager.h100,
-          width: double.infinity,
-          child: file != null
-              ? Image.file(file!) //TODO // make custom widget for custom image
-              : Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.image,
-                      color: ColorManager.kPrimaryColor,
-                      size: FontSizeManager.s28,
-                    ),
-                    VerticalSpace(HeightsManager.h16),
-                    Text(
-                      ConstsValuesManager.selectYourImage,
-                      style: TextStyle(
+          child: SizedBox(
+            height: HeightsManager.h100,
+            width: double.infinity,
+            child: file != null
+                ? Image.file(
+                    file!,
+                  ) //TODO // make custom widget for custom image
+                : Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.image,
                         color: ColorManager.kPrimaryColor,
-                        fontSize: FontSizeManager.s16,
-                        fontFamily: FontsManager.poppinsFontFamily,
+                        size: FontSizeManager.s28,
                       ),
-                    ),
-                  ],
-                ),
+                      VerticalSpace(HeightsManager.h16),
+                      Text(
+                        ConstsValuesManager.selectYourImage,
+                        style: TextStyle(
+                          color: ColorManager.kPrimaryColor,
+                          fontSize: FontSizeManager.s16,
+                          fontFamily: FontsManager.poppinsFontFamily,
+                        ),
+                      ),
+                    ],
+                  ),
+          ),
         ),
       ),
     );

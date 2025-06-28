@@ -5,28 +5,27 @@ import 'package:flutter/material.dart';
 
 import '../resources/assets_values_manager.dart';
 import '../resources/colors_manager.dart';
+import '../resources/conts_values.dart';
 import '../resources/fonts_size_manager.dart';
 import '../resources/heights_manager.dart';
 import 'custom_text_form_field.dart';
 
-class CustomRequiredPasswordField extends StatelessWidget {
-  const CustomRequiredPasswordField({
+class CustomRequiredConfirmPasswordField extends StatelessWidget {
+  const CustomRequiredConfirmPasswordField({
     super.key,
-    required this.title,
     required this.onPressedAtEye,
     required this.visible,
     required this.controller,
-    required this.hintText,
     this.usedValidate = true,
     this.onChanged,
+    required this.password,
   });
 
   final ValueChanged<String>? onChanged;
 
-  final String hintText;
-  final String title;
   final bool usedValidate;
   final VoidCallback? onPressedAtEye;
+  final String password;
   final bool visible;
   final TextEditingController controller;
 
@@ -37,7 +36,7 @@ class CustomRequiredPasswordField extends StatelessWidget {
         Align(
           alignment: Alignment.centerLeft,
           child: Text(
-            title,
+            ConstsValuesManager.confirmPassword,
             style: TextStyle(
               fontSize: FontSizeManager.s16,
               color: ColorManager.kGreyColor,
@@ -51,11 +50,14 @@ class CustomRequiredPasswordField extends StatelessWidget {
           onChanged: onChanged,
           validator: usedValidate == true
               ? (value) {
-                  return AppValidators.passwordValidator(value);
+                  return AppValidators.confirmPasswordValidator(
+                    value,
+                    password,
+                  );
                 }
               : null,
           keyboardType: TextInputType.visiblePassword,
-          obscureText: !visible,
+          obscureText: true,
           suffixIcon: IconButton(
             onPressed: onPressedAtEye,
             icon: Icon(
@@ -63,7 +65,7 @@ class CustomRequiredPasswordField extends StatelessWidget {
               color: ColorManager.kGrey2Color,
             ),
           ),
-          hintText: hintText,
+          hintText: ConstsValuesManager.enterYourConfirmPassword,
         ),
       ],
     );

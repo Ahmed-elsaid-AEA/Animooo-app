@@ -1,7 +1,9 @@
 import 'dart:io';
 
+import 'package:animooo/core/functions/image_picker_service.dart';
 import 'package:animooo/core/resources/conts_values.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:image_picker/image_picker.dart';
 
 class SignUpController {
   late GlobalKey<FormState> formKey;
@@ -11,8 +13,8 @@ class SignUpController {
   late TextEditingController firstNameController;
   late TextEditingController lastNameController;
 
-  bool visibleConfirmPassword = false;
-  bool visiblePassword = false;
+  bool visibleConfirmPassword = true;
+  bool visiblePassword = true;
 
   File? fileImage;
 
@@ -86,5 +88,9 @@ class SignUpController {
     } else {
       _changeRule(4, true);
     }
+  }
+
+  void onTapAtSelectImage() async {
+    fileImage = await ImagePickerService.pickImage(ImageSource.camera);
   }
 }

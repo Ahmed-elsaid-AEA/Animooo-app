@@ -1,8 +1,11 @@
 import 'dart:io';
 
 import 'package:animooo/core/functions/app_validators.dart';
+import 'package:animooo/core/functions/image_picker_service.dart';
+import 'package:animooo/core/resources/extenstions.dart';
 import 'package:animooo/core/resources/fonts_size_manager.dart';
 import 'package:animooo/core/resources/heights_manager.dart';
+import 'package:animooo/core/widgets/custom_required_confirm_password_field.dart';
 import 'package:animooo/core/widgets/custom_required_field.dart';
 import 'package:animooo/core/widgets/custom_required_password_field.dart';
 import 'package:animooo/core/widgets/custom_text_form_field.dart';
@@ -11,6 +14,7 @@ import 'package:animooo/view/signup/widgets/required_rules_for_password_sign_up_
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../../core/resources/assets_values_manager.dart';
 import '../../../core/resources/colors_manager.dart';
@@ -32,6 +36,7 @@ class SignUpForm extends StatelessWidget {
     required this.visibleConfirmPassword,
     required this.onChangedPassword,
     required this.fileImage,
+    required this.onTapAtSelectImage,
   });
 
   final GlobalKey<FormState> formKey;
@@ -46,6 +51,7 @@ class SignUpForm extends StatelessWidget {
   final TextEditingController confirmPasswordController;
   final VoidCallback? onPressedAtEyeConfirmPassword;
   final ValueChanged<String> onChangedPassword;
+  final GestureTapCallback onTapAtSelectImage;
 
   @override
   Widget build(BuildContext context) {
@@ -95,12 +101,11 @@ class SignUpForm extends StatelessWidget {
           VerticalSpace(HeightsManager.h8),
 
           RequiredRulesForPasswordSignUpPage(),
-          CustomRequiredPasswordField(
+          CustomRequiredConfirmPasswordField(
             onPressedAtEye: onPressedAtEyeConfirmPassword,
-            title: ConstsValuesManager.confirmPassword,
             visible: visibleConfirmPassword,
             controller: confirmPasswordController,
-            hintText: ConstsValuesManager.enterYourConfirmPassword,
+            password: passwordController.getText,
           ),
           VerticalSpace(HeightsManager.h16),
 
@@ -114,7 +119,10 @@ class SignUpForm extends StatelessWidget {
             ),
           ),
           VerticalSpace(HeightsManager.h8),
-          CustomSelectImageWidget(file: fileImage),
+          CustomSelectImageWidget(
+            file: fileImage,
+            onTapAtSelectImage: onTapAtSelectImage,
+          ),
           VerticalSpace(HeightsManager.h28),
         ],
       ),

@@ -68,8 +68,14 @@ class _SignUpPageState extends State<SignUpPage> {
                         signUpController.visibleConfirmPassword,
                     visiblePassword: signUpController.visiblePassword,
                     onChangedPassword: (String value) {
-                   signUpController. onChangePassword(value) ;
+                      signUpController.onChangePassword(value);
                       setState(() {});
+                    },
+                    onTapAtSelectImage: () {
+                      signUpController.onTapAtSelectImage();
+                      setState(() {
+
+                      });
                     },
                   ),
 
@@ -95,6 +101,4 @@ class _SignUpPageState extends State<SignUpPage> {
       ),
     );
   }
-
-
 }
