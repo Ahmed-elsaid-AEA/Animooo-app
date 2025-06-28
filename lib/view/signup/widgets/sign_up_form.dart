@@ -27,7 +27,7 @@ class SignUpForm extends StatelessWidget {
     required this.passwordController,
     required this.confirmPasswordController,
     this.onPressedAtEyeConfirmPassword,
-    required this.visibleConfirmPassword,
+    required this.visibleConfirmPassword,required this.onChangedPassword,
   });
 
   final GlobalKey<FormState> formKey;
@@ -40,6 +40,8 @@ class SignUpForm extends StatelessWidget {
   final TextEditingController passwordController;
   final TextEditingController confirmPasswordController;
   final VoidCallback? onPressedAtEyeConfirmPassword;
+  final ValueChanged<String> onChangedPassword;
+
 
   @override
   Widget build(BuildContext context) {
@@ -65,6 +67,7 @@ class SignUpForm extends StatelessWidget {
             title: ConstsValuesManager.lastName,
             hintText: ConstsValuesManager.enterYourLastName,
           ),
+          VerticalSpace(HeightsManager.h16),
           CustomRequiredField(
             controller: emailController,
             title: ConstsValuesManager.email,
@@ -76,6 +79,9 @@ class SignUpForm extends StatelessWidget {
           VerticalSpace(HeightsManager.h16),
 
           CustomRequiredPasswordField(
+            usedValidate: false,
+            onChanged
+            :onChangedPassword,
             controller: passwordController,
             onPressedAtEye: onPressedAtEyePassword,
             title: ConstsValuesManager.password,

@@ -19,12 +19,17 @@ class RequiredRulesForPasswordSignUpPage extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        TitleRules(),
+        if (ConstsListsManager.passwordRulesRequirements.any(
+          (element) => element['valid'] == false,
+        ))
+          TitleRules(),
         VerticalSpace(HeightsManager.h5),
         ListView.separated(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           itemBuilder: (context, index) {
+            bool isValid =
+                ConstsListsManager.passwordRulesRequirements[index]['valid'];
             return RichText(
               text: TextSpan(
                 children: [
@@ -35,12 +40,18 @@ class RequiredRulesForPasswordSignUpPage extends StatelessWidget {
                   ),
                   WidgetSpan(child: HorizontalSpace(WidthManager.w2)),
                   TextSpan(
-                    text: ConstsListsManager.passwordRulesRequirements[index],
+                    text: ConstsListsManager
+                        .passwordRulesRequirements[index]['title'],
                     style: TextStyle(
-                      color: ColorManager.kRedColor,
+                      color: isValid == true
+                          ? ColorManager.kGreenColor
+                          : ColorManager.kRedColor,
                       fontSize: FontSizeManager.s9,
                       fontFamily: FontsManager.poppinsFontFamily,
                       fontWeight: FontWeight.w700,
+                      decoration: isValid == true
+                          ? TextDecoration.lineThrough
+                          : TextDecoration.none,
                     ),
                   ),
                 ],

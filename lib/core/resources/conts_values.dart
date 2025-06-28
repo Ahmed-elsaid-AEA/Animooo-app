@@ -77,11 +77,11 @@ class ConstsValuesManager {
 }
 
 class ConstsListsManager {
-  static const List<String> passwordRulesRequirements = [
-    'Minimum characters 12',
-    'One uppercase character',
-    'One lowercase character',
-    'One special character',
-    'One number',
+  static List<Map<String, dynamic>> passwordRulesRequirements = [
+    {"title": 'Minimum characters 12', 'valid': false},
+    {"title": 'One uppercase character', 'valid': false},
+    {"title": 'One lowercase character', 'valid': false},
+    {"title": 'One special character', 'valid': false},
+    {"title": 'One number', 'valid': false},
   ];
 }

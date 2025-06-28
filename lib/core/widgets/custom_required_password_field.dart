@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 import '../resources/assets_values_manager.dart';
 import '../resources/colors_manager.dart';
- import '../resources/fonts_size_manager.dart';
+import '../resources/fonts_size_manager.dart';
 import '../resources/heights_manager.dart';
 import 'custom_text_form_field.dart';
 
@@ -17,10 +17,13 @@ class CustomRequiredPasswordField extends StatelessWidget {
     required this.visible,
     required this.controller,
     required this.hintText,
+    this.usedValidate = true, this.onChanged,
   });
+  final ValueChanged<String>? onChanged;
 
   final String hintText;
   final String title;
+  final bool usedValidate;
   final VoidCallback? onPressedAtEye;
   final bool visible;
   final TextEditingController controller;
@@ -43,10 +46,12 @@ class CustomRequiredPasswordField extends StatelessWidget {
         VerticalSpace(HeightsManager.h6),
         CustomTextFormField(
           controller: controller,
-
-          validator: (value) {
-           return AppValidators.passwordValidator(value);
-          },
+onChanged: onChanged,
+          validator: usedValidate == true
+              ? (value) {
+                  return AppValidators.passwordValidator(value);
+                }
+              : null,
           keyboardType: TextInputType.visiblePassword,
           obscureText: true,
           suffixIcon: IconButton(
