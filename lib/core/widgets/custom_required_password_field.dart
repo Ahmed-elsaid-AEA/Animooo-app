@@ -1,11 +1,11 @@
+import 'package:animooo/core/functions/app_validators.dart';
 import 'package:animooo/core/widgets/spacing/vertical_space.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../resources/assets_values_manager.dart';
 import '../resources/colors_manager.dart';
-import '../resources/conts_values.dart';
-import '../resources/fonts_size_manager.dart';
+ import '../resources/fonts_size_manager.dart';
 import '../resources/heights_manager.dart';
 import 'custom_text_form_field.dart';
 
@@ -45,13 +45,7 @@ class CustomRequiredPasswordField extends StatelessWidget {
           controller: controller,
 
           validator: (value) {
-            if (value == null || value.trim().isEmpty) {
-              return ConstsValuesManager.enterYourPassword;
-            }
-            //TODO:: add password validation
-            else {
-              return null;
-            }
+           return AppValidators.passwordValidator(value);
           },
           keyboardType: TextInputType.visiblePassword,
           obscureText: true,

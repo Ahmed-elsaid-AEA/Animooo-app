@@ -1,5 +1,6 @@
 class ConstsValuesManager {
   ConstsValuesManager._();
+
   static const String animooo = 'Animooo';
   static const String login = 'Log in';
   static const String firstName = 'First name';
@@ -21,7 +22,8 @@ class ConstsValuesManager {
   static const String email = 'Email';
   static const String forgetYourPassword = 'Forget Your Password ?';
   static const String otpVerification = 'OTP Verification';
-  static const String pleaseEnterThe4DigitCodeSentYourPhoneNumber = 'Please enter the 4 digit code sent your phone number';
+  static const String pleaseEnterThe4DigitCodeSentYourPhoneNumber =
+      'Please enter the 4 digit code sent your phone number';
   static const String password = 'Password';
   static const String confirm = 'Confirm';
 
@@ -49,17 +51,29 @@ class ConstsValuesManager {
 
   static const String back = 'Back';
 
-  static const String sendCode='Send Code';
+  static const String sendCode = 'Send Code';
 
-  static const String enterYourConfirmPassword= 'Enter your confirm password';
+  static const String enterYourConfirmPassword = 'Enter your confirm password';
 
-  static const String  cancel='Cancel';
+  static const String cancel = 'Cancel';
 
   static const String createNewPassword = 'Create New Password';
 
-  static const String newPassword='New Password';
+  static const String newPassword = 'New Password';
 
-  static const String submit='Submit';
+  static const String submit = 'Submit';
+
+  static const String firstNameMustBeAtLeastThreeLetters =
+      'First name must be at least three letters';
+
+  static const String secondNameMustBeAtLeastThreeLetters =
+      'Second name must be at least three letters';
+
+  static const String enterValidEmail = 'Enter valid email';
+
+  static const String
+  passwordMustBeAtLeastEightCharactersAndContainAtLeastOneUpperCaseLetterOneLowerCaseLetterAndOneNumber =
+      'Password must be at least eight characters and contain at least one upper case letter, one lower case letter, and one number';
 }
 
 class ConstsListsManager {

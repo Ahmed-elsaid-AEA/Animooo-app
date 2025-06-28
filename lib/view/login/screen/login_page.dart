@@ -8,24 +8,13 @@ import 'package:animooo/view/login/widgets/forget_password_login.dart';
 import 'package:animooo/view/login/widgets/login_form.dart';
 import 'package:flutter/material.dart';
 
-import '../../../core/resources/padding_manager.dart' show PaddingManager;
+import '../../../core/resources/padding_manager.dart';
 import '../widgets/bottom_nav_bar_login_page.dart';
 import '../widgets/title_login_page.dart';
 
-class LoginPage extends StatefulWidget {
+class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
 
-  @override
-  State<LoginPage> createState() => _LoginPageState();
-}
-
-class _LoginPageState extends State<LoginPage> {
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-
-  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -1,3 +1,4 @@
+import 'package:animooo/core/functions/app_validators.dart';
 import 'package:animooo/core/resources/fonts_size_manager.dart';
 import 'package:animooo/core/resources/heights_manager.dart';
 import 'package:animooo/core/widgets/custom_required_field.dart';
@@ -18,13 +19,27 @@ class SignUpForm extends StatelessWidget {
   const SignUpForm({
     super.key,
     required this.formKey,
-    required this.onPressedAtEye,
-    required this.visible,
+    required this.onPressedAtEyePassword,
+    required this.visiblePassword,
+    required this.firstNameController,
+    required this.lastNameController,
+    required this.emailController,
+    required this.passwordController,
+    required this.confirmPasswordController,
+    this.onPressedAtEyeConfirmPassword,
+    required this.visibleConfirmPassword,
   });
 
   final GlobalKey<FormState> formKey;
-  final VoidCallback? onPressedAtEye;
-  final bool visible;
+  final VoidCallback? onPressedAtEyePassword;
+  final bool visiblePassword;
+  final bool visibleConfirmPassword;
+  final TextEditingController firstNameController;
+  final TextEditingController lastNameController;
+  final TextEditingController emailController;
+  final TextEditingController passwordController;
+  final TextEditingController confirmPasswordController;
+  final VoidCallback? onPressedAtEyeConfirmPassword;
 
   @override
   Widget build(BuildContext context) {
@@ -34,35 +49,48 @@ class SignUpForm extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CustomRequiredField(
-            controller: TextEditingController(),
+            validator: (value) {
+              return AppValidators.firstNameValidator(value);
+            },
+            controller: firstNameController,
             title: ConstsValuesManager.firstName,
             hintText: ConstsValuesManager.enterYourFirstName,
           ),
           VerticalSpace(HeightsManager.h16),
           CustomRequiredField(
-            controller: TextEditingController(),
+            validator: (value) {
+              return AppValidators.lastNameValidator(value);
+            },
+            controller: lastNameController,
             title: ConstsValuesManager.lastName,
             hintText: ConstsValuesManager.enterYourLastName,
           ),
-
+          CustomRequiredField(
+            controller: emailController,
+            title: ConstsValuesManager.email,
+            hintText: ConstsValuesManager.enterYourEmailAddress,
+            validator: (value) {
+              return AppValidators.emailValidator(value);
+            },
+          ),
           VerticalSpace(HeightsManager.h16),
 
           CustomRequiredPasswordField(
-            controller: TextEditingController(),
-            onPressedAtEye: () {},
+            controller: passwordController,
+            onPressedAtEye: onPressedAtEyePassword,
             title: ConstsValuesManager.password,
             hintText: ConstsValuesManager.enterYourPassword,
-            visible: true,
+            visible: visiblePassword,
           ),
 
           VerticalSpace(HeightsManager.h8),
 
           RequiredRulesForPasswordSignUpPage(),
           CustomRequiredPasswordField(
-            onPressedAtEye: () {},
+            onPressedAtEye: onPressedAtEyeConfirmPassword,
             title: ConstsValuesManager.confirmPassword,
-            visible: true,
-            controller: TextEditingController(),
+            visible: visibleConfirmPassword,
+            controller: confirmPasswordController,
             hintText: ConstsValuesManager.enterYourConfirmPassword,
           ),
           VerticalSpace(HeightsManager.h16),

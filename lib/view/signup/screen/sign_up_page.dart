@@ -1,5 +1,8 @@
+import 'package:animooo/controller/sign_up_controller.dart';
+import 'package:animooo/core/services/internet_checker_service.dart';
 import 'package:animooo/view/signup/widgets/sign_up_form.dart';
 import 'package:animooo/view/signup/widgets/sign_up_title.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/resources/conts_values.dart';
@@ -13,8 +16,28 @@ import '../../login/widgets/title_login_page.dart';
 import '../widgets/required_rules_for_password_sign_up_page.dart';
 import '../widgets/sign_in_now.dart';
 
-class SignUpPage extends StatelessWidget {
+class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
+
+  @override
+  State<SignUpPage> createState() => _SignUpPageState();
+}
+
+class _SignUpPageState extends State<SignUpPage> {
+  late SignUpController signUpController;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    signUpController = SignUpController();
+  }
+
+  @override
+  void dispose() {
+    signUpController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,12 +54,28 @@ class SignUpPage extends StatelessWidget {
                   VerticalSpace(HeightsManager.h9_15),
                   TitleSignUpPage(),
                   SignUpForm(
-                    formKey: GlobalKey(),
-                    onPressedAtEye: () {},
-                    visible: true,
+                    formKey: signUpController.formKey,
+                    confirmPasswordController:
+                        signUpController.confirmPasswordController,
+                    emailController: signUpController.emailController,
+                    firstNameController: signUpController.firstNameController,
+                    lastNameController: signUpController.lastNameController,
+                    passwordController: signUpController.passwordController,
+                    onPressedAtEyePassword: () {},
+                    onPressedAtEyeConfirmPassword: () {},
+                    visibleConfirmPassword:
+                        signUpController.visibleConfirmPassword,
+                    visiblePassword: signUpController.visiblePassword,
                   ),
 
-                  AppButton(text: ConstsValuesManager.signUp, onTap: () {}),
+                  AppButton(
+                    text: ConstsValuesManager.signUp,
+                    onTap: () async {
+                      if(signUpController.formKey.currentState!.validate()) {
+                        print("validate");
+                      }
+                    },
+                  ),
                   VerticalSpace(HeightsManager.h8),
                   SignInNow(
                     onPressedSignInNow: () {
