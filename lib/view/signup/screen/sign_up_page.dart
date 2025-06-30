@@ -77,14 +77,16 @@ class _SignUpPageState extends State<SignUpPage> {
                       signUpController.onChangePassword(value);
                       setState(() {});
                     },
-                    onTapAtSelectImage: () {
-                      signUpController.onTapAtSelectImage();
+                    onTapAtSelectImage: () async{
+                      await signUpController.onTapAtSelectImage(context);
                       setState(() {});
                     },
                     selectImageStatus: signUpController.selectImageStatus,
                     onChanged: (String value) {
                       signUpController.onChanged(value);
                       setState(() {});
+                      //?back to close model bottom sheet
+                      Navigator.pop(context);
                     },
                   ),
 

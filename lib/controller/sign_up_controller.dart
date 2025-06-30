@@ -2,10 +2,19 @@ import 'dart:io';
 
 import 'package:animooo/core/enums/select_image_status.dart';
 import 'package:animooo/core/functions/image_picker_service.dart';
+import 'package:animooo/core/functions/show_select_image_model_bottom_sheet.dart';
+import 'package:animooo/core/resources/colors_manager.dart';
 import 'package:animooo/core/resources/conts_values.dart';
 import 'package:animooo/core/resources/extenstions.dart';
+import 'package:animooo/core/resources/fonts_size_manager.dart';
+import 'package:animooo/core/resources/heights_manager.dart';
+import 'package:animooo/core/widgets/buttons/app_button.dart';
+import 'package:animooo/core/widgets/spacing/vertical_space.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+
+import '../core/resources/border_radius_manager.dart';
 
 class SignUpController {
   SelectImageStatus selectImageStatus = SelectImageStatus.normal;
@@ -93,13 +102,25 @@ class SignUpController {
     }
   }
 
-  void onTapAtSelectImage() async {
-    fileImage = await ImagePickerService.pickImage(ImageSource.camera);
+  Future<void> onTapAtSelectImage(BuildContext context) async {
+    //?chow model bottom sheet
+   await showSelectImageModelBottomSheet(
+      context,
+      () async {
+        fileImage = await ImagePickerService.pickImage(ImageSource.camera);
+      },
+      () async {
+        fileImage = await ImagePickerService.pickImage(ImageSource.gallery);
+      },
+    );
+
+    //?check if image is selected
     if (fileImage == null) {
       selectImageStatus = SelectImageStatus.noImageSelected;
     } else {
       selectImageStatus = SelectImageStatus.imageSelected;
     }
+
   }
 
   void onTapSignUp() {

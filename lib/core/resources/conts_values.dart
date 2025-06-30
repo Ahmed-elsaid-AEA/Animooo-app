@@ -79,6 +79,10 @@ class ConstsValuesManager {
   static const String valid = 'valid';
 
   static const String passwordAndConfirmPasswordMustBeTheSame='Password and confirm password must be the same';
+
+  static const String camera='Camera';
+
+  static const String gallery='Gallery';
 }
 
 class ConstsListsManager {
