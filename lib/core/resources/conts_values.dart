@@ -84,7 +84,7 @@ class ConstsValuesManager {
 class ConstsListsManager {
   static List<Map<String, dynamic>> passwordRulesRequirements = [
     {
-      ConstsValuesManager.title: 'Minimum characters 8',
+      ConstsValuesManager.title: 'Minimum characters 12',
       ConstsValuesManager.valid: false,
     },
 

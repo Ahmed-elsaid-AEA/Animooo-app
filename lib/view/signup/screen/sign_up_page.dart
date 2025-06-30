@@ -73,9 +73,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     },
                     onTapAtSelectImage: () {
                       signUpController.onTapAtSelectImage();
-                      setState(() {
-
-                      });
+                      setState(() {});
                     },
                   ),
 

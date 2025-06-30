@@ -47,13 +47,12 @@ class CustomRequiredPasswordField extends StatelessWidget {
         ),
         VerticalSpace(HeightsManager.h6),
         CustomTextFormField(
+          useDefaultErrorBuilder: false,
           controller: controller,
           onChanged: onChanged,
-          validator: usedValidate == true
-              ? (value) {
-                  return AppValidators.passwordValidator(value);
-                }
-              : null,
+          validator: (value) {
+            return AppValidators.passwordValidator(value);
+          },
           keyboardType: TextInputType.visiblePassword,
           obscureText: !visible,
           suffixIcon: IconButton(

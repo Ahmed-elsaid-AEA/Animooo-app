@@ -7,7 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../resources/border_radius_manager.dart';
 import '../resources/colors_manager.dart';
 
-class CustomTextFormField extends StatefulWidget {
+class CustomTextFormField extends StatelessWidget {
   const CustomTextFormField({
     super.key,
     this.hintText,
@@ -21,6 +21,7 @@ class CustomTextFormField extends StatefulWidget {
     this.textAlign,
     this.focusNode,
     this.onChanged,
+    this.useDefaultErrorBuilder = true,
   });
 
   final String? hintText;
@@ -34,24 +35,23 @@ class CustomTextFormField extends StatefulWidget {
   final TextAlign? textAlign;
   final FocusNode? focusNode;
   final ValueChanged<String>? onChanged;
+  final bool useDefaultErrorBuilder;
 
-  @override
-  State<CustomTextFormField> createState() => _CustomTextFormFieldState();
-}
-
-class _CustomTextFormFieldState extends State<CustomTextFormField> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       // height: HeightsManager.h44,
       child: TextFormField(
-        focusNode: widget.focusNode,
-        textAlign: widget.textAlign ?? TextAlign.start,
-        controller: widget.controller,
+        errorBuilder: useDefaultErrorBuilder == true
+            ? null
+            : (context, errorText) => SizedBox(),
+        focusNode: focusNode,
+        textAlign: textAlign ?? TextAlign.start,
+        controller: controller,
         obscuringCharacter: '*',
-        onChanged: widget.onChanged,
-        obscureText: widget.obscureText,
-        keyboardType: widget.keyboardType,
+        onChanged: onChanged,
+        obscureText: obscureText,
+        keyboardType: keyboardType,
         style: TextStyle(
           color: ColorManager.kPrimaryColor,
           fontSize: FontSizeManager.s14,
@@ -59,16 +59,16 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
         onTapOutside: (event) {
           FocusScope.of(context).unfocus();
         },
-        validator: widget.validator,
+        validator: validator,
         autovalidateMode: AutovalidateMode.onUserInteraction,
         decoration: InputDecoration(
           filled: true,
-          fillColor: widget.fillColor ?? ColorManager.kLightWhiteColor,
-          hintText: widget.hintText,
+          fillColor: fillColor ?? ColorManager.kLightWhiteColor,
+          hintText: hintText,
           hintStyle: TextStyle(color: ColorManager.kGrey2Color),
           suffixIcon: Padding(
             padding: EdgeInsetsGeometry.zero,
-            child: widget.suffixIcon,
+            child: suffixIcon,
           ),
 
           suffixIconConstraints: BoxConstraints(minHeight: 0, minWidth: 0),
@@ -76,13 +76,13 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
           isDense: true,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(
-              widget.borderRadius ?? BorderRadiusManager.br10,
+              borderRadius ?? BorderRadiusManager.br10,
             ),
             borderSide: BorderSide(color: ColorManager.kLightGreyColor),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(
-              widget.borderRadius ?? BorderRadiusManager.br10,
+              borderRadius ?? BorderRadiusManager.br10,
             ),
             borderSide: BorderSide(color: ColorManager.kLightGreyColor),
           ),
@@ -94,13 +94,13 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
           // ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(
-              widget.borderRadius ?? BorderRadiusManager.br10,
+              borderRadius ?? BorderRadiusManager.br10,
             ),
             borderSide: BorderSide(color: ColorManager.kPrimaryColor),
           ),
           errorBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(
-              widget.borderRadius ?? BorderRadiusManager.br10,
+              borderRadius ?? BorderRadiusManager.br10,
             ),
             borderSide: BorderSide(color: ColorManager.kRedColor),
           ),
