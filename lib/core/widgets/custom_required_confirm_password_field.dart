@@ -57,7 +57,7 @@ class CustomRequiredConfirmPasswordField extends StatelessWidget {
                 }
               : null,
           keyboardType: TextInputType.visiblePassword,
-          obscureText: true,
+          obscureText: !visible,
           suffixIcon: IconButton(
             onPressed: onPressedAtEye,
             icon: Icon(

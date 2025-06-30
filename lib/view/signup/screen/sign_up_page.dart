@@ -62,8 +62,14 @@ class _SignUpPageState extends State<SignUpPage> {
                     firstNameController: signUpController.firstNameController,
                     lastNameController: signUpController.lastNameController,
                     passwordController: signUpController.passwordController,
-                    onPressedAtEyePassword: () {},
-                    onPressedAtEyeConfirmPassword: () {},
+                    onPressedAtEyePassword: () {
+                      signUpController.onPressedAtEyePassword();
+                      setState(() {});
+                    },
+                    onPressedAtEyeConfirmPassword: () {
+                      signUpController.onPressedAtEyeConfirmPassword();
+                      setState(() {});
+                    },
                     visibleConfirmPassword:
                         signUpController.visibleConfirmPassword,
                     visiblePassword: signUpController.visiblePassword,
@@ -76,17 +82,20 @@ class _SignUpPageState extends State<SignUpPage> {
                       setState(() {});
                     },
                     selectImageStatus: signUpController.selectImageStatus,
+                    onChanged: (String value) {
+                      signUpController.onChanged(value);
+                      setState(() {});
+                    },
                   ),
 
                   AppButton(
                     text: ConstsValuesManager.signUp,
-                    onTap: () async {
-
-                     signUpController.onTapSignUp();
-                     setState(() {
-
-                     });
-                    },
+                    onTap: signUpController.signUpActive == true
+                        ? () async {
+                            signUpController.onTapSignUp();
+                            setState(() {});
+                          }
+                        : null,
                   ),
                   VerticalSpace(HeightsManager.h8),
                   SignInNow(

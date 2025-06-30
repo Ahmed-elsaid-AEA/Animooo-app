@@ -14,12 +14,14 @@ class CustomRequiredField extends StatelessWidget {
     required this.title,
     required this.hintText,
     this.validator,
+    this.onChanged,
   });
 
   final String hintText;
   final TextEditingController controller;
   final String title;
   final String? Function(String? value)? validator;
+  final void Function(String value)? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +40,7 @@ class CustomRequiredField extends StatelessWidget {
         ),
         VerticalSpace(HeightsManager.h6),
         CustomTextFormField(
+          onChanged: onChanged,
           controller: controller,
           keyboardType: TextInputType.emailAddress,
           validator: validator,

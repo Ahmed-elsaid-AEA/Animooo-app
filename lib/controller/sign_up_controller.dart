@@ -9,6 +9,7 @@ import 'package:image_picker/image_picker.dart';
 
 class SignUpController {
   SelectImageStatus selectImageStatus = SelectImageStatus.normal;
+  bool signUpActive = false;
   late GlobalKey<FormState> formKey;
   late TextEditingController emailController;
   late TextEditingController passwordController;
@@ -111,5 +112,28 @@ class SignUpController {
       //? make api
       print("hello");
     }
+  }
+
+  void onChanged(String value) {
+    //?check if image is selected
+    if (selectImageStatus == SelectImageStatus.normal) {
+      selectImageStatus = SelectImageStatus.noImageSelected;
+    }
+    if (formKey.currentState!.validate() &&
+        selectImageStatus == SelectImageStatus.imageSelected) {
+      //? make api
+      signUpActive = true;
+    } else {
+      signUpActive = false;
+    }
+  }
+
+  void onPressedAtEyePassword() {
+    visiblePassword = !visiblePassword;
+  }
+
+  void onPressedAtEyeConfirmPassword() {
+    visibleConfirmPassword = !visibleConfirmPassword;
+    print(visibleConfirmPassword);
   }
 }

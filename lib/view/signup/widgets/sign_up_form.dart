@@ -38,7 +38,7 @@ class SignUpForm extends StatelessWidget {
     required this.onChangedPassword,
     required this.fileImage,
     required this.onTapAtSelectImage,
-    required this.selectImageStatus,
+    required this.selectImageStatus, required this.onChanged,
   });
 
   final GlobalKey<FormState> formKey;
@@ -56,6 +56,7 @@ class SignUpForm extends StatelessWidget {
   final GestureTapCallback onTapAtSelectImage;
 
   final SelectImageStatus selectImageStatus;
+  final void Function(String value) onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -65,6 +66,7 @@ class SignUpForm extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CustomRequiredField(
+            onChanged: onChanged,
             validator: (value) {
               return AppValidators.firstNameValidator(value);
             },
@@ -74,6 +76,7 @@ class SignUpForm extends StatelessWidget {
           ),
           VerticalSpace(HeightsManager.h16),
           CustomRequiredField(
+            onChanged: onChanged,
             validator: (value) {
               return AppValidators.lastNameValidator(value);
             },
@@ -83,6 +86,7 @@ class SignUpForm extends StatelessWidget {
           ),
           VerticalSpace(HeightsManager.h16),
           CustomRequiredField(
+            onChanged: onChanged,
             controller: emailController,
             title: ConstsValuesManager.email,
             hintText: ConstsValuesManager.enterYourEmailAddress,
@@ -94,7 +98,10 @@ class SignUpForm extends StatelessWidget {
 
           CustomRequiredPasswordField(
             usedValidate: false,
-            onChanged: onChangedPassword,
+            onChanged: (value) {
+              onChangedPassword(value);
+              onChanged(value);
+            },
             controller: passwordController,
             onPressedAtEye: onPressedAtEyePassword,
             title: ConstsValuesManager.password,
@@ -106,6 +113,7 @@ class SignUpForm extends StatelessWidget {
 
           RequiredRulesForPasswordSignUpPage(),
           CustomRequiredConfirmPasswordField(
+            onChanged: onChanged,
             onPressedAtEye: onPressedAtEyeConfirmPassword,
             visible: visibleConfirmPassword,
             controller: confirmPasswordController,
