@@ -104,13 +104,15 @@ class SignUpController {
 
   Future<void> onTapAtSelectImage(BuildContext context) async {
     //?chow model bottom sheet
-   await showSelectImageModelBottomSheet(
+    await showSelectImageModelBottomSheet(
       context,
       () async {
         fileImage = await ImagePickerService.pickImage(ImageSource.camera);
+        Navigator.pop(context);
       },
       () async {
         fileImage = await ImagePickerService.pickImage(ImageSource.gallery);
+        Navigator.pop(context);
       },
     );
 
@@ -120,7 +122,6 @@ class SignUpController {
     } else {
       selectImageStatus = SelectImageStatus.imageSelected;
     }
-
   }
 
   void onTapSignUp() {

@@ -12,8 +12,8 @@ Future<void> showSelectImageModelBottomSheet(
   BuildContext context,
   void Function() onTapAtCamera,
   void Function() onTapAtGallery,
-) async{
-  await  showModalBottomSheet(
+) async {
+  await showModalBottomSheet(
     backgroundColor: Colors.transparent,
     context: context,
     builder: (context) {
@@ -52,8 +52,6 @@ Future<void> showSelectImageModelBottomSheet(
               print("object");
               Navigator.pop(context);
               FocusScope.of(context).unfocus();
-
-
             },
             textColor: ColorManager.kPrimaryColor,
             fontSize: FontSizeManager.s18,

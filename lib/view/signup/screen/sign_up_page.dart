@@ -85,8 +85,6 @@ class _SignUpPageState extends State<SignUpPage> {
                     onChanged: (String value) {
                       signUpController.onChanged(value);
                       setState(() {});
-                      //?back to close model bottom sheet
-                      Navigator.pop(context);
                     },
                   ),
 

@@ -78,11 +78,32 @@ class ConstsValuesManager {
   static const String title = 'title';
   static const String valid = 'valid';
 
-  static const String passwordAndConfirmPasswordMustBeTheSame='Password and confirm password must be the same';
+  static const String passwordAndConfirmPasswordMustBeTheSame =
+      'Password and confirm password must be the same';
 
-  static const String camera='Camera';
+  static const String camera = 'Camera';
 
-  static const String gallery='Gallery';
+  static const String gallery = 'Gallery';
+
+  static const String somethingWentWrong = 'Something went wrong';
+
+  static const String connectionTimeout = 'Connection Timeout';
+
+  static const String noInternetConnection = 'No Internet Connection';
+
+  static const String sendTimeOut = 'Send Time Out';
+
+  static const String receiveTimeOut = 'Receive Time Out';
+
+  static const String badCertificate = 'Bad Certificate';
+
+  static const String badResponse = 'Bad Response';
+
+  static const String requestWasCancelled = 'Request was cancelled';
+
+  static const String connectionError = 'Connection Error';
+
+  static const String unKnownError = 'Unknown Error';
 }
 
 class ConstsListsManager {
