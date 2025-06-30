@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:animooo/core/enums/select_image_status.dart';
 import 'package:animooo/core/functions/app_validators.dart';
 import 'package:animooo/core/functions/image_picker_service.dart';
 import 'package:animooo/core/resources/extenstions.dart';
@@ -37,6 +38,7 @@ class SignUpForm extends StatelessWidget {
     required this.onChangedPassword,
     required this.fileImage,
     required this.onTapAtSelectImage,
+    required this.selectImageStatus,
   });
 
   final GlobalKey<FormState> formKey;
@@ -52,6 +54,8 @@ class SignUpForm extends StatelessWidget {
   final VoidCallback? onPressedAtEyeConfirmPassword;
   final ValueChanged<String> onChangedPassword;
   final GestureTapCallback onTapAtSelectImage;
+
+  final SelectImageStatus selectImageStatus;
 
   @override
   Widget build(BuildContext context) {
@@ -122,6 +126,7 @@ class SignUpForm extends StatelessWidget {
           CustomSelectImageWidget(
             file: fileImage,
             onTapAtSelectImage: onTapAtSelectImage,
+            selectImageStatus: selectImageStatus,
           ),
           VerticalSpace(HeightsManager.h28),
         ],

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:animooo/core/enums/select_image_status.dart';
 import 'package:animooo/core/functions/image_picker_service.dart';
 import 'package:animooo/core/resources/conts_values.dart';
 import 'package:animooo/core/resources/extenstions.dart';
@@ -7,6 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
 
 class SignUpController {
+  SelectImageStatus selectImageStatus = SelectImageStatus.normal;
   late GlobalKey<FormState> formKey;
   late TextEditingController emailController;
   late TextEditingController passwordController;
@@ -57,8 +59,8 @@ class SignUpController {
   }
 
   void onChangePassword(String value) {
-    passwordController.text=passwordController.getText;
-     //?check value is less than 12
+    passwordController.text = passwordController.getText;
+    //?check value is less than 12
     if (value.trim().length < 12) {
       _changeRule(0, false);
     } else {
@@ -92,5 +94,22 @@ class SignUpController {
 
   void onTapAtSelectImage() async {
     fileImage = await ImagePickerService.pickImage(ImageSource.camera);
+    if (fileImage == null) {
+      selectImageStatus = SelectImageStatus.noImageSelected;
+    } else {
+      selectImageStatus = SelectImageStatus.imageSelected;
+    }
+  }
+
+  void onTapSignUp() {
+    //?check if image is selected
+    if (selectImageStatus == SelectImageStatus.normal) {
+      selectImageStatus = SelectImageStatus.noImageSelected;
+    }
+    if (formKey.currentState!.validate() &&
+        selectImageStatus == SelectImageStatus.imageSelected) {
+      //? make api
+      print("hello");
+    }
   }
 }

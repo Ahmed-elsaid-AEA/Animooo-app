@@ -75,14 +75,17 @@ class _SignUpPageState extends State<SignUpPage> {
                       signUpController.onTapAtSelectImage();
                       setState(() {});
                     },
+                    selectImageStatus: signUpController.selectImageStatus,
                   ),
 
                   AppButton(
                     text: ConstsValuesManager.signUp,
                     onTap: () async {
-                      if (signUpController.formKey.currentState!.validate()) {
-                        print("validate");
-                      }
+
+                     signUpController.onTapSignUp();
+                     setState(() {
+
+                     });
                     },
                   ),
                   VerticalSpace(HeightsManager.h8),
