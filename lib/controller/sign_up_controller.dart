@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:animooo/core/enums/select_image_status.dart';
+import 'package:animooo/core/error/failure_model.dart';
 import 'package:animooo/core/functions/image_picker_service.dart';
 import 'package:animooo/core/functions/show_select_image_model_bottom_sheet.dart';
 import 'package:animooo/core/resources/colors_manager.dart';
@@ -11,6 +12,9 @@ import 'package:animooo/core/resources/heights_manager.dart';
 import 'package:animooo/core/widgets/buttons/app_button.dart';
 import 'package:animooo/core/widgets/spacing/vertical_space.dart';
 import 'package:animooo/data/network/auth_api.dart';
+import 'package:animooo/models/auth/auth_response.dart';
+import 'package:animooo/models/auth/user_model.dart';
+import 'package:dartz/dartz.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -125,6 +129,7 @@ class SignUpController {
       selectImageStatus = SelectImageStatus.noImageSelected;
     } else {
       selectImageStatus = SelectImageStatus.imageSelected;
+      checkValidate();
     }
   }
 
@@ -136,11 +141,28 @@ class SignUpController {
     if (formKey.currentState!.validate() &&
         selectImageStatus == SelectImageStatus.imageSelected) {
       //? make api
-      await AuthApi.signUp(fileImage!);
+      Either<FailureModel, AuthResponse> response = await AuthApi.signUp(
+        UserModel(
+          firstName: firstNameController.getText,
+          lastName: lastNameController.getText,
+          email: emailController.getText,
+          password: passwordController.getText,
+          phone: phoneController.getText,
+          image: fileImage!,
+        ),
+      );
+      response.fold(
+        (FailureModel l) {
+          print(l.errors);
+        },
+        (AuthResponse r) {
+          print(r);
+        },
+      );
     }
   }
 
-  void onChanged(String value) {
+  void checkValidate() {
     //?check if image is selected
     if (selectImageStatus == SelectImageStatus.normal) {
       selectImageStatus = SelectImageStatus.noImageSelected;
