@@ -45,6 +45,7 @@ dependencies:
   dartz: ^0.10.1
   json_annotation: ^4.9.0
   modal_progress_hud_nsn: ^0.5.1
+  get_it: ^8.0.3
 
 
 dev_dependencies:

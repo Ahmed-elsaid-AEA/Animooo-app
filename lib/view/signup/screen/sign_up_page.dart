@@ -1,7 +1,7 @@
 import 'package:animooo/controller/sign_up_controller.dart';
 import 'package:animooo/core/enums/button_status_enum.dart';
-import 'package:animooo/core/services/internet_checker_service.dart';
-import 'package:animooo/core/widgets/loading/app_model_progress_hud.dart';
+import 'package:animooo/core/enums/screen_status_state.dart';
+ import 'package:animooo/core/widgets/loading/app_model_progress_hud.dart';
 import 'package:animooo/view/signup/widgets/sign_up_form.dart';
 import 'package:animooo/view/signup/widgets/sign_up_title.dart';
 import 'package:dio/dio.dart';
@@ -48,8 +48,7 @@ class _SignUpPageState extends State<SignUpPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: AppModelProgressHud(
-        loading:
-            signUpController.signUpButtonStatus == ButtonStatusEnum.loading,
+        loading: signUpController.screenState == ScreensStatusState.loading,
         child: SafeArea(
           child: SingleChildScrollView(
             child: SizedBox(
@@ -101,19 +100,15 @@ class _SignUpPageState extends State<SignUpPage> {
                       buttonStatus: signUpController.signUpButtonStatus,
                       text: ConstsValuesManager.signUp,
                       onTap: () async {
-                        print(signUpController.signUpButtonStatus);
-                        signUpController.signUpButtonStatus =
-                            ButtonStatusEnum.loading;
-                        print(signUpController.signUpButtonStatus);
+                        signUpController.screenState =
+                            ScreensStatusState.loading;
 
                         setState(() {});
                         await signUpController.onTapSignUp();
-                        signUpController.signUpButtonStatus =
-                            ButtonStatusEnum.enabled;
-                        print(signUpController.signUpButtonStatus);
+                        signUpController.screenState =
+                            ScreensStatusState.success;
 
                         setState(() {});
-                        print(signUpController.signUpButtonStatus);
                       },
                     ),
                     VerticalSpace(HeightsManager.h8),

@@ -20,11 +20,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../core/resources/border_radius_manager.dart';
+import '../core/enums/screen_status_state.dart';
+
 
 class SignUpController {
   SelectImageStatus selectImageStatus = SelectImageStatus.normal;
   ButtonStatusEnum signUpButtonStatus = ButtonStatusEnum.disabled;
+  ScreensStatusState screenState = ScreensStatusState.initial;
+
   late GlobalKey<FormState> formKey;
   late TextEditingController emailController;
   late TextEditingController passwordController;
@@ -56,6 +59,13 @@ class SignUpController {
     firstNameController = TextEditingController();
     lastNameController = TextEditingController();
     phoneController = TextEditingController();
+
+    firstNameController.text = "Ahmed";
+    lastNameController.text = "Mohamed";
+    emailController.text = "ahmed122727727@gmail.com";
+    passwordController.text = "123!@#QWEqwweewwe";
+    confirmPasswordController.text = "123!@#QWEqwweewwe";
+    phoneController.text = "01001398831";
   }
 
   void disposeControllers() {
@@ -154,9 +164,11 @@ class SignUpController {
       );
       response.fold(
         (FailureModel l) {
+          //TODO:: show error
           print(l.errors);
         },
         (AuthResponse r) {
+          //TODO:: show success
           print(r);
         },
       );
@@ -183,6 +195,5 @@ class SignUpController {
 
   void onPressedAtEyeConfirmPassword() {
     visibleConfirmPassword = !visibleConfirmPassword;
-    print(visibleConfirmPassword);
-  }
+   }
 }
