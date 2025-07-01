@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:animooo/core/enums/button_status_enum.dart';
 import 'package:animooo/core/enums/select_image_status.dart';
 import 'package:animooo/core/error/failure_model.dart';
 import 'package:animooo/core/functions/image_picker_service.dart';
@@ -23,7 +24,7 @@ import '../core/resources/border_radius_manager.dart';
 
 class SignUpController {
   SelectImageStatus selectImageStatus = SelectImageStatus.normal;
-  bool signUpActive = false;
+  ButtonStatusEnum signUpButtonStatus = ButtonStatusEnum.disabled;
   late GlobalKey<FormState> formKey;
   late TextEditingController emailController;
   late TextEditingController passwordController;
@@ -133,7 +134,7 @@ class SignUpController {
     }
   }
 
-  void onTapSignUp() async {
+  Future<void> onTapSignUp() async {
     //?check if image is selected
     if (selectImageStatus == SelectImageStatus.normal) {
       selectImageStatus = SelectImageStatus.noImageSelected;
@@ -170,9 +171,9 @@ class SignUpController {
     if (formKey.currentState!.validate() &&
         selectImageStatus == SelectImageStatus.imageSelected) {
       //? make api
-      signUpActive = true;
+      signUpButtonStatus = ButtonStatusEnum.enabled;
     } else {
-      signUpActive = false;
+      signUpButtonStatus = ButtonStatusEnum.disabled;
     }
   }
 
