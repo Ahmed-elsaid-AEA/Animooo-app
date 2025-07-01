@@ -38,7 +38,9 @@ class SignUpForm extends StatelessWidget {
     required this.onChangedPassword,
     required this.fileImage,
     required this.onTapAtSelectImage,
-    required this.selectImageStatus, required this.onChanged,
+    required this.selectImageStatus,
+    required this.phoneController,
+    required this.onChanged,
   });
 
   final GlobalKey<FormState> formKey;
@@ -49,6 +51,7 @@ class SignUpForm extends StatelessWidget {
   final TextEditingController firstNameController;
   final TextEditingController lastNameController;
   final TextEditingController emailController;
+  final TextEditingController phoneController;
   final TextEditingController passwordController;
   final TextEditingController confirmPasswordController;
   final VoidCallback? onPressedAtEyeConfirmPassword;
@@ -66,6 +69,7 @@ class SignUpForm extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CustomRequiredField(
+            keyboardType: TextInputType.name,
             onChanged: onChanged,
             validator: (value) {
               return AppValidators.firstNameValidator(value);
@@ -76,6 +80,7 @@ class SignUpForm extends StatelessWidget {
           ),
           VerticalSpace(HeightsManager.h16),
           CustomRequiredField(
+            keyboardType: TextInputType.name,
             onChanged: onChanged,
             validator: (value) {
               return AppValidators.lastNameValidator(value);
@@ -86,6 +91,7 @@ class SignUpForm extends StatelessWidget {
           ),
           VerticalSpace(HeightsManager.h16),
           CustomRequiredField(
+            keyboardType: TextInputType.emailAddress,
             onChanged: onChanged,
             controller: emailController,
             title: ConstsValuesManager.email,
@@ -95,7 +101,17 @@ class SignUpForm extends StatelessWidget {
             },
           ),
           VerticalSpace(HeightsManager.h16),
-
+          CustomRequiredField(
+            onChanged: onChanged,
+            keyboardType: TextInputType.phone,
+            controller: phoneController,
+            title: ConstsValuesManager.phone,
+            hintText: ConstsValuesManager.enterYourPhone,
+            validator: (value) {
+              return AppValidators.phoneValidator(value);
+            },
+          ),
+          VerticalSpace(HeightsManager.h16),
           CustomRequiredPasswordField(
             usedValidate: false,
             onChanged: (value) {

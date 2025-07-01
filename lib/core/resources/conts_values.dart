@@ -104,6 +104,10 @@ class ConstsValuesManager {
   static const String connectionError = 'Connection Error';
 
   static const String unKnownError = 'Unknown Error';
+
+  static const String image = 'image';
+
+  static const String enterValidPhoneNumber='Enter valid phone number';
 }
 
 class ConstsListsManager {

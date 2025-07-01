@@ -11,6 +11,21 @@ class AppValidators {
     }
   }
 
+  static String? phoneValidator(String? value) {
+    if (value == null || value.trim().isEmpty) {
+      return ConstsValuesManager.thisFieldIsRequired;
+    } else if (isPhoneNumber(value) == false) {
+      return ConstsValuesManager.enterValidPhoneNumber;
+    } else {
+      return null;
+    }
+  }
+static
+  bool isPhoneNumber(String value) {
+    final phoneRegEx = RegExp(r'^01[0125]\d{8}$');//010 or 011 or 012 or 015
+     return phoneRegEx.hasMatch(value);
+  }
+
   static String? lastNameValidator(String? value) {
     if (value == null || value.trim().isEmpty) {
       return ConstsValuesManager.thisFieldIsRequired;
@@ -56,8 +71,7 @@ class AppValidators {
     if (valuePassword == null || valuePassword.trim().isEmpty) {
       return ConstsValuesManager.enterYourPassword;
     } else if (valuePassword != valueConfirmPassword) {
-      return ConstsValuesManager
-          .passwordAndConfirmPasswordMustBeTheSame;
+      return ConstsValuesManager.passwordAndConfirmPasswordMustBeTheSame;
     } else {
       return null;
     }

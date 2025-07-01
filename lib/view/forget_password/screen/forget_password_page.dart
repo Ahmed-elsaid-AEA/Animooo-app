@@ -57,15 +57,19 @@ class ForgetPasswordPage extends StatelessWidget {
                 ),
                 VerticalSpace(HeightsManager.h58),
                 CustomRequiredField(
+                  keyboardType: TextInputType.visiblePassword,
                   controller: TextEditingController(),
                   title: ConstsValuesManager.email,
                   hintText: ConstsValuesManager.enterYourEmailAddress,
                 ),
                 VerticalSpace(HeightsManager.h151),
-                AppButton(text: ConstsValuesManager.sendCode, onTap: () {
-                  //?go to otp page
-                  Navigator.of(context).pushNamed(RoutesName.otpVerification);
-                }),
+                AppButton(
+                  text: ConstsValuesManager.sendCode,
+                  onTap: () {
+                    //?go to otp page
+                    Navigator.of(context).pushNamed(RoutesName.otpVerification);
+                  },
+                ),
               ],
             ),
           ),

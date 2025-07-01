@@ -26,6 +26,7 @@ class LoginForm extends StatelessWidget {
       child: Column(
         children: [
           CustomRequiredField(
+            keyboardType: TextInputType.emailAddress,
             validator: (value) {
               //TODO:: add email validation
               if (value == null || value.trim().isEmpty) {

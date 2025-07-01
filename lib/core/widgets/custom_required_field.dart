@@ -15,11 +15,13 @@ class CustomRequiredField extends StatelessWidget {
     required this.hintText,
     this.validator,
     this.onChanged,
+    required this.keyboardType,
   });
 
   final String hintText;
   final TextEditingController controller;
   final String title;
+  final TextInputType keyboardType;
   final String? Function(String? value)? validator;
   final void Function(String value)? onChanged;
 
@@ -42,7 +44,7 @@ class CustomRequiredField extends StatelessWidget {
         CustomTextFormField(
           onChanged: onChanged,
           controller: controller,
-          keyboardType: TextInputType.emailAddress,
+          keyboardType: keyboardType,
           validator: validator,
           hintText: hintText,
         ),

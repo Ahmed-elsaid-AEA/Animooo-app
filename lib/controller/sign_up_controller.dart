@@ -10,6 +10,7 @@ import 'package:animooo/core/resources/fonts_size_manager.dart';
 import 'package:animooo/core/resources/heights_manager.dart';
 import 'package:animooo/core/widgets/buttons/app_button.dart';
 import 'package:animooo/core/widgets/spacing/vertical_space.dart';
+import 'package:animooo/data/network/auth_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -25,6 +26,7 @@ class SignUpController {
   late TextEditingController confirmPasswordController;
   late TextEditingController firstNameController;
   late TextEditingController lastNameController;
+  late TextEditingController phoneController;
 
   bool visibleConfirmPassword = true;
   bool visiblePassword = true;
@@ -48,6 +50,7 @@ class SignUpController {
     confirmPasswordController = TextEditingController();
     firstNameController = TextEditingController();
     lastNameController = TextEditingController();
+    phoneController = TextEditingController();
   }
 
   void disposeControllers() {
@@ -56,6 +59,7 @@ class SignUpController {
     confirmPasswordController.dispose();
     firstNameController.dispose();
     lastNameController.dispose();
+    phoneController.dispose();
   }
 
   SignUpController() {
@@ -124,7 +128,7 @@ class SignUpController {
     }
   }
 
-  void onTapSignUp() {
+  void onTapSignUp() async {
     //?check if image is selected
     if (selectImageStatus == SelectImageStatus.normal) {
       selectImageStatus = SelectImageStatus.noImageSelected;
@@ -132,7 +136,7 @@ class SignUpController {
     if (formKey.currentState!.validate() &&
         selectImageStatus == SelectImageStatus.imageSelected) {
       //? make api
-      print("hello");
+      await AuthApi.signUp(fileImage!);
     }
   }
 

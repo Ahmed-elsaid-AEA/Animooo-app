@@ -82,6 +82,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       setState(() {});
                     },
                     selectImageStatus: signUpController.selectImageStatus,
+                    phoneController: signUpController.phoneController,
                     onChanged: (String value) {
                       signUpController.onChanged(value);
                       setState(() {});

@@ -4,11 +4,14 @@ import 'package:animooo/core/error/server_exception.dart';
 import 'package:animooo/core/resources/conts_values.dart';
 import 'package:dio/dio.dart';
 
-class ApiService extends ApiConsumer {
+class DioService extends ApiConsumer {
   Dio dio;
 
-  ApiService(this.dio) {
+  DioService(this.dio) {
     dio.options.baseUrl = ApiConstants.baseUrl;
+    //TODO.. add connection time out duration
+    //TODO.. add receiveTimeout: receiveTimeout
+    //TODO.. add sendTimeout: sendTimeout
   }
 
   @override
@@ -27,7 +30,7 @@ class ApiService extends ApiConsumer {
   Future post({
     required String path,
     Map<String, dynamic>? queryParameters,
-    required Map<String, dynamic> body,
+    required Object body,
   }) async {
     try {
       Response response = await dio.post(
