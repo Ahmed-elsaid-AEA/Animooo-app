@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:animooo/core/enums/button_status_enum.dart';
@@ -22,8 +23,8 @@ import 'package:image_picker/image_picker.dart';
 
 import '../core/enums/screen_status_state.dart';
 
-
 class SignUpController {
+  File? fileImage;
   SelectImageStatus selectImageStatus = SelectImageStatus.normal;
   ButtonStatusEnum signUpButtonStatus = ButtonStatusEnum.disabled;
   ScreensStatusState screenState = ScreensStatusState.initial;
@@ -36,18 +37,33 @@ class SignUpController {
   late TextEditingController lastNameController;
   late TextEditingController phoneController;
 
-  bool visibleConfirmPassword = true;
-  bool visiblePassword = true;
+  bool visibleConfirmPassword = false;
+  bool visiblePassword = false;
+  late Stream<File?> fileImageOutPutStream;
+  late Sink<File?> fileImageInput;
+  late StreamController<File?> fileImageController;
 
-  File? fileImage;
+  late Stream<bool> visiblePasswordOutPutStream;
+  late Sink<bool> visiblePasswordInput;
+  late StreamController<bool> visiblePasswordController;
+
+  //?confirm password
+
+  late Stream<bool> visibleConfirmPasswordOutPutStream;
+  late Sink<bool> visibleConfirmPasswordInput;
+  late StreamController<bool> visibleConfirmPasswordController;
 
   void initState() {
     //?init controllers
     initControllers();
-    //?
+    //?init streams
+    initStreams();
   }
 
   void dispose() {
+    //?dispose streams
+    disposeStreams();
+    //?dispose controllers
     disposeControllers();
   }
 
@@ -66,6 +82,34 @@ class SignUpController {
     passwordController.text = "123!@#QWEqwweewwe";
     confirmPasswordController.text = "123!@#QWEqwweewwe";
     phoneController.text = "01001398831";
+  }
+
+  void initStreams() {
+    //?init stream of file image
+    fileImageController = StreamController<File?>();
+    fileImageOutPutStream = fileImageController.stream;
+    fileImageInput = fileImageController.sink;
+    //?init stream of visible password
+    visiblePasswordController = StreamController<bool>();
+    visiblePasswordOutPutStream = visiblePasswordController.stream;
+    visiblePasswordInput = visiblePasswordController.sink;
+    //?init stream of visible confirm password
+    visibleConfirmPasswordController = StreamController<bool>();
+    visibleConfirmPasswordOutPutStream =
+        visibleConfirmPasswordController.stream;
+    visibleConfirmPasswordInput = visibleConfirmPasswordController.sink;
+  }
+
+  void disposeStreams() {
+    //?dispose stream of file image
+    fileImageInput.close();
+    fileImageController.close();
+    //?dispose stream of visible password
+    visiblePasswordInput.close();
+    visiblePasswordController.close();
+    //?dispose stream of visible confirm password
+    visibleConfirmPasswordInput.close();
+    visibleConfirmPasswordController.close();
   }
 
   void disposeControllers() {
@@ -125,13 +169,11 @@ class SignUpController {
     //?chow model bottom sheet
     await showSelectImageModelBottomSheet(
       context,
-      () async {
-        fileImage = await ImagePickerService.pickImage(ImageSource.camera);
-        Navigator.pop(context);
+      () {
+        _onTapAtCamera(context);
       },
-      () async {
-        fileImage = await ImagePickerService.pickImage(ImageSource.gallery);
-        Navigator.pop(context);
+      () {
+        _onTapAtGallery(context);
       },
     );
 
@@ -151,7 +193,11 @@ class SignUpController {
     }
     if (formKey.currentState!.validate() &&
         selectImageStatus == SelectImageStatus.imageSelected) {
-      //? make api
+      //? 1 - show loading
+      screenState = ScreensStatusState.loading;
+      //? update ui
+      //? setState(() {});
+      //? request api
       Either<FailureModel, AuthResponse> response = await AuthApi.signUp(
         UserModel(
           firstName: firstNameController.getText,
@@ -165,11 +211,11 @@ class SignUpController {
       response.fold(
         (FailureModel l) {
           //TODO:: show error
-          print(l.errors);
+          //?show snackbar
         },
         (AuthResponse r) {
-          //TODO:: show success
-          print(r);
+          //?go to verify email
+          //TODO:: go to verify email
         },
       );
     }
@@ -191,9 +237,23 @@ class SignUpController {
 
   void onPressedAtEyePassword() {
     visiblePassword = !visiblePassword;
+    visiblePasswordInput.add(visiblePassword);
   }
 
   void onPressedAtEyeConfirmPassword() {
     visibleConfirmPassword = !visibleConfirmPassword;
-   }
+    visibleConfirmPasswordInput.add(visibleConfirmPassword);
+  }
+
+  void _onTapAtCamera(context) async {
+    fileImage = await ImagePickerService.pickImage(ImageSource.camera);
+    fileImageInput.add(fileImage);
+    Navigator.pop(context);
+  }
+
+  void _onTapAtGallery(BuildContext context) async {
+    fileImage = await ImagePickerService.pickImage(ImageSource.gallery);
+    fileImageInput.add(fileImage);
+    Navigator.pop(context);
+  }
 }

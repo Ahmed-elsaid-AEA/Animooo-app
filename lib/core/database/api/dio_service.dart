@@ -9,9 +9,10 @@ class DioService extends ApiConsumer {
 
   DioService(this.dio) {
     dio.options.baseUrl = ApiConstants.baseUrl;
-    //TODO.. add connection time out duration
-    //TODO.. add receiveTimeout: receiveTimeout
-    //TODO.. add sendTimeout: sendTimeout
+    dio.options.connectTimeout = Duration(seconds: 10);
+    dio.options.receiveTimeout = Duration(seconds: 5);
+    dio.options.sendTimeout = Duration(seconds: 10);
+    //TODO.. add token and headers
   }
 
   @override

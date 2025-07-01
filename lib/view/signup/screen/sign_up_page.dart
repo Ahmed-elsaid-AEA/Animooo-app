@@ -1,7 +1,7 @@
 import 'package:animooo/controller/sign_up_controller.dart';
 import 'package:animooo/core/enums/button_status_enum.dart';
 import 'package:animooo/core/enums/screen_status_state.dart';
- import 'package:animooo/core/widgets/loading/app_model_progress_hud.dart';
+import 'package:animooo/core/widgets/loading/app_model_progress_hud.dart';
 import 'package:animooo/view/signup/widgets/sign_up_form.dart';
 import 'package:animooo/view/signup/widgets/sign_up_title.dart';
 import 'package:dio/dio.dart';
@@ -61,7 +61,8 @@ class _SignUpPageState extends State<SignUpPage> {
                     VerticalSpace(HeightsManager.h9_15),
                     TitleSignUpPage(),
                     SignUpForm(
-                      fileImage: signUpController.fileImage,
+                      fileImageOutPutData:
+                          signUpController.fileImageOutPutStream,
                       formKey: signUpController.formKey,
                       confirmPasswordController:
                           signUpController.confirmPasswordController,
@@ -71,28 +72,23 @@ class _SignUpPageState extends State<SignUpPage> {
                       passwordController: signUpController.passwordController,
                       onPressedAtEyePassword: () {
                         signUpController.onPressedAtEyePassword();
-                        setState(() {});
                       },
                       onPressedAtEyeConfirmPassword: () {
                         signUpController.onPressedAtEyeConfirmPassword();
-                        setState(() {});
                       },
-                      visibleConfirmPassword:
-                          signUpController.visibleConfirmPassword,
-                      visiblePassword: signUpController.visiblePassword,
+                      visibleConfirmPasswordOutPutStream:
+                          signUpController.visibleConfirmPasswordOutPutStream,
+                      visiblePasswordOutPutStream: signUpController.visiblePasswordOutPutStream,
                       onChangedPassword: (String value) {
                         signUpController.onChangePassword(value);
-                        setState(() {});
                       },
                       onTapAtSelectImage: () async {
                         await signUpController.onTapAtSelectImage(context);
-                        setState(() {});
                       },
                       selectImageStatus: signUpController.selectImageStatus,
                       phoneController: signUpController.phoneController,
                       onChanged: (String value) {
                         signUpController.checkValidate();
-                        setState(() {});
                       },
                     ),
 
@@ -102,13 +98,9 @@ class _SignUpPageState extends State<SignUpPage> {
                       onTap: () async {
                         signUpController.screenState =
                             ScreensStatusState.loading;
-
-                        setState(() {});
                         await signUpController.onTapSignUp();
                         signUpController.screenState =
                             ScreensStatusState.success;
-
-                        setState(() {});
                       },
                     ),
                     VerticalSpace(HeightsManager.h8),

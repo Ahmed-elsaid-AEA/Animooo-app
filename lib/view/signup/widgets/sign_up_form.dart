@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:animooo/core/enums/select_image_status.dart';
@@ -27,16 +28,16 @@ class SignUpForm extends StatelessWidget {
     super.key,
     required this.formKey,
     required this.onPressedAtEyePassword,
-    required this.visiblePassword,
+    required this.visiblePasswordOutPutStream,
     required this.firstNameController,
     required this.lastNameController,
     required this.emailController,
     required this.passwordController,
     required this.confirmPasswordController,
     this.onPressedAtEyeConfirmPassword,
-    required this.visibleConfirmPassword,
+    required this.visibleConfirmPasswordOutPutStream,
     required this.onChangedPassword,
-    required this.fileImage,
+    required this.fileImageOutPutData,
     required this.onTapAtSelectImage,
     required this.selectImageStatus,
     required this.phoneController,
@@ -45,9 +46,9 @@ class SignUpForm extends StatelessWidget {
 
   final GlobalKey<FormState> formKey;
   final VoidCallback? onPressedAtEyePassword;
-  final File? fileImage;
-  final bool visiblePassword;
-  final bool visibleConfirmPassword;
+  final Stream<File?> fileImageOutPutData;
+  final Stream<bool> visiblePasswordOutPutStream;
+  final Stream<bool> visibleConfirmPasswordOutPutStream;
   final TextEditingController firstNameController;
   final TextEditingController lastNameController;
   final TextEditingController emailController;
@@ -112,28 +113,37 @@ class SignUpForm extends StatelessWidget {
             },
           ),
           VerticalSpace(HeightsManager.h16),
-          CustomRequiredPasswordField(
-            usedValidate: false,
-            onChanged: (value) {
-              onChangedPassword(value);
-              onChanged(value);
-            },
-            controller: passwordController,
-            onPressedAtEye: onPressedAtEyePassword,
-            title: ConstsValuesManager.password,
-            hintText: ConstsValuesManager.enterYourPassword,
-            visible: visiblePassword,
+          StreamBuilder<bool>(
+            stream: visiblePasswordOutPutStream,
+            initialData: false,
+            builder: (context, snapshot) => CustomRequiredPasswordField(
+              usedValidate: false,
+              onChanged: (value) {
+                onChangedPassword(value);
+                onChanged(value);
+              },
+              controller: passwordController,
+              onPressedAtEye: onPressedAtEyePassword,
+              title: ConstsValuesManager.password,
+              hintText: ConstsValuesManager.enterYourPassword,
+              visible: snapshot.data ?? false,
+            ),
           ),
 
           VerticalSpace(HeightsManager.h8),
 
           RequiredRulesForPasswordSignUpPage(),
-          CustomRequiredConfirmPasswordField(
-            onChanged: onChanged,
-            onPressedAtEye: onPressedAtEyeConfirmPassword,
-            visible: visibleConfirmPassword,
-            controller: confirmPasswordController,
-            password: passwordController.getText,
+
+          StreamBuilder<bool>(
+            initialData: false,
+            stream: visibleConfirmPasswordOutPutStream,
+            builder: (context, snapshot) => CustomRequiredConfirmPasswordField(
+              onChanged: onChanged,
+              onPressedAtEye: onPressedAtEyeConfirmPassword,
+              visible: snapshot.data ?? false,
+              controller: confirmPasswordController,
+              password: passwordController.getText,
+            ),
           ),
           VerticalSpace(HeightsManager.h16),
 
@@ -147,10 +157,14 @@ class SignUpForm extends StatelessWidget {
             ),
           ),
           VerticalSpace(HeightsManager.h8),
-          CustomSelectImageWidget(
-            file: fileImage,
-            onTapAtSelectImage: onTapAtSelectImage,
-            selectImageStatus: selectImageStatus,
+          StreamBuilder<File?>(
+            stream: fileImageOutPutData,
+            initialData: null,
+            builder: (context, snapshot) => CustomSelectImageWidget(
+              file: snapshot.data,
+              onTapAtSelectImage: onTapAtSelectImage,
+              selectImageStatus: selectImageStatus,
+            ),
           ),
           VerticalSpace(HeightsManager.h28),
         ],
