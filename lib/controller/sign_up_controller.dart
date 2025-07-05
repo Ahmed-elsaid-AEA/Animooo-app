@@ -253,10 +253,14 @@ class SignUpController {
   void onSuccessRequest(AuthResponse r, BuildContext context) {
     screenState = ScreensStatusState.success;
     //?go to verify email screen
+    showMySnackBar(context, r.message ?? "");
     Navigator.pushNamed(
       context,
       RoutesName.otpVerificationScreen,
-      arguments: emailController.getText,
+      arguments: {
+        ConstsValuesManager.email: emailController.getText,
+        ConstsValuesManager.screenName: ConstsValuesManager.signUp,
+      },
     );
   }
 

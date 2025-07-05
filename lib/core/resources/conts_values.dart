@@ -118,6 +118,8 @@ class ConstsValuesManager {
   static const String emailAlreadyExists = 'Email already exists';
 
   static const String retry = 'Retry';
+
+  static const String screenName = 'screenName';
 }
 
 class ConstsListsManager {
