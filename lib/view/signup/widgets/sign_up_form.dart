@@ -12,6 +12,7 @@ import 'package:animooo/core/widgets/custom_required_field.dart';
 import 'package:animooo/core/widgets/custom_required_password_field.dart';
 import 'package:animooo/core/widgets/custom_text_form_field.dart';
 import 'package:animooo/core/widgets/spacing/vertical_space.dart';
+import 'package:animooo/models/password_rules_model.dart';
 import 'package:animooo/view/signup/widgets/required_rules_for_password_sign_up_page.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
@@ -41,7 +42,7 @@ class SignUpForm extends StatelessWidget {
     required this.onTapAtSelectImage,
     required this.selectImageStatus,
     required this.phoneController,
-    required this.onChanged,
+    required this.onChanged, required this.listPasswordRulesOutPutStream,
   });
 
   final GlobalKey<FormState> formKey;
@@ -60,6 +61,7 @@ class SignUpForm extends StatelessWidget {
   final GestureTapCallback onTapAtSelectImage;
 
   final SelectImageStatus selectImageStatus;
+  final Stream<List<PasswordRulesModel>> listPasswordRulesOutPutStream;
   final void Function(String value) onChanged;
 
   @override
@@ -132,7 +134,9 @@ class SignUpForm extends StatelessWidget {
 
           VerticalSpace(HeightsManager.h8),
 
-          RequiredRulesForPasswordSignUpPage(),
+          RequiredRulesForPasswordSignUpPage(
+            listPasswordRulesOutputStream: listPasswordRulesOutPutStream,
+          ),
 
           StreamBuilder<bool>(
             initialData: false,

@@ -61,6 +61,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     VerticalSpace(HeightsManager.h9_15),
                     TitleSignUpPage(),
                     SignUpForm(
+                      listPasswordRulesOutPutStream: signUpController.listPasswordRulesOutPutStream,
                       fileImageOutPutData:
                           signUpController.fileImageOutPutStream,
                       formKey: signUpController.formKey,
@@ -78,7 +79,8 @@ class _SignUpPageState extends State<SignUpPage> {
                       },
                       visibleConfirmPasswordOutPutStream:
                           signUpController.visibleConfirmPasswordOutPutStream,
-                      visiblePasswordOutPutStream: signUpController.visiblePasswordOutPutStream,
+                      visiblePasswordOutPutStream:
+                          signUpController.visiblePasswordOutPutStream,
                       onChangedPassword: (String value) {
                         signUpController.onChangePassword(value);
                       },
@@ -93,7 +95,8 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
 
                     AppButton(
-                      buttonStatusOutputStream: signUpController.signUpButtonStatusOutPutStream,
+                      buttonStatusOutputStream:
+                          signUpController.signUpButtonStatusOutPutStream,
                       text: ConstsValuesManager.signUp,
                       onTap: () async {
                         signUpController.screenState =

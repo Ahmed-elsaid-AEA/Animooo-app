@@ -16,6 +16,7 @@ import 'package:animooo/core/widgets/spacing/vertical_space.dart';
 import 'package:animooo/data/network/auth_api.dart';
 import 'package:animooo/models/auth/auth_response.dart';
 import 'package:animooo/models/auth/user_model.dart';
+import 'package:animooo/models/password_rules_model.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -59,11 +60,18 @@ class SignUpController {
   late Sink<ButtonStatusEnum?> signUpButtonStatusInput;
   late StreamController<ButtonStatusEnum?> signUpButtonStatusController;
 
+  //?stream list of password rules
+  late Stream<List<PasswordRulesModel>> listPasswordRulesOutPutStream;
+  late Sink<List<PasswordRulesModel>> listPasswordRulesInput;
+  late StreamController<List<PasswordRulesModel>> listPasswordRulesController;
+
   void initState() {
     //?init controllers
     initControllers();
     //?init streams
     initStreams();
+    //?init rules
+    changePasswordRules();
   }
 
   void dispose() {
@@ -82,12 +90,12 @@ class SignUpController {
     lastNameController = TextEditingController();
     phoneController = TextEditingController();
 
-    firstNameController.text = "Ahmed";
-    lastNameController.text = "Mohamed";
-    emailController.text = "ahmed122727727@gmail.com";
-    passwordController.text = "123!@#QWEqwweewwe";
-    confirmPasswordController.text = "123!@#QWEqwweewwe";
-    phoneController.text = "01001398831";
+    // firstNameController.text = "Ahmed";
+    // lastNameController.text = "Mohamed";
+    // emailController.text = "ahmed122727727@gmail.com";
+    // passwordController.text = "123!@#QWEqwweewwe";
+    // confirmPasswordController.text = "123!@#QWEqwweewwe";
+    // phoneController.text = "01001398831";
   }
 
   void initStreams() {
@@ -108,6 +116,11 @@ class SignUpController {
     signUpButtonStatusController = StreamController<ButtonStatusEnum?>();
     signUpButtonStatusOutPutStream = signUpButtonStatusController.stream;
     signUpButtonStatusInput = signUpButtonStatusController.sink;
+
+    //?init list of password rules
+    listPasswordRulesController = StreamController<List<PasswordRulesModel>>();
+    listPasswordRulesOutPutStream = listPasswordRulesController.stream;
+    listPasswordRulesInput = listPasswordRulesController.sink;
   }
 
   void disposeStreams() {
@@ -123,6 +136,9 @@ class SignUpController {
     //?dispose stream of sign up button status
     signUpButtonStatusInput.close();
     signUpButtonStatusController.close();
+    //?dispose list of password rules
+    listPasswordRulesInput.close();
+    listPasswordRulesController.close();
   }
 
   void disposeControllers() {
@@ -139,9 +155,8 @@ class SignUpController {
   }
 
   void _changeRule(int index, bool value) {
-    ConstsListsManager.passwordRulesRequirements[index][ConstsValuesManager
-            .valid] =
-        value;
+    ConstsListsManager.passwordRulesRequirements[index].valid = value;
+    changePasswordRules();
   }
 
   void onChangePassword(String value) {
@@ -273,5 +288,9 @@ class SignUpController {
     fileImage = await ImagePickerService.pickImage(ImageSource.gallery);
     fileImageInput.add(fileImage);
     Navigator.pop(context);
+  }
+
+  void changePasswordRules() {
+    listPasswordRulesInput.add(ConstsListsManager.passwordRulesRequirements);
   }
 }

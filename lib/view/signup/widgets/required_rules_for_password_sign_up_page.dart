@@ -3,6 +3,7 @@ import 'package:animooo/core/resources/conts_values.dart';
 import 'package:animooo/core/resources/heights_manager.dart';
 import 'package:animooo/core/resources/width_manager.dart';
 import 'package:animooo/core/widgets/spacing/horizontal_space.dart';
+import 'package:animooo/models/password_rules_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -11,7 +12,35 @@ import '../../../core/resources/fonts_size_manager.dart';
 import '../../../core/widgets/spacing/vertical_space.dart';
 
 class RequiredRulesForPasswordSignUpPage extends StatelessWidget {
-  const RequiredRulesForPasswordSignUpPage({super.key});
+  const RequiredRulesForPasswordSignUpPage({
+    super.key,
+    required this.listPasswordRulesOutputStream,
+  });
+
+  final Stream<List<PasswordRulesModel>> listPasswordRulesOutputStream;
+
+  @override
+  Widget build(BuildContext context) {
+
+    return StreamBuilder<List<PasswordRulesModel>>(
+      stream: listPasswordRulesOutputStream,
+      initialData: [],
+      builder: (context, snapshot) {
+        print(snapshot.data);
+        return snapshot.connectionState == ConnectionState.waiting
+          ? WaitingWidget()
+          : snapshot.data == null
+          ? SizedBox()
+          : HasDataWidget(snapshot: snapshot);
+      },
+    );
+  }
+}
+
+class HasDataWidget extends StatelessWidget {
+  const HasDataWidget({super.key, required this.snapshot});
+
+  final AsyncSnapshot<List<PasswordRulesModel>> snapshot;
 
   @override
   Widget build(BuildContext context) {
@@ -19,8 +48,8 @@ class RequiredRulesForPasswordSignUpPage extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (ConstsListsManager.passwordRulesRequirements.any(
-          (element) => element['valid'] == false,
+        if (snapshot.data!.any(
+          (PasswordRulesModel element) => element.valid == false,
         ))
           TitleRules(),
         VerticalSpace(HeightsManager.h5),
@@ -28,8 +57,7 @@ class RequiredRulesForPasswordSignUpPage extends StatelessWidget {
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           itemBuilder: (context, index) {
-            bool isValid =
-                ConstsListsManager.passwordRulesRequirements[index][ConstsValuesManager.valid];
+            bool isValid = snapshot.data![index].valid;
             return RichText(
               text: TextSpan(
                 children: [
@@ -40,8 +68,7 @@ class RequiredRulesForPasswordSignUpPage extends StatelessWidget {
                   ),
                   WidgetSpan(child: HorizontalSpace(WidthManager.w2)),
                   TextSpan(
-                    text: ConstsListsManager
-                        .passwordRulesRequirements[index][ConstsValuesManager.title],
+                    text: snapshot.data![index].title,
                     style: TextStyle(
                       color: isValid == true
                           ? ColorManager.kGreenColor
@@ -61,10 +88,21 @@ class RequiredRulesForPasswordSignUpPage extends StatelessWidget {
           separatorBuilder: (context, index) {
             return SizedBox(height: HeightsManager.h5);
           },
-          itemCount: ConstsListsManager.passwordRulesRequirements.length,
+          itemCount: snapshot.data!.length,
         ),
         VerticalSpace(HeightsManager.h16),
       ],
+    );
+  }
+}
+
+class WaitingWidget extends StatelessWidget {
+  const WaitingWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: CircularProgressIndicator(color: ColorManager.kPrimaryColor),
     );
   }
 }

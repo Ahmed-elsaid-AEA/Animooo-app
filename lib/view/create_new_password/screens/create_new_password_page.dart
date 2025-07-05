@@ -67,8 +67,8 @@ class CreateNewPasswordForm extends StatelessWidget {
         ),
 
         VerticalSpace(HeightsManager.h8),
-
-        RequiredRulesForPasswordSignUpPage(),
+//TODO:: add required rules
+        // RequiredRulesForPasswordSignUpPage(),
         CustomRequiredPasswordField(
           onPressedAtEye: () {},
           title: ConstsValuesManager.confirmPassword,
