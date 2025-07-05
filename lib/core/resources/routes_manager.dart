@@ -17,7 +17,7 @@ class RoutesManager {
         widget = SignUpPage();
       case RoutesName.forgetPassword:
         widget = ForgetPasswordPage();
-      case RoutesName.otpVerification:
+      case RoutesName.otpVerificationScreen:
         widget = OtpVerificationPage();
       case RoutesName.createNewPassword:
         widget = CreateNewPasswordPage();
@@ -32,6 +32,6 @@ class RoutesName {
   static const String loginPage = '/';
   static const String signupPage = '/signup';
   static const String forgetPassword = '/forgetPassword';
-  static const String otpVerification = '/otpVerification';
+  static const String otpVerificationScreen = '/otpVerification';
   static const String createNewPassword = '/createNewPassword';
 }

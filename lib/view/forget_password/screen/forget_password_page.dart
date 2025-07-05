@@ -67,7 +67,7 @@ class ForgetPasswordPage extends StatelessWidget {
                   text: ConstsValuesManager.sendCode,
                   onTap: () {
                     //?go to otp page
-                    Navigator.of(context).pushNamed(RoutesName.otpVerification);
+                    Navigator.of(context).pushNamed(RoutesName.otpVerificationScreen);
                   },
                 ),
               ],

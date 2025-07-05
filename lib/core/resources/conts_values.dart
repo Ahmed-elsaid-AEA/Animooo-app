@@ -115,7 +115,9 @@ class ConstsValuesManager {
   static const String imageIsRequired = 'Image is required';
   static const String firstNameIsRequired = 'First name is required';
   static const String lastNameIsRequired = 'Last name is required';
-static const String emailAlreadyExists = 'Email already exists';
+  static const String emailAlreadyExists = 'Email already exists';
+
+  static const String retry = 'Retry';
 }
 
 class ConstsListsManager {

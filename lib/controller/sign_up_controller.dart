@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:animooo/core/di/services/internet_checker_service.dart';
 import 'package:animooo/core/enums/button_status_enum.dart';
 import 'package:animooo/core/enums/select_image_status.dart';
 import 'package:animooo/core/error/failure_model.dart';
@@ -23,6 +24,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../core/enums/screen_status_state.dart';
+import '../core/resources/routes_manager.dart';
 
 class SignUpController {
   File? fileImage;
@@ -234,39 +236,34 @@ class SignUpController {
     }
     if (formKey.currentState!.validate() &&
         selectImageStatus == SelectImageStatus.imageSelected) {
-      //? 1 - show loading
       screenState = ScreensStatusState.loading;
       changeLoadingScreenState();
-      //? update ui
-      //? setState(() {});
-      //? request api
-      //TODO :: check internet connection
-      Either<FailureModel, AuthResponse> response = await AuthApi.signUp(
-        UserModel(
-          firstName: firstNameController.getText,
-          lastName: lastNameController.getText,
-          email: emailController.getText,
-          password: passwordController.getText,
-          phone: phoneController.getText,
-          image: fileImage!,
-        ),
-      );
-
-      response.fold(
-        (FailureModel l) {
-          screenState = ScreensStatusState.failure;
-          String message=filterErrors(l.errors);
-          showMySnackBar(context, message);
-        },
-        (AuthResponse r) {
-          screenState = ScreensStatusState.success;
-          print(r);
-          //?go to verify email
-          //TODO:: go to verify email
-        },
-      );
-      changeLoadingScreenState();
+      //?check network connection
+      var isInternetConnected = InternetCheckerService();
+      bool result = await isInternetConnected();
+      if (result == true) {
+        //?now make api request
+        _requestMakeNewUser(context);
+      } else {
+        _showNoInternetSnackBar(context);
+      }
     }
+  }
+
+  void onSuccessRequest(AuthResponse r, BuildContext context) {
+    screenState = ScreensStatusState.success;
+    //?go to verify email screen
+    Navigator.pushNamed(
+      context,
+      RoutesName.otpVerificationScreen,
+      arguments: emailController.getText,
+    );
+  }
+
+  void onFailureRequest(FailureModel l, BuildContext context) {
+    screenState = ScreensStatusState.failure;
+    String message = filterErrors(l.errors);
+    showMySnackBar(context, message);
   }
 
   void checkValidate() {
@@ -319,38 +316,91 @@ class SignUpController {
   }
 
   void showMySnackBar(BuildContext context, String message) {
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text(message)));
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        showCloseIcon: true,
+        action: SnackBarAction(
+          label: ConstsValuesManager.retry,
+          onPressed: () {
+            onTapSignUp(context);
+          },
+        ),
+      ),
+    );
   }
 
   String filterErrors(List<String> errors) {
-    String description = '';
+    List<String> errorsList = [];
     if (errors.isNotEmpty) {
       for (var error in errors) {
         if (error.toLowerCase().trim().contains("email already ")) {
-          description += ConstsValuesManager.emailAlreadyExists;
+          errorsList.add(ConstsValuesManager.emailAlreadyExists);
         }
         if (error.toLowerCase().trim().contains("Invalid email")) {
-          description += ConstsValuesManager.enterValidEmail;
+          errorsList.add(ConstsValuesManager.enterValidEmail);
         }
         if (error.toLowerCase().trim().contains("phone")) {
-          description += ConstsValuesManager.phoneIsRequired;
+          errorsList.add(ConstsValuesManager.phoneIsRequired);
         }
         if (error.toLowerCase().trim().contains("password")) {
-          description += ConstsValuesManager.passwordIsRequired;
+          errorsList.add(ConstsValuesManager.passwordIsRequired);
         }
         if (error.toLowerCase().trim().contains("image")) {
-          description += ConstsValuesManager.imageIsRequired;
+          errorsList.add(ConstsValuesManager.imageIsRequired);
         }
         if (error.toLowerCase().trim().contains("first name")) {
-          description += ConstsValuesManager.firstNameIsRequired;
+          errorsList.add(ConstsValuesManager.firstNameIsRequired);
         }
         if (error.toLowerCase().trim().contains("last name")) {
-          description += ConstsValuesManager.lastNameIsRequired;
+          errorsList.add(ConstsValuesManager.lastNameIsRequired);
+        }
+        if (error.toLowerCase().trim().contains("password must be at least")) {
+          errorsList.add(
+            ConstsValuesManager
+                .passwordMustBeAtLeastEightCharactersAndContainAtLeastOneUpperCaseLetterOneLowerCaseLetterAndOneNumber,
+          );
         }
       }
     }
-    return description;
+    return errorsList.join(" , ");
+  }
+
+  void _requestMakeNewUser(BuildContext context) async {
+    //? 1 - show loading
+
+    changeLoadingScreenState();
+    //? update ui
+    //? setState(() {});
+    //? request api
+    //TODO :: check internet connection
+    Either<FailureModel, AuthResponse> response = await AuthApi.signUp(
+      UserModel(
+        firstName: firstNameController.getText,
+        lastName: lastNameController.getText,
+        email: emailController.getText,
+        password: passwordController.getText,
+        phone: phoneController.getText,
+        image: fileImage!,
+      ),
+    );
+
+    response.fold(
+      (FailureModel l) {
+        onFailureRequest(l, context);
+      },
+      (AuthResponse r) {
+        onSuccessRequest(r, context);
+      },
+    );
+    changeLoadingScreenState();
+  }
+
+  void _showNoInternetSnackBar(BuildContext context) {
+    screenState = ScreensStatusState.failure;
+    changeLoadingScreenState();
+
+    showMySnackBar(context, 'No internet connection');
   }
 }
