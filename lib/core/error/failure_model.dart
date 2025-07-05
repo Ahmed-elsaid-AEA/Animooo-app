@@ -14,4 +14,9 @@ class FailureModel {
       _$FailureModelFromJson(json);
 
   Map<String, dynamic> toJson() => _$FailureModelToJson(this);
+
+  @override
+  String toString() {
+    return 'FailureModel{errors: $errors, statusCode: $statusCode}';
+  }
 }

@@ -227,7 +227,7 @@ class SignUpController {
     }
   }
 
-  Future<void> onTapSignUp() async {
+  Future<void> onTapSignUp(BuildContext context) async {
     //?check if image is selected
     if (selectImageStatus == SelectImageStatus.normal) {
       selectImageStatus = SelectImageStatus.noImageSelected;
@@ -240,6 +240,7 @@ class SignUpController {
       //? update ui
       //? setState(() {});
       //? request api
+      //TODO :: check internet connection
       Either<FailureModel, AuthResponse> response = await AuthApi.signUp(
         UserModel(
           firstName: firstNameController.getText,
@@ -254,10 +255,8 @@ class SignUpController {
       response.fold(
         (FailureModel l) {
           screenState = ScreensStatusState.failure;
-
-          print(l);
-          //TODO:: show error
-          //?show snackbar
+          String message=filterErrors(l.errors);
+          showMySnackBar(context, message);
         },
         (AuthResponse r) {
           screenState = ScreensStatusState.success;
@@ -267,7 +266,6 @@ class SignUpController {
         },
       );
       changeLoadingScreenState();
-
     }
   }
 
@@ -318,5 +316,41 @@ class SignUpController {
 
   void changeLoadingScreenState() {
     loadingScreenStateInput.add(screenState == ScreensStatusState.loading);
+  }
+
+  void showMySnackBar(BuildContext context, String message) {
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(message)));
+  }
+
+  String filterErrors(List<String> errors) {
+    String description = '';
+    if (errors.isNotEmpty) {
+      for (var error in errors) {
+        if (error.toLowerCase().trim().contains("email already ")) {
+          description += ConstsValuesManager.emailAlreadyExists;
+        }
+        if (error.toLowerCase().trim().contains("Invalid email")) {
+          description += ConstsValuesManager.enterValidEmail;
+        }
+        if (error.toLowerCase().trim().contains("phone")) {
+          description += ConstsValuesManager.phoneIsRequired;
+        }
+        if (error.toLowerCase().trim().contains("password")) {
+          description += ConstsValuesManager.passwordIsRequired;
+        }
+        if (error.toLowerCase().trim().contains("image")) {
+          description += ConstsValuesManager.imageIsRequired;
+        }
+        if (error.toLowerCase().trim().contains("first name")) {
+          description += ConstsValuesManager.firstNameIsRequired;
+        }
+        if (error.toLowerCase().trim().contains("last name")) {
+          description += ConstsValuesManager.lastNameIsRequired;
+        }
+      }
+    }
+    return description;
   }
 }

@@ -110,6 +110,12 @@ class ConstsValuesManager {
   static const String image = 'image';
 
   static const String enterValidPhoneNumber = 'Enter valid phone number';
+  static const String phoneIsRequired = 'Phone is required';
+  static const String passwordIsRequired = 'Password is required';
+  static const String imageIsRequired = 'Image is required';
+  static const String firstNameIsRequired = 'First name is required';
+  static const String lastNameIsRequired = 'Last name is required';
+static const String emailAlreadyExists = 'Email already exists';
 }
 
 class ConstsListsManager {

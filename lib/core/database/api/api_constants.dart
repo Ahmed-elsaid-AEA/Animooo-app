@@ -10,7 +10,7 @@ class ApiConstants {
   static const String phone = 'phone';
   static const String image = 'image';
 
-  static const String errors = 'errors';
+  static const String errors = 'error';
 
   static const int s500=  500;
 
