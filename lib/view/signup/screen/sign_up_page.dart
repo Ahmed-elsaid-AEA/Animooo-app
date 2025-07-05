@@ -48,7 +48,7 @@ class _SignUpPageState extends State<SignUpPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: AppModelProgressHud(
-        loading: signUpController.screenState == ScreensStatusState.loading,
+        loadingOutputStream: signUpController.loadingScreenStateOutPutStream,
         child: SafeArea(
           child: SingleChildScrollView(
             child: SizedBox(
@@ -99,11 +99,8 @@ class _SignUpPageState extends State<SignUpPage> {
                           signUpController.signUpButtonStatusOutPutStream,
                       text: ConstsValuesManager.signUp,
                       onTap: () async {
-                        signUpController.screenState =
-                            ScreensStatusState.loading;
+
                         await signUpController.onTapSignUp();
-                        signUpController.screenState =
-                            ScreensStatusState.success;
                       },
                     ),
                     VerticalSpace(HeightsManager.h8),

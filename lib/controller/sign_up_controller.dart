@@ -65,6 +65,11 @@ class SignUpController {
   late Sink<List<PasswordRulesModel>> listPasswordRulesInput;
   late StreamController<List<PasswordRulesModel>> listPasswordRulesController;
 
+  //?stream of loading screen state
+  late Stream<bool> loadingScreenStateOutPutStream;
+  late Sink<bool> loadingScreenStateInput;
+  late StreamController<bool> loadingScreenStateController;
+
   void initState() {
     //?init controllers
     initControllers();
@@ -90,12 +95,12 @@ class SignUpController {
     lastNameController = TextEditingController();
     phoneController = TextEditingController();
 
-    // firstNameController.text = "Ahmed";
-    // lastNameController.text = "Mohamed";
-    // emailController.text = "ahmed122727727@gmail.com";
-    // passwordController.text = "123!@#QWEqwweewwe";
-    // confirmPasswordController.text = "123!@#QWEqwweewwe";
-    // phoneController.text = "01001398831";
+    firstNameController.text = "Ahmed";
+    lastNameController.text = "Mohamed";
+    emailController.text = "ahmed122727727@gmail.com";
+    passwordController.text = "123!@#QWEqwweewwe";
+    confirmPasswordController.text = "123!@#QWEqwweewwe";
+    phoneController.text = "01001398831";
   }
 
   void initStreams() {
@@ -121,6 +126,11 @@ class SignUpController {
     listPasswordRulesController = StreamController<List<PasswordRulesModel>>();
     listPasswordRulesOutPutStream = listPasswordRulesController.stream;
     listPasswordRulesInput = listPasswordRulesController.sink;
+
+    //?init stream of loading screen state
+    loadingScreenStateController = StreamController<bool>();
+    loadingScreenStateOutPutStream = loadingScreenStateController.stream;
+    loadingScreenStateInput = loadingScreenStateController.sink;
   }
 
   void disposeStreams() {
@@ -139,6 +149,9 @@ class SignUpController {
     //?dispose list of password rules
     listPasswordRulesInput.close();
     listPasswordRulesController.close();
+    //?dispose stream of loading screen state
+    loadingScreenStateInput.close();
+    loadingScreenStateController.close();
   }
 
   void disposeControllers() {
@@ -223,6 +236,7 @@ class SignUpController {
         selectImageStatus == SelectImageStatus.imageSelected) {
       //? 1 - show loading
       screenState = ScreensStatusState.loading;
+      changeLoadingScreenState();
       //? update ui
       //? setState(() {});
       //? request api
@@ -236,16 +250,24 @@ class SignUpController {
           image: fileImage!,
         ),
       );
+
       response.fold(
         (FailureModel l) {
+          screenState = ScreensStatusState.failure;
+
+          print(l);
           //TODO:: show error
           //?show snackbar
         },
         (AuthResponse r) {
+          screenState = ScreensStatusState.success;
+          print(r);
           //?go to verify email
           //TODO:: go to verify email
         },
       );
+      changeLoadingScreenState();
+
     }
   }
 
@@ -292,5 +314,9 @@ class SignUpController {
 
   void changePasswordRules() {
     listPasswordRulesInput.add(ConstsListsManager.passwordRulesRequirements);
+  }
+
+  void changeLoadingScreenState() {
+    loadingScreenStateInput.add(screenState == ScreensStatusState.loading);
   }
 }

@@ -7,23 +7,27 @@ import '../../resources/colors_manager.dart';
 class AppModelProgressHud extends StatelessWidget {
   const AppModelProgressHud({
     super.key,
-    required this.loading,
+    required this.loadingOutputStream,
     required this.child,
   });
 
-  final bool loading;
+  final Stream<bool> loadingOutputStream;
   final Widget child;
 
   @override
   Widget build(BuildContext context) {
-    return ModalProgressHUD(
-      inAsyncCall: loading,
-      dismissible: false,
-      blur: 5,
-      progressIndicator: CupertinoActivityIndicator(
-        color: ColorManager.kPrimaryColor,
+    return StreamBuilder<bool>(
+      stream: loadingOutputStream,
+      initialData: false,
+      builder: (context, snapshot) => ModalProgressHUD(
+        inAsyncCall: snapshot.data ?? false,
+        dismissible: false,
+        blur: 5,
+        progressIndicator: CupertinoActivityIndicator(
+          color: ColorManager.kPrimaryColor,
+        ),
+        child: child,
       ),
-      child: child,
     );
   }
 }
