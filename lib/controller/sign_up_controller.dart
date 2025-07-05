@@ -26,6 +26,7 @@ import '../core/enums/screen_status_state.dart';
 class SignUpController {
   File? fileImage;
   SelectImageStatus selectImageStatus = SelectImageStatus.normal;
+
   ButtonStatusEnum signUpButtonStatus = ButtonStatusEnum.disabled;
   ScreensStatusState screenState = ScreensStatusState.initial;
 
@@ -52,6 +53,11 @@ class SignUpController {
   late Stream<bool> visibleConfirmPasswordOutPutStream;
   late Sink<bool> visibleConfirmPasswordInput;
   late StreamController<bool> visibleConfirmPasswordController;
+
+  //? button status stream
+  late Stream<ButtonStatusEnum?> signUpButtonStatusOutPutStream;
+  late Sink<ButtonStatusEnum?> signUpButtonStatusInput;
+  late StreamController<ButtonStatusEnum?> signUpButtonStatusController;
 
   void initState() {
     //?init controllers
@@ -98,6 +104,10 @@ class SignUpController {
     visibleConfirmPasswordOutPutStream =
         visibleConfirmPasswordController.stream;
     visibleConfirmPasswordInput = visibleConfirmPasswordController.sink;
+    //?init stream of sign up button status
+    signUpButtonStatusController = StreamController<ButtonStatusEnum?>();
+    signUpButtonStatusOutPutStream = signUpButtonStatusController.stream;
+    signUpButtonStatusInput = signUpButtonStatusController.sink;
   }
 
   void disposeStreams() {
@@ -110,6 +120,9 @@ class SignUpController {
     //?dispose stream of visible confirm password
     visibleConfirmPasswordInput.close();
     visibleConfirmPasswordController.close();
+    //?dispose stream of sign up button status
+    signUpButtonStatusInput.close();
+    signUpButtonStatusController.close();
   }
 
   void disposeControllers() {
@@ -233,6 +246,11 @@ class SignUpController {
     } else {
       signUpButtonStatus = ButtonStatusEnum.disabled;
     }
+    changeSignUpButtonStatus();
+  }
+
+  void changeSignUpButtonStatus() {
+    signUpButtonStatusInput.add(signUpButtonStatus);
   }
 
   void onPressedAtEyePassword() {

@@ -93,7 +93,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
 
                     AppButton(
-                      buttonStatus: signUpController.signUpButtonStatus,
+                      buttonStatusOutputStream: signUpController.signUpButtonStatusOutPutStream,
                       text: ConstsValuesManager.signUp,
                       onTap: () async {
                         signUpController.screenState =
