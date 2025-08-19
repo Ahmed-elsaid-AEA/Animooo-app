@@ -24,6 +24,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../core/enums/screen_status_state.dart';
+import '../core/functions/app_scaffold_massanger.dart';
 import '../core/resources/routes_manager.dart';
 
 class SignUpController {
@@ -257,7 +258,7 @@ class SignUpController {
   void onSuccessRequest(AuthResponse r, BuildContext context) {
     screenState = ScreensStatusState.success;
     //?go to verify email screen
-    showMySnackBar(context, r.message ?? "");
+    showAppSnackBar(context, r.message ?? "");
     Navigator.pushNamed(
       context,
       RoutesName.otpVerificationScreen,
@@ -271,7 +272,13 @@ class SignUpController {
   void onFailureRequest(FailureModel l, BuildContext context) {
     screenState = ScreensStatusState.failure;
     String message = filterErrors(l.errors);
-    showMySnackBar(context, message);
+    showAppSnackBar(
+      context,
+      message,
+      onPressedAtRetry: () {
+        onTapSignUp(context);
+      },
+    );
   }
 
   void checkValidate() {
@@ -325,28 +332,12 @@ class SignUpController {
     loadingScreenStateInput.add(screenState == ScreensStatusState.loading);
   }
 
-  void showMySnackBar(BuildContext context, String message) {
-    ScaffoldMessenger.of(context).hideCurrentSnackBar();
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        showCloseIcon: true,
-        action: SnackBarAction(
-          label: ConstsValuesManager.retry,
-          onPressed: () {
-            onTapSignUp(context);
-          },
-        ),
-      ),
-    );
-  }
-
   String filterErrors(List<String> errors) {
     List<String> errorsList = [];
     print(errors);
     errors = errors.map((e) => e.toLowerCase().trim()).toList();
     void makeFilter(String contain, String msgError) {
-        if (errors.join("").contains(contain.toLowerCase())) {
+      if (errors.join("").contains(contain.toLowerCase())) {
         errorsList.add(msgError);
       }
     }
@@ -359,7 +350,10 @@ class SignUpController {
       makeFilter("image", ConstsValuesManager.imageIsRequired);
       makeFilter("image", ConstsValuesManager.imageIsRequired);
       makeFilter("image", ConstsValuesManager.imageIsRequired);
-      makeFilter("LateInitializationError: Local 'conn' has not been initialized.", ConstsValuesManager.pleaseOpenXamppApp);
+      makeFilter(
+        "LateInitializationError: Local 'conn' has not been initialized.",
+        ConstsValuesManager.pleaseOpenXamppApp,
+      );
       makeFilter(
         "password must be at least",
         ConstsValuesManager.imageIsRequired,
@@ -410,7 +404,14 @@ class SignUpController {
   void _showNoInternetSnackBar(BuildContext context) {
     screenState = ScreensStatusState.failure;
     changeLoadingScreenState();
-
-    showMySnackBar(context, 'No internet connection');
+    showAppSnackBar(
+      context,
+      'No internet connection',
+      onPressedAtRetry: () {
+        onTapSignUp(context);
+      },
+    );
   }
 }
+
+//TODO :: Don't forget remove retery button on scaffold messagnger at singupScuccesfull page

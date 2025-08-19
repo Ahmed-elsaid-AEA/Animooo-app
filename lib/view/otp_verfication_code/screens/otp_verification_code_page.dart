@@ -28,7 +28,7 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _otpVerController = OtpVerController();
+    _otpVerController = OtpVerController(context);
   }
   @override
   Widget build(BuildContext context) {
@@ -81,15 +81,7 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
                   VerticalSpace(HeightsManager.h41),
                   AppButton(
                     text: ConstsValuesManager.confirm,
-                    onTap: () async {
-                      _otpVerController.screenState = ScreensStatusState.loading;
-                      _otpVerController.changeScreenStateLoading();
-                     await Future.delayed(const Duration(seconds: 2));
-
-                      _otpVerController.screenState = ScreensStatusState.success;
-                      _otpVerController.changeScreenStateLoading();
-                      //?go to create new password after request on api
-                    },
+                    onTap: _otpVerController.onPressedConfirmButton,
                   ),
                   VerticalSpace(HeightsManager.h6),
                   Align(
