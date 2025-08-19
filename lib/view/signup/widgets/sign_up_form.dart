@@ -42,7 +42,8 @@ class SignUpForm extends StatelessWidget {
     required this.onTapAtSelectImage,
     required this.selectImageStatus,
     required this.phoneController,
-    required this.onChanged, required this.listPasswordRulesOutPutStream,
+    required this.onChanged,
+    required this.listPasswordRulesOutPutStream,
   });
 
   final GlobalKey<FormState> formKey;
@@ -58,8 +59,7 @@ class SignUpForm extends StatelessWidget {
   final TextEditingController confirmPasswordController;
   final VoidCallback? onPressedAtEyeConfirmPassword;
   final ValueChanged<String> onChangedPassword;
-  final GestureTapCallback onTapAtSelectImage;
-
+  final void Function(FormFieldState<File>) onTapAtSelectImage;
   final SelectImageStatus selectImageStatus;
   final Stream<List<PasswordRulesModel>> listPasswordRulesOutPutStream;
   final void Function(String value) onChanged;

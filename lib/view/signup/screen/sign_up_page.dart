@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:animooo/controller/sign_up_controller.dart';
 import 'package:animooo/core/enums/button_status_enum.dart';
 import 'package:animooo/core/enums/screen_status_state.dart';
@@ -85,8 +87,8 @@ class _SignUpPageState extends State<SignUpPage> {
                       onChangedPassword: (String value) {
                         signUpController.onChangePassword(value);
                       },
-                      onTapAtSelectImage: () async {
-                        await signUpController.onTapAtSelectImage(context);
+                      onTapAtSelectImage: (FormFieldState<File> state) async {
+                        await signUpController.onTapAtSelectImage(context,state);
                       },
                       selectImageStatus: signUpController.selectImageStatus,
                       phoneController: signUpController.phoneController,

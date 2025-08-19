@@ -24,15 +24,46 @@ class CustomSelectImageWidget extends StatelessWidget {
 
   final File? file;
   final SelectImageStatus selectImageStatus;
-  final GestureTapCallback onTapAtSelectImage;
+  final void Function(FormFieldState<File>) onTapAtSelectImage;
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTapAtSelectImage,
-      child: file == null
-          ? NotFoundImage(selectImageStatus: selectImageStatus)
-          : FoundImage(file: file!, selectImageStatus: selectImageStatus),
+    return FormField<File>(
+      validator: (value) {
+        if (value == null) {
+          return ConstsValuesManager.imageIsRequired;
+        } else {
+          return null;
+        }
+      },
+      builder: (state) {
+        print(state.errorText);
+        return InkWell(
+          onTap: () {
+            onTapAtSelectImage(state);
+          },
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              file == null
+                  ? NotFoundImage(selectImageStatus: selectImageStatus)
+                  : FoundImage(
+                      file: file!,
+                      selectImageStatus: selectImageStatus,
+                    ),
+              if (state.errorText != null)
+                Text(
+                  state.errorText!,
+                  style: TextStyle(
+                    color: ColorManager.kRedColor,
+                    fontSize: FontSizeManager.s10,
+                    fontFamily: FontsManager.poppinsFontFamily,
+                  ),
+                ),
+            ],
+          ),
+        );
+      },
     );
   }
 }
@@ -66,10 +97,7 @@ class FoundImage extends StatelessWidget {
         ),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(BorderRadiusManager.br10),
-          child: SizedBox(
-            width: double.infinity,
-            child: Image.file(file),
-          ),
+          child: SizedBox(width: double.infinity, child: Image.file(file)),
         ),
       ),
     );

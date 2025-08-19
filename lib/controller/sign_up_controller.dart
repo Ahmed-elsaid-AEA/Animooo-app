@@ -208,7 +208,10 @@ class SignUpController {
     }
   }
 
-  Future<void> onTapAtSelectImage(BuildContext context) async {
+  Future<void> onTapAtSelectImage(
+    BuildContext context,
+    FormFieldState<File> state,
+  ) async {
     //?chow model bottom sheet
     await showSelectImageModelBottomSheet(
       context,
@@ -225,6 +228,7 @@ class SignUpController {
       selectImageStatus = SelectImageStatus.noImageSelected;
     } else {
       selectImageStatus = SelectImageStatus.imageSelected;
+      state.didChange(fileImage);
       checkValidate();
     }
   }
@@ -272,6 +276,8 @@ class SignUpController {
 
   void checkValidate() {
     //?check if image is selected
+    print(selectImageStatus);
+    print(formKey.currentState!.validate());
     if (selectImageStatus == SelectImageStatus.normal) {
       selectImageStatus = SelectImageStatus.noImageSelected;
     }
@@ -337,37 +343,34 @@ class SignUpController {
 
   String filterErrors(List<String> errors) {
     List<String> errorsList = [];
-    if (errors.isNotEmpty) {
-      for (var error in errors) {
-        if (error.toLowerCase().trim().contains("email already ")) {
-          errorsList.add(ConstsValuesManager.emailAlreadyExists);
-        }
-        if (error.toLowerCase().trim().contains("Invalid email")) {
-          errorsList.add(ConstsValuesManager.enterValidEmail);
-        }
-        if (error.toLowerCase().trim().contains("phone")) {
-          errorsList.add(ConstsValuesManager.phoneIsRequired);
-        }
-        if (error.toLowerCase().trim().contains("password")) {
-          errorsList.add(ConstsValuesManager.passwordIsRequired);
-        }
-        if (error.toLowerCase().trim().contains("image")) {
-          errorsList.add(ConstsValuesManager.imageIsRequired);
-        }
-        if (error.toLowerCase().trim().contains("first name")) {
-          errorsList.add(ConstsValuesManager.firstNameIsRequired);
-        }
-        if (error.toLowerCase().trim().contains("last name")) {
-          errorsList.add(ConstsValuesManager.lastNameIsRequired);
-        }
-        if (error.toLowerCase().trim().contains("password must be at least")) {
-          errorsList.add(
-            ConstsValuesManager
-                .passwordMustBeAtLeastEightCharactersAndContainAtLeastOneUpperCaseLetterOneLowerCaseLetterAndOneNumber,
-          );
-        }
+    print(errors);
+    errors = errors.map((e) => e.toLowerCase().trim()).toList();
+    void makeFilter(String contain, String msgError) {
+       if (errors.join("").contains(contain)) {
+        errorsList.add(msgError);
       }
     }
+
+    if (errors.isNotEmpty) {
+      makeFilter("email already", ConstsValuesManager.emailAlreadyExists);
+      makeFilter("Invalid email", ConstsValuesManager.enterValidEmail);
+      makeFilter("phone", ConstsValuesManager.phoneIsRequired);
+      makeFilter("password", ConstsValuesManager.passwordIsRequired);
+      makeFilter("image", ConstsValuesManager.imageIsRequired);
+      makeFilter(
+        "password must be at least",
+        ConstsValuesManager.imageIsRequired,
+      );
+      makeFilter("last name", ConstsValuesManager.lastNameIsRequired);
+      makeFilter("last name", ConstsValuesManager.lastNameIsRequired);
+      makeFilter(
+        "first name",
+        ConstsValuesManager
+            .passwordMustBeAtLeastEightCharactersAndContainAtLeastOneUpperCaseLetterOneLowerCaseLetterAndOneNumber,
+      );
+    }
+    print(errorsList);
+
     return errorsList.join(" , ");
   }
 
