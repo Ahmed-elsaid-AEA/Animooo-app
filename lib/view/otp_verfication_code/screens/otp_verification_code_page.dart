@@ -94,19 +94,21 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
                   VerticalSpace(HeightsManager.h6),
                   Align(
                     alignment: Alignment.center,
-                    child: TextButton(
-                      onPressed: () {
-
-                      },
-                      child: StreamBuilder<int>(
-                        initialData: 60,
-                        stream: _otpVerController.counterOutPutStream,
-                        builder:(context, snapshot) =>  Text(
-                          "${ConstsValuesManager.resendCodeIn} ${snapshot.data}",
+                    child: StreamBuilder<int>(
+                      initialData: 59,
+                      stream: _otpVerController.counterOutPutStream,
+                      builder: (context, snapshot) => TextButton(
+                        onPressed: snapshot.data != 0
+                            ? null
+                            : _otpVerController.onPressedResendCodeButton,
+                        child: Text(
+                          "${ConstsValuesManager.resendCodeIn} 00:${snapshot.data.toString().padLeft(2, '0')}",
                           style: TextStyle(
                             fontFamily: FontsManager.poppinsFontFamily,
                             fontSize: FontSizeManager.s12,
-                            color: ColorManager.kBlackColor,
+                            color: snapshot.data != 0
+                                ? ColorManager.kGrey3Color
+                                : ColorManager.kGreenColor,
                           ),
                         ),
                       ),

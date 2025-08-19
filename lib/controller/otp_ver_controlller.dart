@@ -31,6 +31,7 @@ class OtpVerController {
   final BuildContext context;
 
 
+
   OtpVerController(this.context) {
     initStreams();
     //?init screen state
@@ -40,7 +41,7 @@ class OtpVerController {
   }
 
   void startTimer() {
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+    _timer = Timer.periodic(Duration(milliseconds: 100), (timer) {
 
       if (counter > 0) {
         counter--;
@@ -191,5 +192,8 @@ class OtpVerController {
       RoutesName.loginPage,
       (route) => false,
     );
+  }
+  void  onPressedResendCodeButton(){
+    print("done");
   }
 }
