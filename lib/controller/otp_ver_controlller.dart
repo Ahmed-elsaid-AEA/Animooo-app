@@ -1,11 +1,15 @@
 import 'dart:async';
 
+import 'package:animooo/core/error/failure_model.dart';
 import 'package:animooo/core/functions/app_scaffold_massanger.dart';
+import 'package:animooo/models/auth/otp_code_response.dart';
+import 'package:dartz/dartz.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../core/di/services/internet_checker_service.dart';
 import '../core/enums/screen_status_state.dart';
 import '../core/resources/conts_values.dart';
+import '../data/network/auth_api.dart';
 
 class OtpVerController {
   late String screenName;
@@ -57,20 +61,46 @@ class OtpVerController {
   }
 
   void onPressedConfirmButton() async {
-    screenState = ScreensStatusState.loading;
-    changeScreenStateLoading();
-    //?check internet connection
-    var isInternetConnected = InternetCheckerService();
-    bool result = await isInternetConnected();
-    if (result == true) {
-      //?now make api request
-      // _requestCheckOtpCodeAvailablity(context);
+    //?check code is not null
+    if (otpCode != null) {
+      screenState = ScreensStatusState.loading;
+      changeScreenStateLoading();
+      //?check internet connection
+      var isInternetConnected = InternetCheckerService();
+      bool result = await isInternetConnected();
+      if (result == true) {
+        //?now make api request
+        _requestCheckOtpCodeAvailability(context);
+      } else {
+        _showNoInternetSnackBar(context);
+      }
+      screenState = ScreensStatusState.success;
+      changeScreenStateLoading();
+      //?go to create new password after request on api
     } else {
-      _showNoInternetSnackBar(context);
+      showAppSnackBar(context, 'Please enter code');
     }
-    screenState = ScreensStatusState.success;
+  }
+
+  void _requestCheckOtpCodeAvailability(BuildContext context) async {
+    //? 1 - show loading
+
     changeScreenStateLoading();
-    //?go to create new password after request on api
+
+  Either<FailureModel, OtpCodeResponse> response =
+        await AuthApi.checkOtpAvailability(email, otpCode!);
+
+    response.fold(
+      (FailureModel l) {
+        print(l);
+        onFailureRequest(l, context);
+      },
+      (OtpCodeResponse r) {
+        print(r);
+        onSuccessRequest(r, context);
+      },
+    );
+    changeScreenStateLoading();
   }
 
   void _showNoInternetSnackBar(BuildContext context) {
@@ -83,5 +113,14 @@ class OtpVerController {
         onPressedConfirmButton();
       },
     );
+  }
+
+  void onFailureRequest(FailureModel l, BuildContext context) {
+    screenState = ScreensStatusState.failure;
+
+  }
+
+  void onSuccessRequest(OtpCodeResponse r, BuildContext context) {
+    screenState = ScreensStatusState.success;
   }
 }

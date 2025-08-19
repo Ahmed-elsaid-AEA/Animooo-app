@@ -40,11 +40,15 @@ class AuthResponse {
 @JsonSerializable()
 class UserResponseModel {
   int? id;
+  @JsonKey(name: 'first_name')
   String? firstName;
+  @JsonKey(name: 'last_name')
   String? lastName;
   String? email;
   String? phone;
+  @JsonKey(name: 'image_path')
   String? imagePath;
+  @JsonKey(name: 'is_verified')
   String? isVerified;
 
   UserResponseModel({
@@ -57,9 +61,11 @@ class UserResponseModel {
     this.isVerified,
   });
 
-  factory UserResponseModel.fromJson(Map<String, dynamic> json) =>_$UserResponseModelFromJson(json);
+  factory UserResponseModel.fromJson(Map<String, dynamic> json) =>
+      _$UserResponseModelFromJson(json);
 
   Map<String, dynamic> toJson() => _$UserResponseModelToJson(this);
+
   @override
   String toString() {
     return 'UserResponseModel{id: $id, firstName: $firstName, lastName: $lastName, email: $email, phone: $phone, imagePath: $imagePath, isVerified: $isVerified}';
