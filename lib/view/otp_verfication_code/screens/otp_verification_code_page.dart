@@ -24,12 +24,20 @@ class OtpVerificationPage extends StatefulWidget {
 
 class _OtpVerificationPageState extends State<OtpVerificationPage> {
   late OtpVerController _otpVerController;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _otpVerController = OtpVerController(context);
   }
+
+  @override
+  void dispose() {
+    _otpVerController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     _otpVerController.getArguments(context);
@@ -75,7 +83,7 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
                   AppOtpVerificationTextField(
                     onCompleted: (String value) {
                       //?go to create new password after request on api
-      _otpVerController.startOtpCheck(value);
+                      _otpVerController.startOtpCheck(value);
                     },
                   ),
                   VerticalSpace(HeightsManager.h41),
@@ -86,12 +94,21 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
                   VerticalSpace(HeightsManager.h6),
                   Align(
                     alignment: Alignment.center,
-                    child: Text(
-                      ConstsValuesManager.resendCodeIn,
-                      style: TextStyle(
-                        fontFamily: FontsManager.poppinsFontFamily,
-                        fontSize: FontSizeManager.s12,
-                        color: ColorManager.kBlackColor,
+                    child: TextButton(
+                      onPressed: () {
+
+                      },
+                      child: StreamBuilder<int>(
+                        initialData: 60,
+                        stream: _otpVerController.counterOutPutStream,
+                        builder:(context, snapshot) =>  Text(
+                          "${ConstsValuesManager.resendCodeIn} ${snapshot.data}",
+                          style: TextStyle(
+                            fontFamily: FontsManager.poppinsFontFamily,
+                            fontSize: FontSizeManager.s12,
+                            color: ColorManager.kBlackColor,
+                          ),
+                        ),
                       ),
                     ),
                   ),

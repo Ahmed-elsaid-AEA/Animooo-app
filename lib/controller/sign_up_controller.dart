@@ -271,7 +271,7 @@ class SignUpController {
 
   void onFailureRequest(FailureModel l, BuildContext context) {
     screenState = ScreensStatusState.failure;
-    String message = filterErrors(l.errors);
+    String message = _filterErrors(l.errors);
     showAppSnackBar(
       context,
       message,
@@ -332,7 +332,7 @@ class SignUpController {
     loadingScreenStateInput.add(screenState == ScreensStatusState.loading);
   }
 
-  String filterErrors(List<String> errors) {
+  String _filterErrors(List<String> errors) {
     List<String> errorsList = [];
     print(errors);
     errors = errors.map((e) => e.toLowerCase().trim()).toList();
@@ -359,8 +359,7 @@ class SignUpController {
         ConstsValuesManager.imageIsRequired,
       );
       makeFilter("last name", ConstsValuesManager.lastNameIsRequired);
-      makeFilter("last name", ConstsValuesManager.lastNameIsRequired);
-      makeFilter(
+       makeFilter(
         "first name",
         ConstsValuesManager
             .passwordMustBeAtLeastEightCharactersAndContainAtLeastOneUpperCaseLetterOneLowerCaseLetterAndOneNumber,

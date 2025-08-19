@@ -15,6 +15,7 @@ import '../../../core/resources/colors_manager.dart';
 import '../../../core/resources/conts_values.dart';
 import '../../../core/resources/heights_manager.dart';
 import '../../../core/resources/padding_manager.dart';
+import '../../../core/resources/routes_manager.dart';
 import '../../../core/widgets/app_logo_and_title_widget.dart';
 import '../../../core/widgets/buttons/app_button.dart';
 import '../../../core/widgets/spacing/vertical_space.dart';
@@ -102,7 +103,11 @@ class _SignUpPageState extends State<SignUpPage> {
                           signUpController.signUpButtonStatusOutPutStream,
                       text: ConstsValuesManager.signUp,
                       onTap: () async {
-                        await signUpController.onTapSignUp(context);
+                        Navigator.pushNamed(
+                          context,
+                          RoutesName.otpVerificationScreen,
+                        );
+                        // await signUpController.onTapSignUp(context);
                       },
                     ),
                     VerticalSpace(HeightsManager.h8),

@@ -121,7 +121,12 @@ class ConstsValuesManager {
 
   static const String screenName = 'screenName';
 
-  static const String pleaseOpenXamppApp= "Please Open Xampp App";
+  static const String pleaseOpenXamppApp = "Please Open Xampp App";
+
+  static const String emailIsRequired = 'Email is required';
+  static const String invalidVerificationCode = 'Invalid verification code';
+
+  static const String databaseError = 'Database Error';
 }
 
 class ConstsListsManager {
