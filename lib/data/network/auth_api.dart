@@ -20,20 +20,30 @@ class AuthApi {
       var response = await dioService.post(
         path: ApiConstants.signUpEndpoint,
         body: FormData.fromMap({
-          // ApiConstants.firstName: user.firstName,
-          // ApiConstants.lastName: user.lastName,
-          // ApiConstants.email: user.email,
-          // ApiConstants.password: user.password,
-          // ApiConstants.phone: user.phone,
-          // ApiConstants.image: await MultipartFile.fromFile(
-          //   user.image.path,
-          //   filename: user.image.path.split("/").last,
-          // ),
+          ApiConstants.firstName: user.firstName,
+          ApiConstants.lastName: user.lastName,
+          ApiConstants.email: user.email,
+          ApiConstants.password: user.password,
+          ApiConstants.phone: user.phone,
+          ApiConstants.image: await MultipartFile.fromFile(
+            user.image.path,
+            filename: user.image.path.split("/").last,
+          ),
         }),
       );
       return Right(AuthResponse.fromJson(response));
     } on ServerException catch (e) {
-      return Left(FailureModel.fromJson(e.data));
+      Map<String, dynamic> errors;
+      if (e.data["error"] == null) {
+        errors = {
+          "error": [e.data["message"].toString()],
+          "statusCode" : 504
+        };
+      } else {
+        errors = e.data;
+      }
+      print(errors);
+      return Left(FailureModel.fromJson(errors));
     } catch (e) {
       return Left(
         FailureModel.fromJson({

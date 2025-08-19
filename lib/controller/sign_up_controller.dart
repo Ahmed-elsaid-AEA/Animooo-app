@@ -346,7 +346,7 @@ class SignUpController {
     print(errors);
     errors = errors.map((e) => e.toLowerCase().trim()).toList();
     void makeFilter(String contain, String msgError) {
-       if (errors.join("").contains(contain)) {
+        if (errors.join("").contains(contain.toLowerCase())) {
         errorsList.add(msgError);
       }
     }
@@ -357,6 +357,9 @@ class SignUpController {
       makeFilter("phone", ConstsValuesManager.phoneIsRequired);
       makeFilter("password", ConstsValuesManager.passwordIsRequired);
       makeFilter("image", ConstsValuesManager.imageIsRequired);
+      makeFilter("image", ConstsValuesManager.imageIsRequired);
+      makeFilter("image", ConstsValuesManager.imageIsRequired);
+      makeFilter("LateInitializationError: Local 'conn' has not been initialized.", ConstsValuesManager.pleaseOpenXamppApp);
       makeFilter(
         "password must be at least",
         ConstsValuesManager.imageIsRequired,

@@ -120,6 +120,8 @@ class ConstsValuesManager {
   static const String retry = 'Retry';
 
   static const String screenName = 'screenName';
+
+  static const String pleaseOpenXamppApp= "Please Open Xampp App";
 }
 
 class ConstsListsManager {
