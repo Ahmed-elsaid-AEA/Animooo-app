@@ -127,6 +127,8 @@ class ConstsValuesManager {
   static const String invalidVerificationCode = 'Invalid verification code';
 
   static const String databaseError = 'Database Error';
+
+  static const String resendCodeSuccessfully = 'Resend code successfully';
 }
 
 class ConstsListsManager {

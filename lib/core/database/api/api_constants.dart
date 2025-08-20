@@ -4,6 +4,7 @@ class ApiConstants {
   static const String baseUrl = 'http://192.168.1.100:8000';
   static const String signUpEndpoint = '/api/signup';
   static const String otpCheckEndpoint = '/api/verfication_code';
+  static const String resendNewOtpCodeEndpoint = '/api/create_new_verfication_code';
   static const String firstName = 'firstName';
   static const String lastName = 'lastName';
   static const String email = 'email';

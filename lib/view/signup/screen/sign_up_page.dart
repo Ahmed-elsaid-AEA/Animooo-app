@@ -103,11 +103,8 @@ class _SignUpPageState extends State<SignUpPage> {
                           signUpController.signUpButtonStatusOutPutStream,
                       text: ConstsValuesManager.signUp,
                       onTap: () async {
-                        Navigator.pushNamed(
-                          context,
-                          RoutesName.otpVerificationScreen,
-                        );
-                        // await signUpController.onTapSignUp(context);
+
+                        await signUpController.onTapSignUp(context);
                       },
                     ),
                     VerticalSpace(HeightsManager.h8),

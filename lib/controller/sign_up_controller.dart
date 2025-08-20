@@ -271,7 +271,7 @@ class SignUpController {
 
   void onFailureRequest(FailureModel l, BuildContext context) {
     screenState = ScreensStatusState.failure;
-    String message = _filterErrors(l.errors);
+    String message = filterErrors(l.errors);
     showAppSnackBar(
       context,
       message,
@@ -332,7 +332,7 @@ class SignUpController {
     loadingScreenStateInput.add(screenState == ScreensStatusState.loading);
   }
 
-  String _filterErrors(List<String> errors) {
+  String filterErrors(List<String> errors) {
     List<String> errorsList = [];
     print(errors);
     errors = errors.map((e) => e.toLowerCase().trim()).toList();

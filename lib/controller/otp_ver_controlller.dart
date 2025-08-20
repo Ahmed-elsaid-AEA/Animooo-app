@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:animooo/core/error/failure_model.dart';
 import 'package:animooo/core/functions/app_scaffold_massanger.dart';
+import 'package:animooo/models/auth/new_otp_code_response.dart';
 import 'package:animooo/models/auth/otp_code_response.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/cupertino.dart';
@@ -19,18 +20,18 @@ class OtpVerController {
   int counter = 60;
   String? otpCode;
   ScreensStatusState screenState = ScreensStatusState.initial;
+
   //?loading state
 
   late Stream<bool> loadingScreenStateOutPutStream;
   late StreamController<bool> loadingScreenStateController;
   late StreamSink<bool> loadingScreenStateInput;
+
   //?counter state
   late Stream<int> counterOutPutStream;
   late StreamController<int> counterController;
   late StreamSink<int> counterInput;
   final BuildContext context;
-
-
 
   OtpVerController(this.context) {
     initStreams();
@@ -41,15 +42,14 @@ class OtpVerController {
   }
 
   void startTimer() {
-    _timer = Timer.periodic(Duration(milliseconds: 100), (timer) {
-
+    counter = 60;
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
       if (counter > 0) {
         counter--;
       } else {
         timer.cancel();
       }
       counterInput.add(counter);
-
     });
   }
 
@@ -72,6 +72,7 @@ class OtpVerController {
     counterInput.close();
     counterController.close();
   }
+
   void dispose() {
     //?dispose streams
     disposeStreams();
@@ -130,10 +131,10 @@ class OtpVerController {
 
     response.fold(
       (FailureModel l) {
-        onFailureRequest(l, context);
+        _onFailureRequest(l, context);
       },
       (OtpCodeResponse r) {
-        onSuccessRequest(r, context);
+        otpOnSuccessRequest(r, context);
       },
     );
     changeScreenStateLoading();
@@ -151,7 +152,7 @@ class OtpVerController {
     );
   }
 
-  void onFailureRequest(FailureModel l, BuildContext context) {
+  void _onFailureRequest(FailureModel l, BuildContext context) {
     screenState = ScreensStatusState.failure;
     String message = _filterErrors(l.errors);
     showAppSnackBar(
@@ -166,8 +167,7 @@ class OtpVerController {
   String _filterErrors(List<String> errors) {
     List<String> errorsList = [];
     errors = errors.map((e) => e.toLowerCase().trim()).toList();
-    print(errors);
-    void makeFilter(String contain, String msgError) {
+     void makeFilter(String contain, String msgError) {
       if (errors.join("").contains(contain.toLowerCase())) {
         errorsList.add(msgError);
       }
@@ -184,7 +184,7 @@ class OtpVerController {
     return errorsList.join(" , ");
   }
 
-  void onSuccessRequest(OtpCodeResponse r, BuildContext context) {
+  void otpOnSuccessRequest(OtpCodeResponse r, BuildContext context) {
     screenState = ScreensStatusState.success;
     //go to sign in page
     Navigator.pushNamedAndRemoveUntil(
@@ -193,7 +193,44 @@ class OtpVerController {
       (route) => false,
     );
   }
-  void  onPressedResendCodeButton(){
-    print("done");
+
+  void onPressedResendCodeButton() async {
+    //?check code is not null
+
+      screenState = ScreensStatusState.loading;
+      changeScreenStateLoading();
+       //?check internet connection
+      var isInternetConnected = InternetCheckerService();
+      bool result = await isInternetConnected();
+      if (result == true) {
+        //?now make api request
+        _requestNewOtpCode(context);
+      } else {
+        _showNoInternetSnackBar(context);
+        screenState = ScreensStatusState.failure;
+        changeScreenStateLoading();
+      }
+
+      //?go to create new password after request on api
+
+  }
+
+  void _requestNewOtpCode(BuildContext context) async {
+    //? 1 - show loading
+
+    Either<FailureModel, NewOtpCodeResponse> response =
+        await AuthApi.resendCOtpCode(email);
+
+    response.fold(
+      (FailureModel l) {
+        _onFailureRequest(l, context);
+      },
+      (NewOtpCodeResponse r) {
+        showAppSnackBar(context, ConstsValuesManager.resendCodeSuccessfully);
+        screenState = ScreensStatusState.success;
+        startTimer();
+      },
+    );
+    changeScreenStateLoading();
   }
 }
