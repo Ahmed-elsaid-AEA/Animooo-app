@@ -5,6 +5,7 @@ class ApiConstants {
   static const String signUpEndpoint = '/api/signup';
   static const String otpCheckEndpoint = '/api/verfication_code';
   static const String loginEndpoint = '/api/login';
+  static const String createNewPasswordEndpoint = '/api/create_new_possword';
   static const String resendNewOtpCodeEndpoint = '/api/create_new_verfication_code';
   static const String firstName = 'firstName';
   static const String lastName = 'lastName';
@@ -20,4 +21,6 @@ class ApiConstants {
   static const String statusCode = 'statusCode';
 
   static const String code = 'code';
+
+  static const String confirmPassword = 'confirmPassword';
 }

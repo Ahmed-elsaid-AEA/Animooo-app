@@ -4,6 +4,7 @@ import 'package:animooo/core/di/get_it.dart';
 import 'package:animooo/core/error/failure_model.dart';
 import 'package:animooo/core/error/server_exception.dart';
 import 'package:animooo/models/auth/auth_response.dart';
+import 'package:animooo/models/auth/create_new_password_response.dart';
 import 'package:animooo/models/auth/login_response.dart';
 import 'package:animooo/models/auth/user_model.dart';
 import 'package:dio/dio.dart';
@@ -71,13 +72,42 @@ class AuthApi {
     }
   }
 
+  static Future<Either<FailureModel, CreateNewPasswordResponse>>
+  createNewPassword(
+    String email,
+    String password,
+    String confirmPassword,
+  ) async {
+    try {
+      DioService dioService = getIt<DioService>();
+      var response = await dioService.post(
+        path: ApiConstants.createNewPasswordEndpoint,
+        body: {
+          ApiConstants.email: email,
+          ApiConstants.password: password,
+          ApiConstants.confirmPassword: confirmPassword,
+        },
+      );
+       return Right(CreateNewPasswordResponse.fromJson(response));
+    } on ServerException catch (e) {
+      return left(handleServerExceptionError(e));
+    } catch (e) {
+      return Left(
+        FailureModel.fromJson({
+          ApiConstants.errors: [e.toString()],
+          ApiConstants.statusCode: ApiConstants.s500,
+        }),
+      );
+    }
+  }
+
   static Future<Either<FailureModel, LoginResponse>> login(
     String email,
     String password,
   ) async {
     try {
       DioService dioService = getIt<DioService>();
-       var response = await dioService.get(
+      var response = await dioService.get(
         path: ApiConstants.loginEndpoint,
         queryParameters: {
           ApiConstants.email: email,
@@ -87,10 +117,8 @@ class AuthApi {
 
       return Right(LoginResponse.fromJson(response));
     } on ServerException catch (e) {
-      print(e.data);
-      return left(handleServerExceptionError(e));
+       return left(handleServerExceptionError(e));
     } catch (e) {
-      print(e.toString());
 
       return Left(
         FailureModel.fromJson({
@@ -110,7 +138,7 @@ class AuthApi {
         path: ApiConstants.resendNewOtpCodeEndpoint,
         body: {ApiConstants.email: email},
       );
-      return Right(NewOtpCodeResponse.fromJson(response));
+       return Right(NewOtpCodeResponse.fromJson(response));
     } on ServerException catch (e) {
       return left(handleServerExceptionError(e));
     } catch (e) {

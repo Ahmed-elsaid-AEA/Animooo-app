@@ -40,6 +40,7 @@ class _CreateNewPasswordPageState extends State<CreateNewPasswordPage> {
 
   @override
   Widget build(BuildContext context) {
+    _createNewPasswordController.getArguments();
     return Scaffold(
       appBar: SimpleAppBar(title: ConstsValuesManager.cancel),
       body: AppModelProgressHud(

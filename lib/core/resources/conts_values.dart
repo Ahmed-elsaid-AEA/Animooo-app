@@ -138,6 +138,12 @@ class ConstsValuesManager {
 
   static const String accountNotVerified =
       'Account not verified : Go To Verify Screen';
+
+  static const String confirmPasswordIsRequired = 'Confirm password is required';
+
+  static const  String invalidEmail = 'Invalid email';
+
+  static const  String notFoundThisEmail = 'Not found this email';
 }
 
 class ConstsListsManager {
