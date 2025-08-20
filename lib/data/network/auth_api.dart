@@ -77,17 +77,21 @@ class AuthApi {
   ) async {
     try {
       DioService dioService = getIt<DioService>();
-      var response = await dioService.get(
+       var response = await dioService.get(
         path: ApiConstants.loginEndpoint,
         queryParameters: {
           ApiConstants.email: email,
           ApiConstants.password: password,
         },
       );
-       return Right(LoginResponse.fromJson(response));
+
+      return Right(LoginResponse.fromJson(response));
     } on ServerException catch (e) {
+      print(e.data);
       return left(handleServerExceptionError(e));
     } catch (e) {
+      print(e.toString());
+
       return Left(
         FailureModel.fromJson({
           ApiConstants.errors: [e.toString()],

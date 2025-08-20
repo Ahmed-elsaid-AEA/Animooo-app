@@ -130,9 +130,14 @@ class ConstsValuesManager {
 
   static const String resendCodeSuccessfully = 'Resend code successfully';
 
-  static const String passwordAtLeast8Characters = 'Password at least 8 characters';
+  static const String passwordAtLeast8Characters =
+      'Password at least 8 characters';
 
-  static const String passwordOrEmailNotCorrect = 'Password or email not correct';
+  static const String passwordOrEmailNotCorrect =
+      'Password or email not correct';
+
+  static const String accountNotVerified =
+      'Account not verified : Go To Verify Screen';
 }
 
 class ConstsListsManager {

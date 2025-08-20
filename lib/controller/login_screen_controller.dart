@@ -64,6 +64,8 @@ class LoginScreenController {
   void initTextControllers() {
     emailController = TextEditingController();
     passwordController = TextEditingController();
+    emailController.text = "ahmed122727727@gmail.com";
+    passwordController.text = "123!@#QWEqwweewwe";
   }
 
   void initControllers() {
@@ -133,7 +135,7 @@ class LoginScreenController {
   void _requestLogin() async {
     screenState = ScreensStatusState.loading;
     changeLoadingScreenState();
-     //?make api
+    //?make api
     Either<FailureModel, LoginResponse> response = await AuthApi.login(
       emailController.getText,
       passwordController.getText,
@@ -141,10 +143,11 @@ class LoginScreenController {
 
     response.fold(
       (FailureModel l) {
-         _onFailureRequest(l, context);
+        _onFailureRequest(l, context);
+        //Todo :: validate if not verified
       },
       (LoginResponse r) {
-         _onSuccessRequest(r, context);
+        _onSuccessRequest(r, context);
       },
     );
     changeLoadingScreenState();
@@ -160,10 +163,21 @@ class LoginScreenController {
     showAppSnackBar(
       context,
       message,
-      onPressedAtRetry: () {
-        onPressedAtLoginButton();
-      },
+      onPressedAtRetry: message.contains(ConstsValuesManager.accountNotVerified)
+          ? null
+          : () {
+              onPressedAtLoginButton();
+            },
     );
+    if (message.contains(ConstsValuesManager.accountNotVerified)) {
+       Navigator.of(context).pushNamed(
+        RoutesName.otpVerificationScreen,
+        arguments: {
+          ConstsValuesManager.email: emailController.getText,
+          ConstsValuesManager.screenName: ConstsValuesManager.login,
+        },
+      );
+    }
   }
 
   String _filterErrors(List<String> errors) {
@@ -177,7 +191,10 @@ class LoginScreenController {
 
     if (errors.isNotEmpty) {
       makeFilter("email is required", ConstsValuesManager.emailIsRequired);
-      makeFilter("password is required", ConstsValuesManager.passwordIsRequired);
+      makeFilter(
+        "password is required",
+        ConstsValuesManager.passwordIsRequired,
+      );
       makeFilter(
         "LateInitializationError: Local 'conn' has not been initialized.",
         ConstsValuesManager.pleaseOpenXamppApp,
@@ -188,9 +205,8 @@ class LoginScreenController {
       );
       makeFilter(
         "Account not verified",
-        ConstsValuesManager.lastNameIsRequired,//TODO::go to verify screen
+        ConstsValuesManager.accountNotVerified,
       );
-
     }
 
     return errorsList.join(" , ");
@@ -200,13 +216,15 @@ class LoginScreenController {
     screenState = ScreensStatusState.success;
     //?go to verify email screen
     showAppSnackBar(context, r.message ?? "");
-    // Navigator.pushNamed(
-    //   context,
-    //   RoutesName.otpVerificationScreen,
-    //   arguments: {
-    //     ConstsValuesManager.email: emailController.getText,
-    //     ConstsValuesManager.screenName: ConstsValuesManager.signUp,
-    //   },
-    // );
+    //TODO ::  store token
+    Navigator.pushNamedAndRemoveUntil(
+      context,
+      RoutesName.mainPage,
+      arguments: {
+        ConstsValuesManager.email: emailController.getText,
+        ConstsValuesManager.screenName: ConstsValuesManager.signUp,
+      },
+      (route) => false,
+    );
   }
 }

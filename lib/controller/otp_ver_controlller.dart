@@ -89,6 +89,9 @@ class OtpVerController {
         email = arguments[ConstsValuesManager.email];
       }
     }
+    if (screenName == ConstsValuesManager.login) {
+      _requestNewOtpCode(context);
+    }
   }
 
   void startOtpCheck(String value) {
@@ -167,7 +170,7 @@ class OtpVerController {
   String _filterErrors(List<String> errors) {
     List<String> errorsList = [];
     errors = errors.map((e) => e.toLowerCase().trim()).toList();
-     void makeFilter(String contain, String msgError) {
+    void makeFilter(String contain, String msgError) {
       if (errors.join("").contains(contain.toLowerCase())) {
         errorsList.add(msgError);
       }
@@ -197,22 +200,21 @@ class OtpVerController {
   void onPressedResendCodeButton() async {
     //?check code is not null
 
-      screenState = ScreensStatusState.loading;
+    screenState = ScreensStatusState.loading;
+    changeScreenStateLoading();
+    //?check internet connection
+    var isInternetConnected = InternetCheckerService();
+    bool result = await isInternetConnected();
+    if (result == true) {
+      //?now make api request
+      _requestNewOtpCode(context);
+    } else {
+      _showNoInternetSnackBar(context);
+      screenState = ScreensStatusState.failure;
       changeScreenStateLoading();
-       //?check internet connection
-      var isInternetConnected = InternetCheckerService();
-      bool result = await isInternetConnected();
-      if (result == true) {
-        //?now make api request
-        _requestNewOtpCode(context);
-      } else {
-        _showNoInternetSnackBar(context);
-        screenState = ScreensStatusState.failure;
-        changeScreenStateLoading();
-      }
+    }
 
-      //?go to create new password after request on api
-
+    //?go to create new password after request on api
   }
 
   void _requestNewOtpCode(BuildContext context) async {
@@ -226,6 +228,7 @@ class OtpVerController {
         _onFailureRequest(l, context);
       },
       (NewOtpCodeResponse r) {
+        //?solve this error
         showAppSnackBar(context, ConstsValuesManager.resendCodeSuccessfully);
         screenState = ScreensStatusState.success;
         startTimer();
