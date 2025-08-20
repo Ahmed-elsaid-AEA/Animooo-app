@@ -49,7 +49,7 @@ class OtpVerController {
       } else {
         timer.cancel();
       }
-      counterInput.add(counter);
+      if (!counterController.isClosed) counterInput.add(counter);
     });
   }
 
@@ -89,7 +89,8 @@ class OtpVerController {
         email = arguments[ConstsValuesManager.email];
       }
     }
-    if (screenName == ConstsValuesManager.login) {
+    if (screenName == ConstsValuesManager.login ||
+        screenName == RoutesName.forgetPassword) {
       _requestNewOtpCode(context);
     }
   }
@@ -99,7 +100,9 @@ class OtpVerController {
   }
 
   void changeScreenStateLoading() {
-    loadingScreenStateInput.add(screenState == ScreensStatusState.loading);
+    if (!loadingScreenStateController.isClosed) {
+      loadingScreenStateInput.add(screenState == ScreensStatusState.loading);
+    }
   }
 
   void onPressedConfirmButton() async {
@@ -112,9 +115,13 @@ class OtpVerController {
       bool result = await isInternetConnected();
       if (result == true) {
         //?now make api request
-        _requestCheckOtpCodeAvailability(context);
+        if (context.mounted) {
+          _requestCheckOtpCodeAvailability(context);
+        }
       } else {
-        _showNoInternetSnackBar(context);
+        if (context.mounted) {
+          _showNoInternetSnackBar(context);
+        }
       }
       screenState = ScreensStatusState.success;
       changeScreenStateLoading();
@@ -207,9 +214,13 @@ class OtpVerController {
     bool result = await isInternetConnected();
     if (result == true) {
       //?now make api request
-      _requestNewOtpCode(context);
+      if (context.mounted) {
+        _requestNewOtpCode(context);
+      }
     } else {
-      _showNoInternetSnackBar(context);
+      if (context.mounted) {
+        _showNoInternetSnackBar(context);
+      }
       screenState = ScreensStatusState.failure;
       changeScreenStateLoading();
     }

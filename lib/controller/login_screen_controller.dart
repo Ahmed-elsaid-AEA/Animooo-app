@@ -54,10 +54,10 @@ class LoginScreenController {
     //?init textControllers
     initTextControllers();
     //?change button status
-    changeButtonStatus(ButtonStatusEnum.disabled);
+    changeLoginButtonStatus(ButtonStatusEnum.disabled);
   }
 
-  void changeButtonStatus(ButtonStatusEnum status) {
+  void changeLoginButtonStatus(ButtonStatusEnum status) {
     loginButtonStatusInput.add(status);
   }
 
@@ -126,9 +126,9 @@ class LoginScreenController {
 
   void onChangeTextFiled(String value) {
     if (loginFormKey.currentState!.validate()) {
-      changeButtonStatus(ButtonStatusEnum.enabled);
+      changeLoginButtonStatus(ButtonStatusEnum.enabled);
     } else {
-      changeButtonStatus(ButtonStatusEnum.disabled);
+      changeLoginButtonStatus(ButtonStatusEnum.disabled);
     }
   }
 
