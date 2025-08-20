@@ -29,6 +29,7 @@ class RoutesManager {
 }
 
 class RoutesName {
+  RoutesName._();
   static const String loginPage = '/';
   static const String signupPage = '/signup';
   static const String forgetPassword = '/forgetPassword';
