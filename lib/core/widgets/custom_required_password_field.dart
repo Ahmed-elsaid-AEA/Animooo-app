@@ -20,6 +20,7 @@ class CustomRequiredPasswordField extends StatelessWidget {
     this.usedValidate = true,
     this.onChanged,
     this.useDefaultErrorBuilder = false,
+    this.validator,
   });
 
   final ValueChanged<String>? onChanged;
@@ -31,6 +32,7 @@ class CustomRequiredPasswordField extends StatelessWidget {
   final bool visible;
   final TextEditingController controller;
   final bool useDefaultErrorBuilder;
+  final String? Function(String? value)? validator;
 
   @override
   Widget build(BuildContext context) {
@@ -52,9 +54,11 @@ class CustomRequiredPasswordField extends StatelessWidget {
           useDefaultErrorBuilder: useDefaultErrorBuilder,
           controller: controller,
           onChanged: onChanged,
-          validator: (value) {
-            return AppValidators.passwordValidator(value);
-          },
+          validator:
+              validator ??
+              (value) {
+                return AppValidators.passwordValidator(value);
+              },
           keyboardType: TextInputType.visiblePassword,
           obscureText: !visible,
           suffixIcon: IconButton(

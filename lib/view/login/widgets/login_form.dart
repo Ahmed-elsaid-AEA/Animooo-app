@@ -16,6 +16,7 @@ class LoginForm extends StatelessWidget {
     required this.eyeVisibleOutPutStream,
     required this.emailController,
     required this.passwordController,
+    this.onChanged,
   });
 
   final GlobalKey<FormState> formKey;
@@ -24,6 +25,7 @@ class LoginForm extends StatelessWidget {
   final TextEditingController emailController;
 
   final TextEditingController passwordController;
+  final void Function(String value)? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +38,7 @@ class LoginForm extends StatelessWidget {
             validator: (value) {
               return AppValidators.emailValidator(value);
             },
+            onChanged: onChanged,
             controller: emailController,
             title: ConstsValuesManager.email,
             hintText: ConstsValuesManager.enterYourEmailAddress,
@@ -46,7 +49,17 @@ class LoginForm extends StatelessWidget {
             stream: eyeVisibleOutPutStream,
             initialData: false,
             builder: (context, snapshot) => CustomRequiredPasswordField(
+              onChanged: onChanged,
               useDefaultErrorBuilder: true,
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return ConstsValuesManager.thisFieldIsRequired;
+                } else if (value.length < 8) {
+                  return ConstsValuesManager.passwordAtLeast8Characters;
+                } else {
+                  return null;
+                }
+              },
               usedValidate: true,
               title: ConstsValuesManager.password,
               onPressedAtEye: onPressedAtEye,

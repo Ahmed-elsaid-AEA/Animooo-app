@@ -22,9 +22,34 @@ class DioService extends ApiConsumer {
   }
 
   @override
-  Future get({required String path, Map<String, dynamic>? queryParameters}) {
+  Future get({
+    required String path,
+    Map<String, dynamic>? queryParameters,
+    Map<String, dynamic>? body,
+  }) async {
     // TODO: implement get
-    throw UnimplementedError();
+    try {
+      Response response = await dio.get(
+        path,
+        data: body,
+        queryParameters: queryParameters,
+      );
+
+      if (response.statusCode! >= 200 && response.statusCode! < 300) {
+        //?success
+        return response.data;
+      } else {
+        //?failure
+        throw ServerException(
+          data: response.data as Map<String, dynamic>,
+          statusCode: response.statusCode!,
+          message: '',
+        );
+      }
+    } catch (e) {
+      //?exception
+      await handleDioException(e);
+    }
   }
 
   @override

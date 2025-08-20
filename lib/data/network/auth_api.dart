@@ -4,6 +4,7 @@ import 'package:animooo/core/di/get_it.dart';
 import 'package:animooo/core/error/failure_model.dart';
 import 'package:animooo/core/error/server_exception.dart';
 import 'package:animooo/models/auth/auth_response.dart';
+import 'package:animooo/models/auth/login_response.dart';
 import 'package:animooo/models/auth/user_model.dart';
 import 'package:dio/dio.dart';
 import 'package:dartz/dartz.dart';
@@ -58,6 +59,32 @@ class AuthApi {
         body: {ApiConstants.email: email, ApiConstants.code: code},
       );
       return Right(OtpCodeResponse.fromJson(response));
+    } on ServerException catch (e) {
+      return left(handleServerExceptionError(e));
+    } catch (e) {
+      return Left(
+        FailureModel.fromJson({
+          ApiConstants.errors: [e.toString()],
+          ApiConstants.statusCode: ApiConstants.s500,
+        }),
+      );
+    }
+  }
+
+  static Future<Either<FailureModel, LoginResponse>> login(
+    String email,
+    String password,
+  ) async {
+    try {
+      DioService dioService = getIt<DioService>();
+      var response = await dioService.get(
+        path: ApiConstants.loginEndpoint,
+        queryParameters: {
+          ApiConstants.email: email,
+          ApiConstants.password: password,
+        },
+      );
+       return Right(LoginResponse.fromJson(response));
     } on ServerException catch (e) {
       return left(handleServerExceptionError(e));
     } catch (e) {

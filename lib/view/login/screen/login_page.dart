@@ -28,14 +28,15 @@ class _LoginPageState extends State<LoginPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _loginScreenController = LoginScreenController();
+    _loginScreenController = LoginScreenController(context);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: AppModelProgressHud(
-        loadingOutputStream: _loginScreenController.loadingScreenStateOutPutStream,
+        loadingOutputStream:
+            _loginScreenController.loadingScreenStateOutPutStream,
         child: SafeArea(
           child: SingleChildScrollView(
             child: SizedBox(
@@ -49,6 +50,7 @@ class _LoginPageState extends State<LoginPage> {
                     TitleLoginPage(),
 
                     LoginForm(
+                      onChanged: _loginScreenController.onChangeTextFiled,
                       formKey: _loginScreenController.loginFormKey,
                       onPressedAtEye: _loginScreenController.onPressedAtEye,
                       eyeVisibleOutPutStream:
@@ -58,9 +60,8 @@ class _LoginPageState extends State<LoginPage> {
                           _loginScreenController.passwordController,
                     ),
                     ForgetPasswordLogin(
-                      onPressedAtForgetPassword: () {
-                        _loginScreenController.onPressedAtForgetPassword(context);
-                      },
+                      onPressedAtForgetPassword:
+                          _loginScreenController.onPressedAtForgetPassword,
                     ),
 
                     AppButton(

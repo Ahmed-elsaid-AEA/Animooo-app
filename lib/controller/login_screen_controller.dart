@@ -1,9 +1,17 @@
 import 'dart:async';
 
+import 'package:animooo/core/di/services/internet_checker_service.dart';
+import 'package:animooo/core/error/failure_model.dart';
+import 'package:animooo/core/resources/conts_values.dart';
+import 'package:animooo/core/resources/extenstions.dart';
+import 'package:animooo/data/network/auth_api.dart';
+import 'package:animooo/models/auth/login_response.dart';
+import 'package:dartz/dartz.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../core/enums/button_status_enum.dart';
 import '../core/enums/screen_status_state.dart';
+import '../core/functions/app_scaffold_massanger.dart';
 import '../core/resources/routes_manager.dart';
 
 class LoginScreenController {
@@ -34,7 +42,9 @@ class LoginScreenController {
   late Sink<bool> loadingScreenStateInput;
   late StreamController<bool> loadingScreenStateController;
 
-  LoginScreenController() {
+  final BuildContext context;
+
+  LoginScreenController(this.context) {
     init();
   }
 
@@ -46,6 +56,7 @@ class LoginScreenController {
     //?change button status
     changeButtonStatus(ButtonStatusEnum.disabled);
   }
+
   void changeButtonStatus(ButtonStatusEnum status) {
     loginButtonStatusInput.add(status);
   }
@@ -63,11 +74,13 @@ class LoginScreenController {
     //button status stream
     loginButtonStatusController = StreamController<ButtonStatusEnum>();
     loginButtonStatusInput = loginButtonStatusController.sink;
-    loginButtonStatusOutPutStream = loginButtonStatusController.stream;
+    loginButtonStatusOutPutStream = loginButtonStatusController.stream
+        .asBroadcastStream();
     //screen state stream
     loadingScreenStateController = StreamController<bool>();
     loadingScreenStateInput = loadingScreenStateController.sink;
-    loadingScreenStateOutPutStream = loadingScreenStateController.stream;
+    loadingScreenStateOutPutStream = loadingScreenStateController.stream
+        .asBroadcastStream();
   }
 
   void dispose() {
@@ -85,13 +98,115 @@ class LoginScreenController {
     eyeInput.add(eyeVisible);
   }
 
-  void onPressedAtForgetPassword(BuildContext context) {
+  void onPressedAtForgetPassword() {
     Navigator.of(context).pushNamed(RoutesName.forgetPassword);
   }
 
-  void onPressedAtLoginButton() {
+  void onPressedAtLoginButton() async {
     if (loginFormKey.currentState!.validate()) {
-      //?request login
+      //?check network
+      InternetCheckerService isInternetConnected = InternetCheckerService();
+      bool result = await isInternetConnected();
+      if (result == true) {
+        //?make api
+        _requestLogin();
+      } else {
+        showAppSnackBar(
+          context,
+          ConstsValuesManager.noInternetConnection,
+          onPressedAtRetry: () {
+            onPressedAtLoginButton();
+          },
+        );
+      }
     }
+  }
+
+  void onChangeTextFiled(String value) {
+    if (loginFormKey.currentState!.validate()) {
+      changeButtonStatus(ButtonStatusEnum.enabled);
+    } else {
+      changeButtonStatus(ButtonStatusEnum.disabled);
+    }
+  }
+
+  void _requestLogin() async {
+    screenState = ScreensStatusState.loading;
+    changeLoadingScreenState();
+     //?make api
+    Either<FailureModel, LoginResponse> response = await AuthApi.login(
+      emailController.getText,
+      passwordController.getText,
+    );
+
+    response.fold(
+      (FailureModel l) {
+         _onFailureRequest(l, context);
+      },
+      (LoginResponse r) {
+         _onSuccessRequest(r, context);
+      },
+    );
+    changeLoadingScreenState();
+  }
+
+  void changeLoadingScreenState() {
+    loadingScreenStateInput.add(screenState == ScreensStatusState.loading);
+  }
+
+  void _onFailureRequest(FailureModel l, BuildContext context) {
+    screenState = ScreensStatusState.failure;
+    String message = _filterErrors(l.errors);
+    showAppSnackBar(
+      context,
+      message,
+      onPressedAtRetry: () {
+        onPressedAtLoginButton();
+      },
+    );
+  }
+
+  String _filterErrors(List<String> errors) {
+    List<String> errorsList = [];
+    errors = errors.map((e) => e.toLowerCase().trim()).toList();
+    void makeFilter(String contain, String msgError) {
+      if (errors.join("").contains(contain.toLowerCase())) {
+        errorsList.add(msgError);
+      }
+    }
+
+    if (errors.isNotEmpty) {
+      makeFilter("email is required", ConstsValuesManager.emailIsRequired);
+      makeFilter("password is required", ConstsValuesManager.passwordIsRequired);
+      makeFilter(
+        "LateInitializationError: Local 'conn' has not been initialized.",
+        ConstsValuesManager.pleaseOpenXamppApp,
+      );
+      makeFilter(
+        "Password or email not true",
+        ConstsValuesManager.passwordOrEmailNotCorrect,
+      );
+      makeFilter(
+        "Account not verified",
+        ConstsValuesManager.lastNameIsRequired,//TODO::go to verify screen
+      );
+
+    }
+
+    return errorsList.join(" , ");
+  }
+
+  void _onSuccessRequest(LoginResponse r, BuildContext context) {
+    screenState = ScreensStatusState.success;
+    //?go to verify email screen
+    showAppSnackBar(context, r.message ?? "");
+    // Navigator.pushNamed(
+    //   context,
+    //   RoutesName.otpVerificationScreen,
+    //   arguments: {
+    //     ConstsValuesManager.email: emailController.getText,
+    //     ConstsValuesManager.screenName: ConstsValuesManager.signUp,
+    //   },
+    // );
   }
 }

@@ -129,6 +129,10 @@ class ConstsValuesManager {
   static const String databaseError = 'Database Error';
 
   static const String resendCodeSuccessfully = 'Resend code successfully';
+
+  static const String passwordAtLeast8Characters = 'Password at least 8 characters';
+
+  static const String passwordOrEmailNotCorrect = 'Password or email not correct';
 }
 
 class ConstsListsManager {

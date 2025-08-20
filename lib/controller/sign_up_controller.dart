@@ -255,7 +255,7 @@ class SignUpController {
     }
   }
 
-  void onSuccessRequest(AuthResponse r, BuildContext context) {
+  void _onSuccessRequest(AuthResponse r, BuildContext context) {
     screenState = ScreensStatusState.success;
     //?go to verify email screen
     showAppSnackBar(context, r.message ?? "");
@@ -269,9 +269,9 @@ class SignUpController {
     );
   }
 
-  void onFailureRequest(FailureModel l, BuildContext context) {
+  void _onFailureRequest(FailureModel l, BuildContext context) {
     screenState = ScreensStatusState.failure;
-    String message = filterErrors(l.errors);
+    String message = _filterErrors(l.errors);
     showAppSnackBar(
       context,
       message,
@@ -332,7 +332,7 @@ class SignUpController {
     loadingScreenStateInput.add(screenState == ScreensStatusState.loading);
   }
 
-  String filterErrors(List<String> errors) {
+  String _filterErrors(List<String> errors) {
     List<String> errorsList = [];
     print(errors);
     errors = errors.map((e) => e.toLowerCase().trim()).toList();
@@ -391,10 +391,10 @@ class SignUpController {
 
     response.fold(
       (FailureModel l) {
-        onFailureRequest(l, context);
+        _onFailureRequest(l, context);
       },
       (AuthResponse r) {
-        onSuccessRequest(r, context);
+        _onSuccessRequest(r, context);
       },
     );
     changeLoadingScreenState();
