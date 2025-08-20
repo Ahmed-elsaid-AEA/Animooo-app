@@ -14,6 +14,7 @@ import '../core/resources/routes_manager.dart';
 import '../data/network/auth_api.dart';
 
 class OtpVerController {
+  bool isCodeSent = false;
   late String screenName;
   late String email;
   late Timer _timer;
@@ -89,9 +90,11 @@ class OtpVerController {
         email = arguments[ConstsValuesManager.email];
       }
     }
-    if (screenName == ConstsValuesManager.login ||
-        screenName == RoutesName.forgetPassword) {
+    if ((screenName == ConstsValuesManager.login ||
+            screenName == RoutesName.forgetPasswordPage) &&
+        isCodeSent == false) {
       _requestNewOtpCode(context);
+      isCodeSent = true;
     }
   }
 
@@ -196,12 +199,21 @@ class OtpVerController {
 
   void otpOnSuccessRequest(OtpCodeResponse r, BuildContext context) {
     screenState = ScreensStatusState.success;
+    if (screenName == RoutesName.forgetPasswordPage) {
+      Navigator.pushNamed(
+        context,
+        RoutesName.createNewPassword,
+        arguments: {ConstsValuesManager.email: email},
+      );
+    }
     //go to sign in page
-    Navigator.pushNamedAndRemoveUntil(
-      context,
-      RoutesName.loginPage,
-      (route) => false,
-    );
+    else {
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        RoutesName.loginPage,
+        (route) => false,
+      );
+    }
   }
 
   void onPressedResendCodeButton() async {
@@ -239,8 +251,11 @@ class OtpVerController {
         _onFailureRequest(l, context);
       },
       (NewOtpCodeResponse r) {
+        //!check if context is mounted
         //?solve this error
-        showAppSnackBar(context, ConstsValuesManager.resendCodeSuccessfully);
+        if (context.mounted) {
+          showAppSnackBar(context, ConstsValuesManager.resendCodeSuccessfully);
+        }
         screenState = ScreensStatusState.success;
         startTimer();
       },

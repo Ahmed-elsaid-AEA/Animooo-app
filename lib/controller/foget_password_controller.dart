@@ -71,7 +71,7 @@ class ForgetPasswordController {
       RoutesName.otpVerificationScreen,
       arguments: {
         ConstsValuesManager.email: emailController.text,
-        ConstsValuesManager.screenName: RoutesName.forgetPassword,
+        ConstsValuesManager.screenName: RoutesName.forgetPasswordPage,
       },
     );
   }

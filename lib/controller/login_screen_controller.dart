@@ -101,7 +101,7 @@ class LoginScreenController {
   }
 
   void onPressedAtForgetPassword() {
-    Navigator.of(context).pushNamed(RoutesName.forgetPassword);
+    Navigator.of(context).pushNamed(RoutesName.forgetPasswordPage);
   }
 
   void onPressedAtLoginButton() async {
