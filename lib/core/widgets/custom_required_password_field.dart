@@ -19,6 +19,7 @@ class CustomRequiredPasswordField extends StatelessWidget {
     required this.hintText,
     this.usedValidate = true,
     this.onChanged,
+    this.useDefaultErrorBuilder = false,
   });
 
   final ValueChanged<String>? onChanged;
@@ -29,6 +30,7 @@ class CustomRequiredPasswordField extends StatelessWidget {
   final VoidCallback? onPressedAtEye;
   final bool visible;
   final TextEditingController controller;
+  final bool useDefaultErrorBuilder;
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +49,7 @@ class CustomRequiredPasswordField extends StatelessWidget {
         ),
         VerticalSpace(HeightsManager.h6),
         CustomTextFormField(
-          useDefaultErrorBuilder: false,
+          useDefaultErrorBuilder: useDefaultErrorBuilder,
           controller: controller,
           onChanged: onChanged,
           validator: (value) {

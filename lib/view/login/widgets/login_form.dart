@@ -5,6 +5,7 @@ import 'package:animooo/core/widgets/spacing/vertical_space.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../../core/functions/app_validators.dart';
 import '../../../core/resources/conts_values.dart';
 
 class LoginForm extends StatelessWidget {
@@ -12,12 +13,17 @@ class LoginForm extends StatelessWidget {
     super.key,
     required this.formKey,
     required this.onPressedAtEye,
-    required this.visible,
+    required this.eyeVisibleOutPutStream,
+    required this.emailController,
+    required this.passwordController,
   });
 
   final GlobalKey<FormState> formKey;
   final VoidCallback? onPressedAtEye;
-  final bool visible;
+  final Stream<bool> eyeVisibleOutPutStream;
+  final TextEditingController emailController;
+
+  final TextEditingController passwordController;
 
   @override
   Widget build(BuildContext context) {
@@ -28,25 +34,26 @@ class LoginForm extends StatelessWidget {
           CustomRequiredField(
             keyboardType: TextInputType.emailAddress,
             validator: (value) {
-              //TODO:: add email validation
-              if (value == null || value.trim().isEmpty) {
-                return ConstsValuesManager.enterYourEmailAddress;
-              } else {
-                return null;
-              }
+              return AppValidators.emailValidator(value);
             },
-            controller: TextEditingController(),
+            controller: emailController,
             title: ConstsValuesManager.email,
             hintText: ConstsValuesManager.enterYourEmailAddress,
           ),
           VerticalSpace(HeightsManager.h16),
 
-          CustomRequiredPasswordField(
-            title: ConstsValuesManager.password,
-            onPressedAtEye: onPressedAtEye,
-            visible: visible,
-            controller: TextEditingController(),
-            hintText: ConstsValuesManager.enterYourPassword,
+          StreamBuilder<bool>(
+            stream: eyeVisibleOutPutStream,
+            initialData: false,
+            builder: (context, snapshot) => CustomRequiredPasswordField(
+              useDefaultErrorBuilder: true,
+              usedValidate: true,
+              title: ConstsValuesManager.password,
+              onPressedAtEye: onPressedAtEye,
+              visible: snapshot.data ?? false,
+              controller: passwordController,
+              hintText: ConstsValuesManager.enterYourPassword,
+            ),
           ),
         ],
       ),
