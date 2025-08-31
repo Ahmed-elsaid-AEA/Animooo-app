@@ -66,8 +66,12 @@ class _LoginPageState extends State<LoginPage> {
                           _loginScreenController.passwordController,
                     ),
                     ForgetPasswordLogin(
+                      onChangedRememberMe:
+                          _loginScreenController.onChangedRememberMe,
                       onPressedAtForgetPassword:
                           _loginScreenController.onPressedAtForgetPassword,
+                      rememberMeOutPutStream:
+                          _loginScreenController.rememberMeOutPutStream,
                     ),
 
                     AppButton(

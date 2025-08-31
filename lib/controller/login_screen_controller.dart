@@ -17,6 +17,7 @@ import '../core/resources/routes_manager.dart';
 
 class LoginScreenController {
   GlobalKey<FormState> loginFormKey = GlobalKey<FormState>();
+  bool rememberMe = false;
   ButtonStatusEnum loginButtonStatus = ButtonStatusEnum.disabled;
   ScreensStatusState screenState = ScreensStatusState.initial;
   bool eyeVisible = false;
@@ -42,6 +43,12 @@ class LoginScreenController {
   late Stream<bool> loadingScreenStateOutPutStream;
   late Sink<bool> loadingScreenStateInput;
   late StreamController<bool> loadingScreenStateController;
+
+  //?remember me stream
+  late StreamController<bool> rememberMeController;
+
+  late Sink<bool> rememberMeInput;
+  late Stream<bool> rememberMeOutPutStream;
 
   final BuildContext context;
 
@@ -84,6 +91,10 @@ class LoginScreenController {
     loadingScreenStateInput = loadingScreenStateController.sink;
     loadingScreenStateOutPutStream = loadingScreenStateController.stream
         .asBroadcastStream();
+    //remember me stream
+    rememberMeController = StreamController<bool>();
+    rememberMeInput = rememberMeController.sink;
+    rememberMeOutPutStream = rememberMeController.stream;
   }
 
   void dispose() {
@@ -94,6 +105,12 @@ class LoginScreenController {
   void disposeStreams() {
     eyeStreamController.close();
     eyeInput.close();
+    rememberMeController.close();
+    rememberMeInput.close();
+    loginButtonStatusController.close();
+    loginButtonStatusInput.close();
+    loadingScreenStateController.close();
+    loadingScreenStateInput.close();
   }
 
   void onPressedAtEye() {
@@ -219,6 +236,8 @@ class LoginScreenController {
     showAppSnackBar(context, r.message);
     //TODO :: change store token way ( flutter secure storage - shared preferences )
     await _storeToken(accessToken: r.accessToken, refreshToken: r.refreshToken);
+    //? store remember me
+    await _storeRememberMe();
     Navigator.pushNamedAndRemoveUntil(
       context,
       RoutesName.mainPage,
@@ -247,7 +266,21 @@ class LoginScreenController {
       key: ConstsValuesManager.refreshToken,
       value: refreshToken,
     );
-    print("done");
+   }
+
+  void onChangedRememberMe(bool? value) {
+    rememberMe = !rememberMe;
+    rememberMeInput.add(rememberMe);
+  }
+
+  Future<void> _storeRememberMe() async {
+    HiveHelper<bool> hiveHelper = HiveHelper(
+      ConstsValuesManager.rememberMeBoxName,
+    );
+    await hiveHelper.addValue(
+      key: ConstsValuesManager.rememberMe,
+      value: rememberMe,
+    );
   }
 }
 

@@ -149,6 +149,10 @@ class ConstsValuesManager {
   static const String accessToken = 'accessToken';
   static const String refreshToken = 'refreshToken';
   static const String isFirstTimeLogin = 'isFirstTimeLogin';
+
+  static const String rememberMe = 'Remember Me';
+
+  static const String rememberMeBoxName = 'rememberMeBox';
 }
 
 class ConstsListsManager {
