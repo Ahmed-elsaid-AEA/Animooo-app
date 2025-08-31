@@ -153,6 +153,8 @@ class ConstsValuesManager {
   static const String rememberMe = 'Remember Me';
 
   static const String rememberMeBoxName = 'rememberMeBox';
+
+  static const String kHelloInAnimooo = 'Hello In Animooo';
 }
 
 class ConstsListsManager {

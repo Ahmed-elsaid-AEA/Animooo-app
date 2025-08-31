@@ -1,5 +1,5 @@
 import 'package:animooo/core/widgets/unknow_route_page.dart';
-import 'package:animooo/view/main_page/main_page.dart';
+import 'package:animooo/view/main_page/screen/main_page.dart';
 import 'package:animooo/view/signup/screen/sign_up_page.dart';
 import 'package:flutter/material.dart';
 
