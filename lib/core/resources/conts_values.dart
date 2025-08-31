@@ -144,6 +144,11 @@ class ConstsValuesManager {
   static const  String invalidEmail = 'Invalid email';
 
   static const  String notFoundThisEmail = 'Not found this email';
+
+  static const String tokenBoxName = 'tokensBox';
+  static const String accessToken = 'accessToken';
+  static const String refreshToken = 'refreshToken';
+  static const String isFirstTimeLogin = 'isFirstTimeLogin';
 }
 
 class ConstsListsManager {

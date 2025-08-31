@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:animooo/core/database/hive/hive_helper.dart';
 import 'package:animooo/core/di/services/internet_checker_service.dart';
 import 'package:animooo/core/error/failure_model.dart';
 import 'package:animooo/core/resources/conts_values.dart';
@@ -170,7 +171,7 @@ class LoginScreenController {
             },
     );
     if (message.contains(ConstsValuesManager.accountNotVerified)) {
-       Navigator.of(context).pushNamed(
+      Navigator.of(context).pushNamed(
         RoutesName.otpVerificationScreen,
         arguments: {
           ConstsValuesManager.email: emailController.getText,
@@ -212,11 +213,12 @@ class LoginScreenController {
     return errorsList.join(" , ");
   }
 
-  void _onSuccessRequest(LoginResponse r, BuildContext context) {
+  void _onSuccessRequest(LoginResponse r, BuildContext context) async {
     screenState = ScreensStatusState.success;
     //?go to verify email screen
-    showAppSnackBar(context, r.message ?? "");
-    //TODO ::  store token
+    showAppSnackBar(context, r.message);
+    //TODO :: change store token way ( flutter secure storage - shared preferences )
+    await _storeToken(accessToken: r.accessToken, refreshToken: r.refreshToken);
     Navigator.pushNamedAndRemoveUntil(
       context,
       RoutesName.mainPage,
@@ -227,4 +229,28 @@ class LoginScreenController {
       (route) => false,
     );
   }
+
+  Future<void> _storeToken({
+    required String accessToken,
+    required String refreshToken,
+  }) async {
+    HiveHelper<String> hiveHelper = HiveHelper(
+      ConstsValuesManager.tokenBoxName,
+    );
+    //?store access token
+    await hiveHelper.addValue(
+      key: ConstsValuesManager.accessToken,
+      value: accessToken,
+    );
+    //?store refresh token
+    await hiveHelper.addValue(
+      key: ConstsValuesManager.refreshToken,
+      value: refreshToken,
+    );
+    print("done");
+  }
 }
+
+//sqflite (relation database)
+//hive (non relation database)
+//
