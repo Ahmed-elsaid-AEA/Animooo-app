@@ -19,6 +19,7 @@ class AnimoooApp extends StatelessWidget {
           theme: ThemeData().copyWith(
             scaffoldBackgroundColor: ColorManager.kWhiteColor,
           ),
+          initialRoute: RoutesName.mainPage,
           debugShowCheckedModeBanner: false,
           onGenerateRoute: RoutesManager.onGenerateRoute,
         );

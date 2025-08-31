@@ -155,6 +155,9 @@ class ConstsValuesManager {
   static const String rememberMeBoxName = 'rememberMeBox';
 
   static const String kHelloInAnimooo = 'Hello In Animooo';
+
+  static const String categories = 'Categories';
+  static const String addNewCategory = 'Add New Category';
 }
 
 class ConstsListsManager {
