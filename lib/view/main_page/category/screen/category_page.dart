@@ -8,8 +8,10 @@ import 'package:animooo/core/widgets/buttons/app_button.dart';
 import 'package:animooo/core/widgets/custom_required_field.dart';
 import 'package:animooo/core/widgets/custom_text_form_field.dart';
 import 'package:animooo/core/widgets/spacing/horizontal_space.dart';
+import 'package:animooo/view/main_page/category/widget/category_form_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../../controller/category_page_controller.dart';
 import '../../../../core/enums/select_image_status.dart';
 import '../../../../core/resources/assets_values_manager.dart';
 import '../../../../core/resources/colors_manager.dart';
@@ -19,121 +21,127 @@ import '../../../../core/resources/padding_manager.dart';
 import '../../../../core/widgets/custom_select_your_image_widget.dart';
 import '../../../../core/widgets/spacing/vertical_space.dart';
 
-class CategoryPage extends StatelessWidget {
+class CategoryPage extends StatefulWidget {
   const CategoryPage({super.key});
+
+  @override
+  State<CategoryPage> createState() => _CategoryPageState();
+}
+
+class _CategoryPageState extends State<CategoryPage> {
+  late CategoryPageController _categoryPageController;
+
+  @override
+  void initState() {
+    super.initState();
+    _categoryPageController = CategoryPageController(context);
+  }
+
+  @override
+  void dispose() {
+    _categoryPageController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Padding(
-          padding: EdgeInsetsGeometry.symmetric(
-            horizontal: PaddingManager.pw16,
-            vertical: PaddingManager.ph12,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Create New Category",
-                style: TextStyle(
-                  fontSize: FontSizeManager.s20,
-                  fontFamily: FontsManager.otamaEpFontFamily,
-                  color: ColorManager.kPrimaryColor,
-                ),
-              ),
-              VerticalSpace(HeightsManager.h12),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  CircleAvatar(
-                    radius: BorderRadiusManager.br18,
-                    backgroundImage: AssetImage(
-                      AssetsValuesManager.backgroundSplashScreenUnder12,
-                    ),
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsetsGeometry.symmetric(
+              horizontal: PaddingManager.pw16,
+              vertical: PaddingManager.ph12,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  ConstsValuesManager.createNewCategory,
+                  style: TextStyle(
+                    fontSize: FontSizeManager.s20,
+                    fontFamily: FontsManager.otamaEpFontFamily,
+                    color: ColorManager.kPrimaryColor,
                   ),
-                  HorizontalSpace(WidthManager.w6),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Ahmed Elsaid",
-                        style: TextStyle(
-                          fontFamily: FontsManager.otamaEpFontFamily,
-                          fontSize: FontSizeManager.s12,
-                          color: ColorManager.kBlackColor,
-                        ),
+                ),
+                VerticalSpace(HeightsManager.h12),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    CircleAvatar(
+                      radius: BorderRadiusManager.br18,
+                      backgroundImage: AssetImage(
+                        AssetsValuesManager.backgroundSplashScreenUnder12,
                       ),
-                      VerticalSpace(HeightsManager.h4),
-                      Container(
-                        padding: EdgeInsets.all(PaddingManager.ph5),
-                        decoration: BoxDecoration(
-                          color: ColorManager.kLightGreenColor.withOpacity(.1),
-                          borderRadius: BorderRadius.circular(
-                            BorderRadiusManager.br32,
+                    ),
+                    HorizontalSpace(WidthManager.w6),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Ahmed Elsaid",
+                          style: TextStyle(
+                            fontFamily: FontsManager.otamaEpFontFamily,
+                            fontSize: FontSizeManager.s12,
+                            color: ColorManager.kBlackColor,
                           ),
                         ),
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.public,
-                              size: 10,
-                              color: ColorManager.kLightGreenColor,
+                        VerticalSpace(HeightsManager.h4),
+                        Container(
+                          padding: EdgeInsets.all(PaddingManager.ph5),
+                          decoration: BoxDecoration(
+                            color: ColorManager.kLightGreenColor.withOpacity(
+                              .1,
                             ),
-                            HorizontalSpace(WidthManager.w3),
-                            Text(
-                              ConstsValuesManager.public,
-                              style: TextStyle(
-                                fontSize: FontSizeManager.s10,
+                            borderRadius: BorderRadius.circular(
+                              BorderRadiusManager.br32,
+                            ),
+                          ),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.public,
+                                size: 10,
                                 color: ColorManager.kLightGreenColor,
                               ),
-                            ),
-                          ],
+                              HorizontalSpace(WidthManager.w3),
+                              Text(
+                                ConstsValuesManager.public,
+                                style: TextStyle(
+                                  fontSize: FontSizeManager.s10,
+                                  color: ColorManager.kLightGreenColor,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              VerticalSpace(HeightsManager.h22),
-
-              CustomRequiredField(
-                controller: TextEditingController(),
-                title: ConstsValuesManager.categoryName,
-                hintText: ConstsValuesManager.enterYourCategoryName,
-                keyboardType: TextInputType.text,
-              ),
-              VerticalSpace(HeightsManager.h12),
-              CustomRequiredField(
-                maxLines: 3,
-                controller: TextEditingController(),
-                title: ConstsValuesManager.categoryDescription,
-                hintText: ConstsValuesManager.enterYourDescription,
-                keyboardType: TextInputType.text,
-              ),
-              VerticalSpace(HeightsManager.h12),
-              Text(
-                ConstsValuesManager.uploadImageForYourCategory,
-                style: TextStyle(
-                  fontSize: FontSizeManager.s16,
-                  color: ColorManager.kGreyColor,
-                  fontFamily: FontsManager.poppinsFontFamily,
+                      ],
+                    ),
+                  ],
                 ),
-              ),
-              VerticalSpace(HeightsManager.h4),
-
-              StreamBuilder<File?>(
-                stream: Stream.empty(),
-                initialData: null,
-                builder: (context, snapshot) => CustomSelectImageWidget(
-                  file: snapshot.data,
-                  onTapAtSelectImage: (value) {},
-                  selectImageStatus: SelectImageStatus.noImageSelected,
+                VerticalSpace(HeightsManager.h22),
+                CategoryFormField(
+                  categoryFormKey: _categoryPageController.categoryFormKey,
+                  onChanged: _categoryPageController.onChanged,
+                  onTapAtSelectImage:
+                      _categoryPageController.onTapAtSelectImage,
+                  selectImageStatus: _categoryPageController.selectImageStatus,
+                  categoryImageOutputStream:
+                      _categoryPageController.categoryFileImageOutPutStream,
+                  categoryNameController:
+                      _categoryPageController.categoryNameController,
+                  categoryDescriptionController:
+                      _categoryPageController.categoryDescriptionController,
                 ),
-              ),
-              VerticalSpace(HeightsManager.h31),
-              AppButton(text: ConstsValuesManager.save, onTap: () {}),
-            ],
+                VerticalSpace(HeightsManager.h31),
+                AppButton(
+                  text: ConstsValuesManager.save,
+                  onTap: () {},
+                  buttonStatusOutputStream:
+                      _categoryPageController.saveButtonStatusOutPutStream,
+                ),
+              ],
+            ),
           ),
         ),
       ),

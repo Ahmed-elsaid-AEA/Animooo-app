@@ -139,11 +139,12 @@ class ConstsValuesManager {
   static const String accountNotVerified =
       'Account not verified : Go To Verify Screen';
 
-  static const String confirmPasswordIsRequired = 'Confirm password is required';
+  static const String confirmPasswordIsRequired =
+      'Confirm password is required';
 
-  static const  String invalidEmail = 'Invalid email';
+  static const String invalidEmail = 'Invalid email';
 
-  static const  String notFoundThisEmail = 'Not found this email';
+  static const String notFoundThisEmail = 'Not found this email';
 
   static const String tokenBoxName = 'tokensBox';
   static const String accessToken = 'accessToken';
@@ -159,27 +160,38 @@ class ConstsValuesManager {
   static const String categories = 'Categories';
   static const String addNewCategory = 'Add New Category';
 
-  static const  String seeMore = 'See More';
+  static const String seeMore = 'See More';
 
-  static const String  animals = 'Animals';
+  static const String animals = 'Animals';
 
   static const String addNewAnimal = 'Add New Animal';
 
-  static const String home  = 'Home';
-  static const String category  = 'Category';
-  static const String animal  = 'Animal';
-  static const String search  = 'Search';
-  static const String me  = 'Me';
+  static const String home = 'Home';
+  static const String category = 'Category';
+  static const String animal = 'Animal';
+  static const String search = 'Search';
+  static const String me = 'Me';
 
   static const String public = 'Public';
 
   static const String categoryName = 'Category Name';
   static const String categoryDescription = 'Category Description';
-  static const String   enterYourCategoryName = 'Enter your Category Name';
-  static const String   enterYourDescription = 'Enter your Description';
-  static const String   uploadImageForYourCategory = 'Upload Image For Your Category';
+  static const String enterYourCategoryName = 'Enter your Category Name';
+  static const String enterYourDescription = 'Enter your Description';
+  static const String uploadImageForYourCategory =
+      'Upload Image For Your Category';
 
   static const String save = 'Save';
+  static const String categoryNameRequired = 'Category name is required';
+  static const String categoryDescriptionRequired =
+      'Category description is required';
+  static const String categoryImageRequired = 'Category image is required';
+  static const String categoryNameMustBeBetween3And20 =
+      'Category name must be between 3 and 20';
+  static const String categoryDescriptionMustBeBetween20And200 =
+      'Category description must be between 20 and 200';
+
+  static const String createNewCategory = 'Create New Category';
 }
 
 class ConstsListsManager {
