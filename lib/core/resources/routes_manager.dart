@@ -1,4 +1,5 @@
 import 'package:animooo/core/widgets/unknow_route_page.dart';
+import 'package:animooo/view/custom_splash_screen/custom_splash_screen.dart';
 import 'package:animooo/view/main_page/screen/main_page.dart';
 import 'package:animooo/view/signup/screen/sign_up_page.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,8 @@ class RoutesManager {
     switch (settings.name) {
       case RoutesName.loginPage:
         widget = LoginPage();
+      case RoutesName.customSplashScreen:
+        widget = CustomSplashScreen();
       case RoutesName.signupPage:
         widget = SignUpPage();
       case RoutesName.forgetPasswordPage:
@@ -34,11 +37,12 @@ class RoutesManager {
 class RoutesName {
   RoutesName._();
 
-  static const String loginPage = '/';
+  static const String loginPage = '/loginPage';
   static const String signupPage = '/signup';
   static const String forgetPasswordPage = '/forgetPassword';
   static const String otpVerificationScreen = '/otpVerification';
   static const String createNewPassword = '/createNewPassword';
 
   static const String mainPage = '/mainPage';
+  static const String customSplashScreen = '/';
 }

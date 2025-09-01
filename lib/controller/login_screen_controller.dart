@@ -54,6 +54,7 @@ class LoginScreenController {
 
   LoginScreenController(this.context) {
     init();
+    //check remember me
   }
 
   void init() {
@@ -63,6 +64,12 @@ class LoginScreenController {
     initTextControllers();
     //?change button status
     changeLoginButtonStatus(ButtonStatusEnum.disabled);
+    //?change remember me
+    changeRememberMe();
+  }
+
+  void changeRememberMe() {
+    rememberMeInput.add(rememberMe);
   }
 
   void changeLoginButtonStatus(ButtonStatusEnum status) {
@@ -231,22 +238,24 @@ class LoginScreenController {
   }
 
   void _onSuccessRequest(LoginResponse r, BuildContext context) async {
-    screenState = ScreensStatusState.success;
-    //?go to verify email screen
-    showAppSnackBar(context, r.message);
     //TODO :: change store token way ( flutter secure storage - shared preferences )
     await _storeToken(accessToken: r.accessToken, refreshToken: r.refreshToken);
     //? store remember me
     await _storeRememberMe();
-    Navigator.pushNamedAndRemoveUntil(
-      context,
-      RoutesName.mainPage,
-      arguments: {
-        ConstsValuesManager.email: emailController.getText,
-        ConstsValuesManager.screenName: ConstsValuesManager.signUp,
-      },
-      (route) => false,
-    );
+    screenState = ScreensStatusState.success;
+    //?go to verify email screen
+    if (context.mounted) showAppSnackBar(context, r.message);
+    goToMainPage();
+  }
+
+  void goToMainPage() {
+    if (context.mounted) {
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        RoutesName.mainPage,
+        (route) => false,
+      );
+    }
   }
 
   Future<void> _storeToken({
@@ -266,11 +275,11 @@ class LoginScreenController {
       key: ConstsValuesManager.refreshToken,
       value: refreshToken,
     );
-   }
+  }
 
   void onChangedRememberMe(bool? value) {
     rememberMe = !rememberMe;
-    rememberMeInput.add(rememberMe);
+    changeRememberMe();
   }
 
   Future<void> _storeRememberMe() async {
