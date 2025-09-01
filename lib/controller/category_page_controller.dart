@@ -48,10 +48,22 @@ class CategoryPageController {
   late Sink<bool> loadingScreenStateInput;
   late StreamController<bool> loadingScreenStateController;
   final BuildContext context;
+  static CategoryPageController? _instance;
 
-  CategoryPageController(this.context) {
+  CategoryPageController._internal(this.context) {
+    //?
+    print("TestHomeController");
     init();
   }
+
+  factory CategoryPageController(BuildContext context) {
+    return _instance ??= CategoryPageController._internal(context);
+  }
+
+  // CategoryPageController(this.context) {
+  //   print("init category page controller");
+  //   init();
+  // }
 
   void changeSaveButtonStatus(ButtonStatusEnum status) {
     saveButtonStatus = status;

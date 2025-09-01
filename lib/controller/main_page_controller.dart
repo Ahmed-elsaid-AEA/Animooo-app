@@ -1,11 +1,15 @@
 import 'dart:async';
 
+import 'package:animooo/controller/category_page_controller.dart';
 import 'package:animooo/view/main_page/home/screen/home_page.dart';
 import 'package:flutter/material.dart';
 
 import '../view/main_page/category/screen/category_page.dart';
 
 class MainPageController {
+
+  BuildContext context;
+
   int _currentIndex = 0;
 
   //?streams
@@ -15,16 +19,44 @@ class MainPageController {
   late Stream<int> currentIndexOutputStream;
   late Sink<int> currentIndexInput;
 
-  List<Widget> pages = [
-    HomePage(),
-    Scaffold(body: Center(child: Text('search'))),
-    CategoryPage(),
-    Scaffold(body: Center(child: Text('Animals'))),
-    Scaffold(body: Center(child: Text('Me'))),
-  ];
+  List<Widget?> pages = List.filled(5, null);
+  List<bool> hasVisited = List.filled(5, false);
+  CategoryPageController? categoryPageController;
+
+  //?page controller
+  late final PageController pageController;
+
+  Widget buildWidget(int index) {
+    if (!hasVisited[index]) {
+      print("building page$index");
+      hasVisited[index] = true;
+      switch (index) {
+        case 0:
+          //?build controller
+          //   _testHomeController ??= TestHomeController();
+          pages[index] = HomePage();
+          break;
+        case 1:
+          // categoryPageController ??= CategoryPageController(context);
+          pages[index] = Scaffold(body: Center(child: Text("Search")));
+        case 2:
+          categoryPageController ??= CategoryPageController(context);
+          pages[index] = CategoryPage();
+
+        case 3:
+          // categoryPageController ??= CategoryPageController(context);
+          pages[index] = Scaffold(body: Center(child: Text("Animal")));
+        case 4:
+          // categoryPageController ??= CategoryPageController(context);
+          pages[index] = Scaffold(body: Center(child: Text("Me")));
+          break;
+      }
+    }
+    return pages[index]!;
+  }
 
   //?constructor
-  MainPageController() {
+  MainPageController(this.context) {
     //?init
     init();
   }
@@ -32,6 +64,8 @@ class MainPageController {
   void init() {
     //?init bottom
     initStreams();
+    //?init page controller
+    pageController = PageController(initialPage: _currentIndex);
   }
 
   void initStreams() {
@@ -44,6 +78,8 @@ class MainPageController {
   void dispose() {
     //?dispose streams
     disposeStreams();
+    //?dispose other controllers dispose method
+    categoryPageController?.dispose();
   }
 
   void disposeStreams() {
