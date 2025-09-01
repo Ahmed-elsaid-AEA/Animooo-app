@@ -82,7 +82,7 @@ class HomePageCategories extends StatelessWidget {
                           CircleAvatar(
                             radius: 32,
                             backgroundImage: AssetImage(
-                              'assets/image/background_splash_screen_undrer_12.png',
+                              AssetsValuesManager.backgroundSplashScreenUnder12,
                             ),
                           ),
                           Positioned(

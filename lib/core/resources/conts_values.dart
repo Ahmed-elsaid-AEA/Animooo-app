@@ -160,6 +160,10 @@ class ConstsValuesManager {
   static const String addNewCategory = 'Add New Category';
 
   static const  String seeMore = 'See More';
+
+  static const String  animals = 'Animals';
+
+  static const String addNewAnimal = 'Add New Animal';
 }
 
 class ConstsListsManager {

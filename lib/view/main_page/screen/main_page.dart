@@ -5,6 +5,7 @@ import 'package:animooo/core/resources/fonts_size_manager.dart';
 import 'package:animooo/core/resources/width_manager.dart';
 import 'package:animooo/core/widgets/app_logo_widget.dart';
 import 'package:animooo/core/widgets/spacing/horizontal_space.dart';
+import 'package:animooo/view/main_page/widgets/home_page_animals.dart';
 import 'package:animooo/view/main_page/widgets/home_page_categories.dart';
 import 'package:flutter/material.dart';
 
@@ -26,8 +27,14 @@ class MainPage extends StatelessWidget {
             children: [
               HomePageAppBar(),
               VerticalSpace(HeightsManager.h18),
-              HomePageCategories(onPressedAddNewCategory: () {  }, onPressedAtSeeMore: () {  },),
-            Text("d")
+              HomePageCategories(
+                onPressedAddNewCategory: () {},
+                onPressedAtSeeMore: () {},
+              ),
+              HomePageAnimals(
+                onPressedAddNewCategory: () {},
+                onPressedAtSeeMore: () {},
+              ),
             ],
           ),
         ),

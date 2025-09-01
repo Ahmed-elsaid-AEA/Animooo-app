@@ -9,6 +9,7 @@ class ColorManager{
   static const Color kGreyColor = Color(0xff505050);
 
   static const Color kLightWhiteColor = Color(0xfff6f6f6);
+  static const Color kGrey5Color = Color(0xff999999);
   static const Color kWhiteColor = Color(0xffffffff);
   static const Color kRedColor = Color(0xffFC1B1A);
   static const Color kBoldRedColor = Color(0xff7c0000);
