@@ -22,10 +22,12 @@ class MainPage extends StatelessWidget {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               HomePageAppBar(),
               VerticalSpace(HeightsManager.h18),
-              HomePageCategories(onPressedAddNewCategory: () {  },),
+              HomePageCategories(onPressedAddNewCategory: () {  }, onPressedAtSeeMore: () {  },),
+            Text("d")
             ],
           ),
         ),

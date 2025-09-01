@@ -1,4 +1,5 @@
 import 'package:animooo/core/resources/assets_values_manager.dart';
+import 'package:animooo/core/resources/border_radius_manager.dart';
 import 'package:animooo/core/resources/colors_manager.dart';
 import 'package:animooo/core/resources/conts_values.dart';
 import 'package:animooo/core/resources/fonts_size_manager.dart';
@@ -11,9 +12,14 @@ import 'package:flutter/material.dart';
 import '../../../core/resources/padding_manager.dart';
 
 class HomePageCategories extends StatelessWidget {
-  const HomePageCategories({super.key, required this.onPressedAddNewCategory});
+  const HomePageCategories({
+    super.key,
+    required this.onPressedAddNewCategory,
+    required this.onPressedAtSeeMore,
+  });
 
   final VoidCallback onPressedAddNewCategory;
+  final VoidCallback onPressedAtSeeMore;
 
   @override
   Widget build(BuildContext context) {
@@ -37,16 +43,72 @@ class HomePageCategories extends StatelessWidget {
             itemBuilder: (context, index) => index == 0
                 ? HorizontalSpace(WidthManager.w16)
                 : index == length - 1
-                ? Center(child: TextButton(onPressed: () {}, child: Text("See More")))
-                : Column(
-                    children: [
-                      CircleAvatar(
-                        radius: 32,
-                        backgroundImage: AssetImage(
-                          'assets/image/background_splash_screen_undrer_12.png',
+                ? Container(
+                    alignment: Alignment.center,
+                    margin: EdgeInsets.only(right: 30,bottom: 20),
+                    child: MaterialButton(
+                      onPressed: onPressedAtSeeMore,
+                      color: ColorManager.kGreenColor,
+                      padding: EdgeInsets.zero,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(BorderRadiusManager.br10),
                         ),
                       ),
+                      child: Text(
+                        ConstsValuesManager.seeMore,
+                        style: TextStyle(
+                          fontSize: FontSizeManager.s12,
+                          fontFamily: FontsManager.otamaEpFontFamily,
+                          color: ColorManager.kWhiteColor,
+                        ),
+                      ),
+                    ),
+                  )
+                : Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    //TODO ::Solve the problem of the overflow
+                    /*
+                              *
+                A RenderFlex overflowed by 30 pixels on the bottom.
 
+                The relevant error-causing widget was:
+                  Column Column:file:///G:/udemy/flutter%20Intermediate%20%20level/animooo/lib/view/main_page/widgets/home_page_categories.dart:46:19
+                */
+                    children: [
+                      Stack(
+                        clipBehavior: Clip.none,
+                        children: [
+                          CircleAvatar(
+                            radius: 32,
+                            backgroundImage: AssetImage(
+                              'assets/image/background_splash_screen_undrer_12.png',
+                            ),
+                          ),
+                          Positioned(
+                            top: 0,
+                            right: -3,
+                            child: Badge.count(
+                              maxCount: 9,
+                              count: 10,
+                              textStyle: TextStyle(
+                                fontSize: FontSizeManager.s12,
+                                fontFamily: FontsManager.poppinsFontFamily,
+                              ),
+                              padding: EdgeInsets.all(4),
+                              backgroundColor: ColorManager.kPrimaryColor,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Text(
+                        "Dogs",
+                        style: TextStyle(
+                          fontSize: FontSizeManager.s16,
+                          fontWeight: FontWeight.w600,
+                          fontFamily: FontsManager.otamaEpFontFamily,
+                        ),
+                      ),
                     ],
                   ),
             separatorBuilder: (context, index) =>
@@ -54,6 +116,8 @@ class HomePageCategories extends StatelessWidget {
             itemCount: length,
           ),
         ),
+        VerticalSpace(HeightsManager.h22),
+
       ],
     );
   }
