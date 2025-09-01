@@ -164,6 +164,12 @@ class ConstsValuesManager {
   static const String  animals = 'Animals';
 
   static const String addNewAnimal = 'Add New Animal';
+
+  static const String home  = 'Home';
+  static const String category  = 'Category';
+  static const String animal  = 'Animal';
+  static const String search  = 'Search';
+  static const String me  = 'Me';
 }
 
 class ConstsListsManager {
