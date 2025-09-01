@@ -22,6 +22,7 @@ class CustomTextFormField extends StatelessWidget {
     this.focusNode,
     this.onChanged,
     this.useDefaultErrorBuilder = true,
+    this.maxLines = 1,
   });
 
   final String? hintText;
@@ -36,12 +37,14 @@ class CustomTextFormField extends StatelessWidget {
   final FocusNode? focusNode;
   final ValueChanged<String>? onChanged;
   final bool useDefaultErrorBuilder;
+  final int? maxLines;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       // height: HeightsManager.h44,
       child: TextFormField(
+        maxLines: maxLines,
         errorBuilder: useDefaultErrorBuilder == true
             ? null
             : (context, errorText) => SizedBox(),

@@ -16,12 +16,14 @@ class CustomRequiredField extends StatelessWidget {
     this.validator,
     this.onChanged,
     required this.keyboardType,
+    this.maxLines,
   });
 
   final String hintText;
   final TextEditingController controller;
   final String title;
   final TextInputType keyboardType;
+  final int? maxLines;
   final String? Function(String? value)? validator;
   final void Function(String value)? onChanged;
 
@@ -42,10 +44,12 @@ class CustomRequiredField extends StatelessWidget {
         ),
         VerticalSpace(HeightsManager.h6),
         CustomTextFormField(
+          maxLines: maxLines,
           onChanged: onChanged,
           controller: controller,
           keyboardType: keyboardType,
           validator: validator,
+
           hintText: hintText,
         ),
       ],

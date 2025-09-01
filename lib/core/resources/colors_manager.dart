@@ -21,4 +21,5 @@ class ColorManager{
   static const Color kGrey4Color = Color(0xff696969);
 
   static const Color kGreenColor=Color(0xff08A43A);
+  static const Color kLightGreenColor=Color(0xff16A99F);
 }

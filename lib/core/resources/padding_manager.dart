@@ -17,6 +17,8 @@ class PaddingManager{
   static   double ph18 = 18.h;
   static   double ph20 = 20.h;
   static   double pw20 = 20.w;
+  static   double ph24 = 24.h;
+  static   double pw24 = 24.w;
   static   double pw67 = 67.w;
   static   double ph67 = 67.h;
 

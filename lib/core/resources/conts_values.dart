@@ -170,6 +170,16 @@ class ConstsValuesManager {
   static const String animal  = 'Animal';
   static const String search  = 'Search';
   static const String me  = 'Me';
+
+  static const String public = 'Public';
+
+  static const String categoryName = 'Category Name';
+  static const String categoryDescription = 'Category Description';
+  static const String   enterYourCategoryName = 'Enter your Category Name';
+  static const String   enterYourDescription = 'Enter your Description';
+  static const String   uploadImageForYourCategory = 'Upload Image For Your Category';
+
+  static const String save = 'Save';
 }
 
 class ConstsListsManager {

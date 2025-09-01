@@ -10,6 +10,7 @@ import 'package:animooo/view/main_page/widgets/home_page_categories.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../../controller/main_page_controller.dart';
 import '../../../core/resources/heights_manager.dart';
 import '../../../core/resources/padding_manager.dart';
 import '../../../core/widgets/spacing/vertical_space.dart';
@@ -23,75 +24,72 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  int _currentIndex = 0;
+  late MainPageController _mainPageController;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _mainPageController = MainPageController();
+  }
+
+  @override
+  void dispose() {
+    _mainPageController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              HomePageAppBar(),
-              VerticalSpace(HeightsManager.h18),
-              HomePageCategories(
-                onPressedAddNewCategory: () {},
-                onPressedAtSeeMore: () {},
-              ),
-              HomePageAnimals(
-                onPressedAddNewCategory: () {},
-                onPressedAtSeeMore: () {},
-              ),
-            ],
+    return StreamBuilder<int>(
+      stream: _mainPageController.currentIndexOutputStream,
+      initialData: 0,
+      builder: (context, snapshot) => Scaffold(
+        body: _mainPageController.pages[snapshot.data ?? 0],
+        bottomNavigationBar: BottomNavigationBar(
+          onTap: _mainPageController.onTapBottomNavigationBarItem,
+          currentIndex: snapshot.data ?? 0,
+          backgroundColor: ColorManager.kWhite2Color,
+          selectedItemColor: ColorManager.kPrimaryColor,
+          showSelectedLabels: true,
+          showUnselectedLabels: true,
+          selectedLabelStyle: TextStyle(
+            fontSize: FontSizeManager.s12,
+            fontWeight: FontWeight.w500,
+            color: ColorManager.kPrimaryColor,
           ),
+          unselectedLabelStyle: TextStyle(
+            fontSize: FontSizeManager.s12,
+            fontWeight: FontWeight.w500,
+            color: ColorManager.kGrey6Color,
+          ),
+          unselectedItemColor: ColorManager.kGrey6Color,
+          items: [
+
+            BottomNavigationBarItem(
+              backgroundColor: ColorManager.kWhite2Color,
+              icon: Icon(Icons.home),
+              label: ConstsValuesManager.home,
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.search),
+              label: ConstsValuesManager.search,
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.category),
+              label: ConstsValuesManager.category,
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(CupertinoIcons.heart_fill),
+              label: ConstsValuesManager.animal,
+            ),
+
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              label: ConstsValuesManager.me,
+            ),
+          ],
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        onTap: (value) {
-          setState(() {
-            _currentIndex = value;
-          });
-        },
-        currentIndex: _currentIndex,
-        backgroundColor: ColorManager.kWhite2Color,
-        selectedItemColor: ColorManager.kPrimaryColor,
-        showSelectedLabels: true,
-        showUnselectedLabels: true,
-        selectedLabelStyle: TextStyle(
-          fontSize: FontSizeManager.s12,
-          fontWeight: FontWeight.w500,
-          color: ColorManager.kPrimaryColor,
-        ),
-        unselectedLabelStyle: TextStyle(
-          fontSize: FontSizeManager.s12,
-          fontWeight: FontWeight.w500,
-          color: ColorManager.kGrey6Color,
-        ),
-        unselectedItemColor: ColorManager.kGrey6Color,
-        items: [
-          BottomNavigationBarItem(
-            backgroundColor: ColorManager.kWhite2Color,
-            icon: Icon(Icons.home),
-            label: ConstsValuesManager.home,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.category),
-            label: ConstsValuesManager.category,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.heart_fill),
-            label: ConstsValuesManager.animal,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: ConstsValuesManager.search,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: ConstsValuesManager.me,
-          ),
-        ],
       ),
     );
   }
