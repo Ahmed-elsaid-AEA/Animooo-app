@@ -1,13 +1,16 @@
 import 'dart:async';
 
 import 'package:animooo/controller/category_page_controller.dart';
+import 'package:animooo/controller/home_page_controller.dart';
+import 'package:animooo/view/main_page/home/screen/home_tab.dart';
 import 'package:animooo/view/main_page/home/screen/home_page.dart';
 import 'package:flutter/material.dart';
 
+import '../core/di/get_it.dart';
+import '../core/resources/conts_values.dart';
 import '../view/main_page/category/screen/category_page.dart';
 
 class MainPageController {
-
   BuildContext context;
 
   int _currentIndex = 0;
@@ -22,6 +25,7 @@ class MainPageController {
   List<Widget?> pages = List.filled(5, null);
   List<bool> hasVisited = List.filled(5, false);
   CategoryPageController? categoryPageController;
+  HomePageController? homePageController;
 
   //?page controller
   late final PageController pageController;
@@ -33,8 +37,8 @@ class MainPageController {
       switch (index) {
         case 0:
           //?build controller
-          //   _testHomeController ??= TestHomeController();
-          pages[index] = HomePage();
+          homePageController ??= HomePageController();
+          pages[index] = HomeTab();
           break;
         case 1:
           // categoryPageController ??= CategoryPageController(context);
@@ -87,8 +91,26 @@ class MainPageController {
     currentIndexInput.close();
   }
 
-  void onTapBottomNavigationBarItem(int value) {
+  void changeCurrentIndex(int value) {
     _currentIndex = value;
     currentIndexInput.add(value);
+  }
+
+  void onPageChangedOfPageView(int value) {
+    changeCurrentIndex(value);
+  }
+
+  void onTapBottomNavigationBarItem(int value) {
+    changeCurrentIndex(value);
+    pageController.animateToPage(
+      value,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    );
+    if (_currentIndex == 0) {
+      getIt<GlobalKey<NavigatorState>>(
+        instanceName: ConstsValuesManager.homePageNavigationState,
+      ).currentState?.popUntil((route) => route.isFirst);
+    }
   }
 }

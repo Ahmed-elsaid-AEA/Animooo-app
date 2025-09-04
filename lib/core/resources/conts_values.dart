@@ -192,6 +192,10 @@ class ConstsValuesManager {
       'Category description must be between 20 and 200';
 
   static const String createNewCategory = 'Create New Category';
+
+  static const String homePageNavigationState =  'homePageNavigationState';
+
+  static const String searchPageNavigationState = 'searchPageNavigationState';
 }
 
 class ConstsListsManager {

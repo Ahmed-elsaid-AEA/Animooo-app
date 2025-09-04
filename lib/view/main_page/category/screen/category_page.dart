@@ -41,6 +41,7 @@ class _CategoryPageState extends State<CategoryPage>     with AutomaticKeepAlive
   @override
   Widget build(BuildContext context) {
     print("build category page");
+    super.build(context);
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
