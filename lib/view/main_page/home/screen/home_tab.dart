@@ -7,24 +7,31 @@ import '../../../../core/di/get_it.dart';
 import '../../../../core/resources/routes_manager.dart';
 import '../../../../core/widgets/unknow_route_page.dart';
 
-class HomeTab extends StatelessWidget {
+class HomeTab extends StatefulWidget {
   const HomeTab({super.key});
 
   @override
+  State<HomeTab> createState() => _HomeTabState();
+}
+
+class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin {
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
+    print("build home tab");
     return Navigator(
       key: getIt<GlobalKey<NavigatorState>>(
         instanceName: ConstsValuesManager.homePageNavigationState,
       ),
       onGenerateRoute: (settings) {
+        print("${settings.name}");
         Widget widget;
-        switch (settings.name) {
-          case RoutesName.categoryPageDetails:
-            widget = CategoryDetailPage();
-          case RoutesName.slash:
-            widget = HomePage();
-          default:
-            widget = const UnknownRoutePage();
+        if (settings.name == RoutesName.categoryPageDetails.route) {
+          widget = CategoryDetailPage();
+        } else if (settings.name == RoutesName.slash.route) {
+          widget = HomePage();
+        } else {
+          widget = const UnknownRoutePage();
         }
         return MaterialPageRoute(
           settings: settings,
@@ -35,4 +42,8 @@ class HomeTab extends StatelessWidget {
       },
     );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }

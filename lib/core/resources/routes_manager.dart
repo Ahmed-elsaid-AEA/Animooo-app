@@ -12,41 +12,39 @@ import '../../view/otp_verfication_code/screens/otp_verification_code_page.dart'
 class RoutesManager {
   static Route? onGenerateRoute(RouteSettings settings) {
     Widget widget;
-    switch (settings.name) {
-      case RoutesName.loginPage:
-        widget = LoginPage();
-      case RoutesName.customSplashScreen:
-        widget = CustomSplashScreen();
-      case RoutesName.signupPage:
-        widget = SignUpPage();
-      case RoutesName.forgetPasswordPage:
-        widget = ForgetPasswordPage();
-      case RoutesName.otpVerificationScreen:
-        widget = OtpVerificationPage();
-      case RoutesName.createNewPassword:
-        widget = CreateNewPasswordPage();
-      case RoutesName.mainPage:
-        widget = MainPage();
-      default:
-        widget = const UnknownRoutePage();
+    if (settings.name == RoutesName.loginPage.route) {
+      widget = LoginPage();
+    } else if (settings.name == RoutesName.customSplashScreen.route) {
+      widget = CustomSplashScreen();
+    } else if (settings.name == RoutesName.signupPage.route) {
+      widget = SignUpPage();
+    } else if (settings.name == RoutesName.forgetPasswordPage.route) {
+      widget = ForgetPasswordPage();
+    } else if (settings.name == RoutesName.otpVerificationScreen.route) {
+      widget = OtpVerificationPage();
+    } else if (settings.name == RoutesName.createNewPassword.route) {
+      widget = CreateNewPasswordPage();
+    } else if (settings.name == RoutesName.mainPage.route) {
+      widget = MainPage();
+    } else {
+      widget = const UnknownRoutePage();
     }
     return MaterialPageRoute(builder: (context) => widget, settings: settings);
   }
 }
 
-class RoutesName {
-  RoutesName._();
+enum RoutesName {
+  loginPage("/loginPage"),
+  signupPage("/signupPage"),
+  forgetPasswordPage("/forgetPasswordPage"),
+  otpVerificationScreen("/otpVerificationScreen"),
+  createNewPassword("/createNewPassword"),
+  mainPage("/mainPage"),
+  customSplashScreen("/"),
+  categoryPageDetails("/home/categoryPageDetails"),
+  slash("/");
 
-  static const String loginPage = '/loginPage';
-  static const String signupPage = '/signup';
-  static const String forgetPasswordPage = '/forgetPassword';
-  static const String otpVerificationScreen = '/otpVerification';
-  static const String createNewPassword = '/createNewPassword';
+  final String route;
 
-  static const String mainPage = '/mainPage';
-  static const String customSplashScreen = '/';
-
-  static const String categoryPageDetails = '/categoryPageDetails';
-
-  static const String slash = '/';
+  const RoutesName(this.route);
 }

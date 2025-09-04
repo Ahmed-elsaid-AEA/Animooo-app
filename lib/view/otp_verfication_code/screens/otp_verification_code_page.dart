@@ -4,13 +4,11 @@ import 'package:animooo/core/widgets/app_Bar/simple_app_bar.dart';
 import 'package:animooo/core/widgets/loading/app_model_progress_hud.dart';
 import 'package:flutter/material.dart';
 
-import '../../../core/enums/screen_status_state.dart';
 import '../../../core/resources/assets_values_manager.dart';
 import '../../../core/resources/colors_manager.dart';
 import '../../../core/resources/fonts_size_manager.dart';
 import '../../../core/resources/heights_manager.dart';
 import '../../../core/resources/padding_manager.dart';
-import '../../../core/resources/routes_manager.dart';
 import '../../../core/widgets/buttons/app_button.dart';
 import '../../../core/widgets/spacing/vertical_space.dart';
 import '../../../core/widgets/verifications/app_otp_verification_text_field.dart';

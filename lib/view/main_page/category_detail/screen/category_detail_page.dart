@@ -6,7 +6,8 @@ class CategoryDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(),
-        body: Center(child: Text('Category Detail Page')));
+      appBar: AppBar(),
+      body: Center(child: Text('Category Detail Page')),
+    );
   }
 }

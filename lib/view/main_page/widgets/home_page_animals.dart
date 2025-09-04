@@ -4,8 +4,6 @@ import 'package:animooo/core/resources/colors_manager.dart';
 import 'package:animooo/core/resources/conts_values.dart';
 import 'package:animooo/core/resources/fonts_size_manager.dart';
 import 'package:animooo/core/resources/heights_manager.dart';
-import 'package:animooo/core/resources/width_manager.dart';
-import 'package:animooo/core/widgets/spacing/horizontal_space.dart';
 import 'package:animooo/core/widgets/spacing/vertical_space.dart';
 import 'package:flutter/material.dart';
 

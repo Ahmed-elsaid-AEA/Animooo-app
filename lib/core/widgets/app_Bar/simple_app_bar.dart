@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 
 import '../../../core/resources/assets_values_manager.dart';
 import '../../../core/resources/colors_manager.dart';
-import '../../../core/resources/conts_values.dart';
 import '../../../core/resources/fonts_size_manager.dart';
 import '../../../core/resources/padding_manager.dart';
 

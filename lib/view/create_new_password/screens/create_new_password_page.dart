@@ -10,10 +10,8 @@ import '../../../core/resources/colors_manager.dart';
 import '../../../core/resources/fonts_size_manager.dart';
 import '../../../core/resources/heights_manager.dart';
 import '../../../core/resources/padding_manager.dart';
-import '../../../core/widgets/custom_required_password_field.dart';
 import '../../../core/widgets/loading/app_model_progress_hud.dart';
 import '../../../core/widgets/spacing/vertical_space.dart';
-import '../../signup/widgets/required_rules_for_password_sign_up_page.dart';
 
 class CreateNewPasswordPage extends StatefulWidget {
   const CreateNewPasswordPage({super.key});

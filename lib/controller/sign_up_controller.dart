@@ -5,15 +5,11 @@ import 'package:animooo/core/di/services/internet_checker_service.dart';
 import 'package:animooo/core/enums/button_status_enum.dart';
 import 'package:animooo/core/enums/select_image_status.dart';
 import 'package:animooo/core/error/failure_model.dart';
+import 'package:animooo/core/functions/app_navigations.dart';
 import 'package:animooo/core/functions/image_picker_service.dart';
 import 'package:animooo/core/functions/show_select_image_model_bottom_sheet.dart';
-import 'package:animooo/core/resources/colors_manager.dart';
 import 'package:animooo/core/resources/conts_values.dart';
 import 'package:animooo/core/resources/extenstions.dart';
-import 'package:animooo/core/resources/fonts_size_manager.dart';
-import 'package:animooo/core/resources/heights_manager.dart';
-import 'package:animooo/core/widgets/buttons/app_button.dart';
-import 'package:animooo/core/widgets/spacing/vertical_space.dart';
 import 'package:animooo/data/network/auth_api.dart';
 import 'package:animooo/models/auth/auth_response.dart';
 import 'package:animooo/models/auth/user_model.dart';
@@ -248,9 +244,13 @@ class SignUpController {
       bool result = await isInternetConnected();
       if (result == true) {
         //?now make api request
-        _requestMakeNewUser(context);
+        if (context.mounted) {
+          _requestMakeNewUser(context);
+        }
       } else {
-        _showNoInternetSnackBar(context);
+        if (context.mounted) {
+          _showNoInternetSnackBar(context);
+        }
       }
     }
   }
@@ -259,7 +259,7 @@ class SignUpController {
     screenState = ScreensStatusState.success;
     //?go to verify email screen
     showAppSnackBar(context, r.message ?? "");
-    Navigator.pushNamed(
+    AppNavigation.pushNamed(
       context,
       RoutesName.otpVerificationScreen,
       arguments: {
@@ -321,7 +321,9 @@ class SignUpController {
   void _onTapAtGallery(BuildContext context) async {
     fileImage = await ImagePickerService.pickImage(ImageSource.gallery);
     fileImageInput.add(fileImage);
-    Navigator.pop(context);
+    if (context.mounted) {
+      Navigator.pop(context);
+    }
   }
 
   void changePasswordRules() {
@@ -359,7 +361,7 @@ class SignUpController {
         ConstsValuesManager.imageIsRequired,
       );
       makeFilter("last name", ConstsValuesManager.lastNameIsRequired);
-       makeFilter(
+      makeFilter(
         "first name",
         ConstsValuesManager
             .passwordMustBeAtLeastEightCharactersAndContainAtLeastOneUpperCaseLetterOneLowerCaseLetterAndOneNumber,

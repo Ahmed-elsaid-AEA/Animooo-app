@@ -1,8 +1,5 @@
-import 'package:animooo/core/resources/conts_values.dart';
 import 'package:animooo/core/resources/fonts_size_manager.dart';
-import 'package:animooo/core/resources/heights_manager.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../resources/border_radius_manager.dart';
 import '../resources/colors_manager.dart';

@@ -3,8 +3,6 @@ import 'package:animooo/core/resources/routes_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../core/database/hive/hive_helper.dart';
-import '../core/resources/conts_values.dart';
 
 class AnimoooApp extends StatelessWidget {
   const AnimoooApp({super.key});

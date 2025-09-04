@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:animooo/controller/category_page_controller.dart';
 import 'package:animooo/controller/home_page_controller.dart';
 import 'package:animooo/view/main_page/home/screen/home_tab.dart';
-import 'package:animooo/view/main_page/home/screen/home_page.dart';
 import 'package:flutter/material.dart';
 
 import '../core/di/get_it.dart';
@@ -32,7 +31,7 @@ class MainPageController {
 
   Widget buildWidget(int index) {
     if (!hasVisited[index]) {
-      print("building page$index");
+      debugPrint("building page$index");
       hasVisited[index] = true;
       switch (index) {
         case 0:

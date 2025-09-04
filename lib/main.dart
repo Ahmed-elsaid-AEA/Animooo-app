@@ -21,7 +21,7 @@ class TestMainPage extends StatefulWidget {
 class _TestMainPageState extends State<TestMainPage> {
   int _currentIndex = 0;
   List<Widget?> pages = List.filled(2, null);
-  List<bool> _hasVisted = List.filled(2, false);
+  final List<bool> _hasVisted = List.filled(2, false);
   TestHomeController? _testHomeController;
   TestSearchController? _testSearchController;
 
@@ -130,12 +130,13 @@ class _TestHomePageState extends State<TestHomePage>
 
   @override
   void dispose() {
-    print("dispose test home page");
+    debugPrint("dispose test home page");
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     print("now build home ");
     return const Center(child: Text("Home"));
   }
@@ -155,19 +156,16 @@ class TestSearchPage extends StatefulWidget {
 
 class _TestSearchPageState extends State<TestSearchPage>
     with AutomaticKeepAliveClientMixin {
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   void dispose() {
-    print("dispose search home page");
+    debugPrint("dispose search home page");
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     print("now build search ");
 
     return Scaffold(
@@ -199,7 +197,7 @@ class TestSearchController {
 
   TestSearchController._internal() {
     //?
-    print("TestSearchController");
+    debugPrint("TestSearchController");
   }
 
   factory TestSearchController() {

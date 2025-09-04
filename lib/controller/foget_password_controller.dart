@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:animooo/core/functions/app_navigations.dart';
 import 'package:flutter/material.dart';
 
 import '../core/enums/button_status_enum.dart';
@@ -67,7 +68,8 @@ class ForgetPasswordController {
   }
 
   void onTapAtSendCodeButton(BuildContext context) {
-    Navigator.of(context).pushNamed(
+    AppNavigation.pushNamed(
+      context,
       RoutesName.otpVerificationScreen,
       arguments: {
         ConstsValuesManager.email: emailController.text,

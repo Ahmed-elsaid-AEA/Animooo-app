@@ -1,24 +1,18 @@
-import 'dart:io';
 
 import 'package:animooo/core/resources/border_radius_manager.dart';
 import 'package:animooo/core/resources/conts_values.dart';
 import 'package:animooo/core/resources/heights_manager.dart';
 import 'package:animooo/core/resources/width_manager.dart';
 import 'package:animooo/core/widgets/buttons/app_button.dart';
-import 'package:animooo/core/widgets/custom_required_field.dart';
-import 'package:animooo/core/widgets/custom_text_form_field.dart';
 import 'package:animooo/core/widgets/spacing/horizontal_space.dart';
 import 'package:animooo/view/main_page/category/widget/category_form_field.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../controller/category_page_controller.dart';
-import '../../../../core/enums/select_image_status.dart';
 import '../../../../core/resources/assets_values_manager.dart';
 import '../../../../core/resources/colors_manager.dart';
 import '../../../../core/resources/fonts_size_manager.dart';
 
 import '../../../../core/resources/padding_manager.dart';
-import '../../../../core/widgets/custom_select_your_image_widget.dart';
 import '../../../../core/widgets/spacing/vertical_space.dart';
 
 class CategoryPage extends StatefulWidget {
@@ -28,7 +22,8 @@ class CategoryPage extends StatefulWidget {
   State<CategoryPage> createState() => _CategoryPageState();
 }
 
-class _CategoryPageState extends State<CategoryPage>     with AutomaticKeepAliveClientMixin  {
+class _CategoryPageState extends State<CategoryPage>
+    with AutomaticKeepAliveClientMixin {
   late CategoryPageController _categoryPageController;
 
   @override
@@ -36,7 +31,6 @@ class _CategoryPageState extends State<CategoryPage>     with AutomaticKeepAlive
     super.initState();
     _categoryPageController = CategoryPageController(context);
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -87,8 +81,8 @@ class _CategoryPageState extends State<CategoryPage>     with AutomaticKeepAlive
                         Container(
                           padding: EdgeInsets.all(PaddingManager.ph5),
                           decoration: BoxDecoration(
-                            color: ColorManager.kLightGreenColor.withOpacity(
-                              .1,
+                            color: ColorManager.kLightGreenColor.withValues(
+                              alpha: .1,
                             ),
                             borderRadius: BorderRadius.circular(
                               BorderRadiusManager.br32,

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:animooo/core/di/services/internet_checker_service.dart';
 import 'package:animooo/core/enums/button_status_enum.dart';
 import 'package:animooo/core/error/failure_model.dart';
+import 'package:animooo/core/functions/app_navigations.dart';
 import 'package:animooo/core/functions/app_scaffold_massanger.dart';
 import 'package:animooo/core/resources/conts_values.dart';
 import 'package:animooo/core/resources/extenstions.dart';
@@ -199,7 +200,7 @@ class CreateNewPasswordController {
         _onFailureRequest(l, context);
       },
       (CreateNewPasswordResponse r) {
-         _onSuccessRequest(r, context);
+        _onSuccessRequest(r, context);
       },
     );
     changeScreenStateLoading();
@@ -255,14 +256,11 @@ class CreateNewPasswordController {
   void changeScreenStateLoading() {
     loadingScreenInput.add(screenState == ScreensStatusState.loading);
   }
-// !@#QWE123qwe
+
+  // !@#QWE123qwe
   void _onSuccessRequest(CreateNewPasswordResponse r, BuildContext context) {
     screenState = ScreensStatusState.success;
-    Navigator.pushNamedAndRemoveUntil(
-      context,
-      RoutesName.loginPage,
-      (route) => false,
-    );
+    AppNavigation.pushNamedAndRemoveUntil(context, RoutesName.loginPage);
   }
 }
 

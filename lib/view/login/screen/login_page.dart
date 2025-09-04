@@ -1,4 +1,5 @@
 import 'package:animooo/controller/login_screen_controller.dart';
+import 'package:animooo/core/functions/app_navigations.dart';
 import 'package:animooo/core/resources/conts_values.dart';
 import 'package:animooo/core/resources/heights_manager.dart';
 import 'package:animooo/core/resources/routes_manager.dart';
@@ -89,7 +90,7 @@ class _LoginPageState extends State<LoginPage> {
       ),
       bottomNavigationBar: BottomNavBarLoginPage(
         onPressedSignUpNow: () {
-          Navigator.pushNamed(context, RoutesName.signupPage);
+          AppNavigation.pushNamed(context, RoutesName.signupPage);
         },
       ),
     );

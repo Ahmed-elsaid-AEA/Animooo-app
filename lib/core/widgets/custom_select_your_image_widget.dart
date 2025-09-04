@@ -4,8 +4,7 @@ import 'package:animooo/core/enums/select_image_status.dart';
 import 'package:animooo/core/resources/border_radius_manager.dart';
 import 'package:animooo/core/widgets/spacing/vertical_space.dart';
 import 'package:dotted_border/dotted_border.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+ import 'package:flutter/material.dart';
 
 import '../resources/assets_values_manager.dart';
 import '../resources/colors_manager.dart';

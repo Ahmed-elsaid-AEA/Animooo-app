@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:animooo/core/error/failure_model.dart';
+import 'package:animooo/core/functions/app_navigations.dart';
 import 'package:animooo/core/functions/app_scaffold_massanger.dart';
 import 'package:animooo/models/auth/new_otp_code_response.dart';
 import 'package:animooo/models/auth/otp_code_response.dart';
@@ -91,7 +92,7 @@ class OtpVerController {
       }
     }
     if ((screenName == ConstsValuesManager.login ||
-            screenName == RoutesName.forgetPasswordPage) &&
+            screenName == RoutesName.forgetPasswordPage.route) &&
         isCodeSent == false) {
       _requestNewOtpCode(context);
       isCodeSent = true;
@@ -199,8 +200,8 @@ class OtpVerController {
 
   void otpOnSuccessRequest(OtpCodeResponse r, BuildContext context) {
     screenState = ScreensStatusState.success;
-    if (screenName == RoutesName.forgetPasswordPage) {
-      Navigator.pushNamed(
+    if (screenName == RoutesName.forgetPasswordPage.route) {
+      AppNavigation.pushNamed(
         context,
         RoutesName.createNewPassword,
         arguments: {ConstsValuesManager.email: email},
@@ -208,11 +209,7 @@ class OtpVerController {
     }
     //go to sign in page
     else {
-      Navigator.pushNamedAndRemoveUntil(
-        context,
-        RoutesName.loginPage,
-        (route) => false,
-      );
+      AppNavigation.pushNamedAndRemoveUntil(context, RoutesName.loginPage);
     }
   }
 

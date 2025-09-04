@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:animooo/core/database/hive/hive_helper.dart';
 import 'package:animooo/core/di/services/internet_checker_service.dart';
 import 'package:animooo/core/error/failure_model.dart';
+import 'package:animooo/core/functions/app_navigations.dart';
 import 'package:animooo/core/resources/conts_values.dart';
 import 'package:animooo/core/resources/extenstions.dart';
 import 'package:animooo/data/network/auth_api.dart';
@@ -126,7 +127,7 @@ class LoginScreenController {
   }
 
   void onPressedAtForgetPassword() {
-    Navigator.of(context).pushNamed(RoutesName.forgetPasswordPage);
+    AppNavigation.pushNamed(context, RoutesName.forgetPasswordPage);
   }
 
   void onPressedAtLoginButton() async {
@@ -138,13 +139,15 @@ class LoginScreenController {
         //?make api
         _requestLogin();
       } else {
-        showAppSnackBar(
+        if(context.mounted) {
+          showAppSnackBar(
           context,
           ConstsValuesManager.noInternetConnection,
           onPressedAtRetry: () {
             onPressedAtLoginButton();
           },
         );
+        }
       }
     }
   }
@@ -195,7 +198,8 @@ class LoginScreenController {
             },
     );
     if (message.contains(ConstsValuesManager.accountNotVerified)) {
-      Navigator.of(context).pushNamed(
+      AppNavigation.pushNamed(
+        context,
         RoutesName.otpVerificationScreen,
         arguments: {
           ConstsValuesManager.email: emailController.getText,
@@ -250,11 +254,7 @@ class LoginScreenController {
 
   void goToMainPage() {
     if (context.mounted) {
-      Navigator.pushNamedAndRemoveUntil(
-        context,
-        RoutesName.mainPage,
-        (route) => false,
-      );
+      AppNavigation.pushNamedAndRemoveUntil(context, RoutesName.mainPage);
     }
   }
 
