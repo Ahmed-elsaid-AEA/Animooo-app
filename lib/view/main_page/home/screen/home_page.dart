@@ -1,3 +1,4 @@
+import 'package:animooo/view/main_page/screen/main_page.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../controller/home_page_controller.dart';
@@ -16,11 +17,13 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late HomePageController _homePageController;
+
   @override
   void initState() {
     super.initState();
     _homePageController = HomePageController();
   }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -31,16 +34,16 @@ class _HomePageState extends State<HomePage> {
             HomePageAppBar(),
             VerticalSpace(HeightsManager.h18),
             HomePageCategories(
-              onPressedAddNewCategory: () {},
+              onPressedAddNewCategory: () {
+                _homePageController.goToCategoryTapPage(context);
+              },
               onPressedAtSeeMore: () {
                 _homePageController.onPressedAtSeeMore(context);
               },
             ),
             HomePageAnimals(
               onPressedAddNewCategory: () {},
-              onPressedAtSeeMore:(){
-
-              },
+              onPressedAtSeeMore: () {},
             ),
           ],
         ),
@@ -48,4 +51,3 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
-

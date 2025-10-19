@@ -52,7 +52,7 @@ class CategoryPageController {
 
   CategoryPageController._internal(this.context) {
     //?
-    print("TestHomeController");
+    print("CategoryPageController");
     init();
   }
 

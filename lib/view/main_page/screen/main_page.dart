@@ -6,8 +6,10 @@ import 'package:flutter/material.dart';
 
 import '../../../controller/main_page_controller.dart';
 
+final GlobalKey<_MainPageState> mainPageKey = GlobalKey<_MainPageState>();
+
 class MainPage extends StatefulWidget {
-  const MainPage({super.key});
+  MainPage({Key? key}) : super(key: mainPageKey);
 
   @override
   State<MainPage> createState() => _MainPageState();
@@ -15,18 +17,18 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage>
     with AutomaticKeepAliveClientMixin {
-  late MainPageController _mainPageController;
+  late MainPageController mainPageController;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _mainPageController = MainPageController(context);
+    mainPageController = MainPageController(context);
   }
 
   @override
   void dispose() {
-    _mainPageController.dispose();
+    mainPageController.dispose();
     super.dispose();
   }
 
@@ -34,23 +36,23 @@ class _MainPageState extends State<MainPage>
   Widget build(BuildContext context) {
     super.build(context);
     return StreamBuilder<int>(
-      stream: _mainPageController.currentIndexOutputStream,
+      stream: mainPageController.currentIndexOutputStream,
       initialData: 0,
       builder: (context, snapshot) => Scaffold(
         body: PageView(
-          onPageChanged:_mainPageController.onPageChangedOfPageView,
-          controller: _mainPageController.pageController,
+          onPageChanged: mainPageController.onPageChangedOfPageView,
+          controller: mainPageController.pageController,
           children: [
-            for (int i = 0; i < _mainPageController.pages.length; i++)
-              _mainPageController.hasVisited[i]
-                  ? _mainPageController.buildWidget(i)
+            for (int i = 0; i < mainPageController.pages.length; i++)
+              mainPageController.hasVisited[i]
+                  ? mainPageController.buildWidget(i)
                   : (snapshot.data == i
-                        ? _mainPageController.buildWidget(i)
+                        ? mainPageController.buildWidget(i)
                         : Container()),
           ],
         ),
         bottomNavigationBar: BottomNavigationBar(
-          onTap: _mainPageController.onTapBottomNavigationBarItem,
+          onTap: mainPageController.onTapBottomNavigationBarItem,
           currentIndex: snapshot.data ?? 0,
           backgroundColor: ColorManager.kWhite2Color,
           selectedItemColor: ColorManager.kPrimaryColor,
