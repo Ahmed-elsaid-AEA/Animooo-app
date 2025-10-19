@@ -137,7 +137,7 @@ class LoginScreenController {
       bool result = await isInternetConnected();
       if (result == true) {
         //?make api
-        _requestLogin();
+        await _requestLogin();
       } else {
         if(context.mounted) {
           showAppSnackBar(
@@ -160,7 +160,7 @@ class LoginScreenController {
     }
   }
 
-  void _requestLogin() async {
+  Future<void> _requestLogin() async {
     screenState = ScreensStatusState.loading;
     changeLoadingScreenState();
     //?make api

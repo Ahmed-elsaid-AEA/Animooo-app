@@ -9,15 +9,18 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../core/di/services/internet_checker_service.dart';
 import '../core/enums/button_status_enum.dart';
 import '../core/enums/screen_status_state.dart';
 import '../core/enums/select_image_status.dart';
+import '../core/functions/app_scaffold_massanger.dart';
 import '../core/functions/image_picker_service.dart';
 import '../core/functions/show_select_image_model_bottom_sheet.dart';
+import '../core/resources/conts_values.dart';
 
 class CategoryPageController {
   //?category image
-  File? fileImage;
+  File? categoryFileImage;
 
   //?save button status
   ButtonStatusEnum saveButtonStatus = ButtonStatusEnum.disabled;
@@ -146,46 +149,118 @@ class CategoryPageController {
     );
 
     //?check if image is selected
-    if (fileImage == null) {
+    if (categoryFileImage == null) {
       selectImageStatus = SelectImageStatus.noImageSelected;
     } else {
       selectImageStatus = SelectImageStatus.imageSelected;
-      state.didChange(fileImage);
+      state.didChange(categoryFileImage);
       checkValidateForm();
     }
   }
 
   void _onTapAtCamera() async {
-    fileImage = await ImagePickerService.pickImage(ImageSource.camera);
-    categoryFileImageInput.add(fileImage);
+    categoryFileImage = await ImagePickerService.pickImage(ImageSource.camera);
+    categoryFileImageInput.add(categoryFileImage);
 
     if (context.mounted) Navigator.pop(context);
   }
 
   void _onTapAtGallery() async {
-    fileImage = await ImagePickerService.pickImage(ImageSource.gallery);
-    categoryFileImageInput.add(fileImage);
+    categoryFileImage = await ImagePickerService.pickImage(ImageSource.gallery);
+    categoryFileImageInput.add(categoryFileImage);
     if (context.mounted) Navigator.pop(context);
   }
 
   void onTapSaveButton() async {
     if (categoryFormKey.currentState!.validate()) {
-      Either<FailureModel, CategoryResponse> result =
-          await CategoryApi.createNewCategory(
-            CategoryModel(
-              name: categoryNameController.text,
-              description: categoryDescriptionController.text,
-              image: fileImage!,
-            ),
-          );
-      result.fold(
-        (failure) {
-          print(failure);
-        },
-        (categoryResponse) {
-          print(categoryResponse);
-        },
+      InternetCheckerService isInternetConnected = InternetCheckerService();
+      bool result = await isInternetConnected();
+      if (result == true) {
+        //?make api
+        await _requestCreateNewCategory();
+      } else {
+        if (context.mounted) {
+          showAppSnackBar(context, ConstsValuesManager.noInternetConnection);
+        }
+      }
+    }
+  }
+
+  Future<void> _requestCreateNewCategory() async {
+    //loading
+    changeScreenStateLoading(ScreensStatusState.loading);
+    changeSaveButtonStatus(ButtonStatusEnum.loading);
+    Either<FailureModel, CategoryResponse> result =
+        await CategoryApi.createNewCategory(
+          CategoryModel(
+            name: categoryNameController.text,
+            description: categoryDescriptionController.text,
+            image: categoryFileImage!,
+          ),
+        );
+    result.fold(
+      (l) {
+        _onFailureCreateNewCategory(l);
+      },
+      (r) {
+        _onSuccessCreateNewCategory(r);
+      },
+    );
+    changeSaveButtonStatus(ButtonStatusEnum.enabled);
+  }
+
+  void _onSuccessCreateNewCategory(CategoryResponse r) {
+    changeScreenStateLoading(ScreensStatusState.success);
+    showAppSnackBar(context, r.message);
+  }
+
+  void _onFailureCreateNewCategory(FailureModel l) {
+    changeScreenStateLoading(ScreensStatusState.failure);
+    String message = _filterErrors(l.errors);
+    showAppSnackBar(
+      context,
+      message,
+      onPressedAtRetry: () {
+        onTapSaveButton();
+      },
+    );
+  }
+
+  void changeScreenStateLoading(ScreensStatusState state) {
+    loadingScreenStateInput.add(state == ScreensStatusState.loading);
+  }
+
+  String _filterErrors(List<String> errors) {
+    List<String> errorsList = [];
+    errors = errors.map((e) => e.toLowerCase().trim()).toList();
+    void makeFilter(String contain, String msgError) {
+      if (errors.join("").contains(contain.toLowerCase())) {
+        errorsList.add(msgError);
+      }
+    }
+
+    if (errors.isNotEmpty) {
+      makeFilter("Token is required", ConstsValuesManager.tokenIsRequired);
+      makeFilter("image is required", ConstsValuesManager.imageIsRequired);
+      makeFilter(
+        "category name is required",
+        ConstsValuesManager.categoryNameIsRequired,
+      );
+      makeFilter(
+        "category description is required",
+        ConstsValuesManager.categoryDescriptionIsRequired,
+      );
+      makeFilter("Token is required", ConstsValuesManager.tokenIsRequired);
+      makeFilter(
+        "Invalid or expired token",
+        ConstsValuesManager.invalidOrExpiredToken,
+      );
+      makeFilter(
+        "Category should be unique",
+        ConstsValuesManager.categoryShouldBeUnique,
       );
     }
+
+    return errorsList.join(" , ");
   }
 }

@@ -29,11 +29,11 @@ class CategoryApi {
       HiveHelper<String> hiveHelper = HiveHelper(
         ConstsValuesManager.tokenBoxName,
       );
+      //TODO :: Change that way to put token
       String token =
           (await hiveHelper.getValue(key: ConstsValuesManager.accessToken)) ??
           "";
-print(category);
-      var response = await dioService.post(
+       var response = await dioService.post(
         headers: {ApiConstants.authorization: "Bearer $token"},
         path: ApiConstants.createNewCategoryEndpoint,
         body: FormData.fromMap({
