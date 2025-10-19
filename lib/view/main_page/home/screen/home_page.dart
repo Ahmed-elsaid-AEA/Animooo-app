@@ -35,14 +35,16 @@ class _HomePageState extends State<HomePage> {
             VerticalSpace(HeightsManager.h18),
             HomePageCategories(
               onPressedAddNewCategory: () {
-                _homePageController.goToCategoryTapPage(context);
+                _homePageController.goToCategoryTapPage();
               },
               onPressedAtSeeMore: () {
                 _homePageController.onPressedAtSeeMore(context);
               },
             ),
             HomePageAnimals(
-              onPressedAddNewCategory: () {},
+              onPressedAddNewAnimal: () {
+                _homePageController.goToAnimalTapPage();
+              },
               onPressedAtSeeMore: () {},
             ),
           ],

@@ -56,13 +56,16 @@ class DioService extends ApiConsumer {
   Future post({
     required String path,
     Map<String, dynamic>? queryParameters,
+    Map<String, dynamic>? headers,
     required Object body,
   }) async {
     try {
       Response response = await dio.post(
         path,
         data: body,
-        queryParameters: queryParameters,
+        queryParameters: queryParameters,options: Options(
+        headers: headers
+      )
       );
 
       if (response.statusCode! >= 200 && response.statusCode! < 300) {

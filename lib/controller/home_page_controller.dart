@@ -21,7 +21,6 @@ class HomePageController {
   }
 
   void onPressedAtSeeMore(BuildContext context) {
-    print("done");
     GlobalKey<NavigatorState> navigatorKey = getIt<GlobalKey<NavigatorState>>(
       instanceName: ConstsValuesManager.homePageNavigationState,
     );
@@ -34,9 +33,17 @@ class HomePageController {
     }
   }
 
-  void goToCategoryTapPage(BuildContext context) {
+  void goToCategoryTapPage() {
     // MainPageController mainPageController = MainPageController(context);
     // mainPageController.onTapBottomNavigationBarItem(2);
-    mainPageKey.currentState?.mainPageController.onTapBottomNavigationBarItem(2);
+    mainPageKey.currentState?.mainPageController.onTapBottomNavigationBarItem(
+      2,
+    );
+  }
+
+  void goToAnimalTapPage() {
+    mainPageKey.currentState?.mainPageController.onTapBottomNavigationBarItem(
+      3,
+    );
   }
 }

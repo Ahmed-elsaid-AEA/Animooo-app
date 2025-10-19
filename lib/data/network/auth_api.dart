@@ -88,7 +88,7 @@ class AuthApi {
           ApiConstants.confirmPassword: confirmPassword,
         },
       );
-       return Right(CreateNewPasswordResponse.fromJson(response));
+      return Right(CreateNewPasswordResponse.fromJson(response));
     } on ServerException catch (e) {
       return left(handleServerExceptionError(e));
     } catch (e) {
@@ -117,9 +117,8 @@ class AuthApi {
 
       return Right(LoginResponse.fromJson(response));
     } on ServerException catch (e) {
-       return left(handleServerExceptionError(e));
+      return left(handleServerExceptionError(e));
     } catch (e) {
-
       return Left(
         FailureModel.fromJson({
           ApiConstants.errors: [e.toString()],
@@ -138,7 +137,7 @@ class AuthApi {
         path: ApiConstants.resendNewOtpCodeEndpoint,
         body: {ApiConstants.email: email},
       );
-       return Right(NewOtpCodeResponse.fromJson(response));
+      return Right(NewOtpCodeResponse.fromJson(response));
     } on ServerException catch (e) {
       return left(handleServerExceptionError(e));
     } catch (e) {
@@ -150,17 +149,17 @@ class AuthApi {
       );
     }
   }
+}
 
-  static FailureModel handleServerExceptionError<T>(ServerException e) {
-    Map<String, dynamic> errors;
-    if (e.data["error"] == null) {
-      errors = {
-        "error": [e.data["message"].toString()],
-        "statusCode": 504,
-      };
-    } else {
-      errors = e.data;
-    }
-    return FailureModel.fromJson(errors);
+FailureModel handleServerExceptionError<T>(ServerException e) {
+  Map<String, dynamic> errors;
+  if (e.data["error"] == null) {
+    errors = {
+      "error": [e.data["message"].toString()],
+      "statusCode": 504,
+    };
+  } else {
+    errors = e.data;
   }
+  return FailureModel.fromJson(errors);
 }

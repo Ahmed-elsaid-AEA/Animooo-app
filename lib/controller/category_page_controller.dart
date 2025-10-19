@@ -1,6 +1,11 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:animooo/core/error/failure_model.dart';
+import 'package:animooo/data/network/category_api.dart';
+import 'package:animooo/models/category_model.dart';
+import 'package:animooo/models/category_response.dart';
+import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -161,5 +166,26 @@ class CategoryPageController {
     fileImage = await ImagePickerService.pickImage(ImageSource.gallery);
     categoryFileImageInput.add(fileImage);
     if (context.mounted) Navigator.pop(context);
+  }
+
+  void onTapSaveButton() async {
+    if (categoryFormKey.currentState!.validate()) {
+      Either<FailureModel, CategoryResponse> result =
+          await CategoryApi.createNewCategory(
+            CategoryModel(
+              name: categoryNameController.text,
+              description: categoryDescriptionController.text,
+              image: fileImage!,
+            ),
+          );
+      result.fold(
+        (failure) {
+          print(failure);
+        },
+        (categoryResponse) {
+          print(categoryResponse);
+        },
+      );
+    }
   }
 }

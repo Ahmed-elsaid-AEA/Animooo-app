@@ -127,7 +127,9 @@ class _CategoryPageState extends State<CategoryPage>
                 VerticalSpace(HeightsManager.h31),
                 AppButton(
                   text: ConstsValuesManager.save,
-                  onTap: () {},
+                  onTap: () {
+                    _categoryPageController.onTapSaveButton();
+                  },
                   buttonStatusOutputStream:
                       _categoryPageController.saveButtonStatusOutPutStream,
                 ),

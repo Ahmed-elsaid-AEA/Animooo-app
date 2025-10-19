@@ -12,11 +12,11 @@ import '../../../core/resources/padding_manager.dart';
 class HomePageAnimals extends StatelessWidget {
   const HomePageAnimals({
     super.key,
-    required this.onPressedAddNewCategory,
+    required this.onPressedAddNewAnimal,
     required this.onPressedAtSeeMore,
   });
 
-  final VoidCallback onPressedAddNewCategory;
+  final VoidCallback onPressedAddNewAnimal;
   final VoidCallback onPressedAtSeeMore;
 
   @override
@@ -28,7 +28,7 @@ class HomePageAnimals extends StatelessWidget {
           padding: EdgeInsetsGeometry.symmetric(
             horizontal: PaddingManager.pw16,
           ),
-          child: _TitleAnimal(onPressedAddNewAnimal: onPressedAddNewCategory),
+          child: _TitleAnimal(onPressedAddNewAnimal: onPressedAddNewAnimal),
         ),
         VerticalSpace(HeightsManager.h13),
         ListView.separated(
