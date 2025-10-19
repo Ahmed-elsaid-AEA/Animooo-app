@@ -5,6 +5,7 @@ part 'category_response.g.dart';
 @JsonSerializable()
 class CategoryResponse {
   int statusCode;
+  @JsonKey(name: "Category")
   CategoryInfoModel category;
   String message;
 

@@ -32,6 +32,7 @@ class CategoryApi {
       String token =
           (await hiveHelper.getValue(key: ConstsValuesManager.accessToken)) ??
           "";
+print(category);
       var response = await dioService.post(
         headers: {ApiConstants.authorization: "Bearer $token"},
         path: ApiConstants.createNewCategoryEndpoint,
@@ -44,7 +45,7 @@ class CategoryApi {
           ),
         }),
       );
-      return Right(CategoryResponse.fromJson(response));
+       return Right(CategoryResponse.fromJson(response));
     } on ServerException catch (e) {
       return left(handleServerExceptionError(e));
     } catch (e) {

@@ -10,7 +10,7 @@ CategoryResponse _$CategoryResponseFromJson(Map<String, dynamic> json) =>
     CategoryResponse(
       statusCode: (json['statusCode'] as num).toInt(),
       category: CategoryInfoModel.fromJson(
-        json['category'] as Map<String, dynamic>,
+        json['Category'] as Map<String, dynamic>,
       ),
       message: json['message'] as String,
     );
@@ -18,7 +18,7 @@ CategoryResponse _$CategoryResponseFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$CategoryResponseToJson(CategoryResponse instance) =>
     <String, dynamic>{
       'statusCode': instance.statusCode,
-      'category': instance.category,
+      'Category': instance.category,
       'message': instance.message,
     };
 

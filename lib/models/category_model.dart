@@ -10,4 +10,8 @@ class CategoryModel {
     required this.description,
     required this.image,
   });
+  @override
+  String toString() {
+    return 'CategoryModel(name: $name, description: $description, image: $image)';
+  }
 }

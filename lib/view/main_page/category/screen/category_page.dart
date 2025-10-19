@@ -1,4 +1,4 @@
-
+import 'package:animooo/core/database/hive/hive_helper.dart';
 import 'package:animooo/core/resources/border_radius_manager.dart';
 import 'package:animooo/core/resources/conts_values.dart';
 import 'package:animooo/core/resources/heights_manager.dart';
@@ -128,6 +128,12 @@ class _CategoryPageState extends State<CategoryPage>
                 AppButton(
                   text: ConstsValuesManager.save,
                   onTap: () {
+                    // HiveHelper h = HiveHelper(
+                    //   ConstsValuesManager.rememberMeBoxName,
+                    // );
+                    // h.deleteValue(
+                    //   key: ConstsValuesManager.rememberMe,
+                    // );
                     _categoryPageController.onTapSaveButton();
                   },
                   buttonStatusOutputStream:

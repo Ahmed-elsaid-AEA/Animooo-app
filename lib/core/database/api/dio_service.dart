@@ -63,10 +63,10 @@ class DioService extends ApiConsumer {
       Response response = await dio.post(
         path,
         data: body,
-        queryParameters: queryParameters,options: Options(
-        headers: headers
-      )
+        queryParameters: queryParameters,
+        options: Options(headers: headers),
       );
+
 
       if (response.statusCode! >= 200 && response.statusCode! < 300) {
         //?success
