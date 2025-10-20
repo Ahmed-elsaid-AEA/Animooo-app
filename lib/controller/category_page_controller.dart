@@ -5,6 +5,7 @@ import 'package:animooo/core/error/failure_model.dart';
 import 'package:animooo/data/network/category_api.dart';
 import 'package:animooo/models/gategory/category_model.dart';
 import 'package:animooo/models/gategory/category_response.dart';
+import 'package:animooo/view/main_page/screen/main_page.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -212,6 +213,7 @@ class CategoryPageController {
   void _onSuccessCreateNewCategory(CategoryResponse r) {
     changeScreenStateLoading(ScreensStatusState.success);
     showAppSnackBar(context, r.message);
+    _goToHomeTap();
   }
 
   void _onFailureCreateNewCategory(FailureModel l) {
@@ -262,5 +264,13 @@ class CategoryPageController {
     }
 
     return errorsList.join(" , ");
+  }
+
+  void _goToHomeTap() {
+    mainPageKey.currentState?.mainPageController.onTapBottomNavigationBarItem(
+      0,
+    );
+    //TODO :: don't forget to update categories list
+
   }
 }

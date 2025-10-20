@@ -39,7 +39,7 @@ class _HomePageState extends State<HomePage> {
               },
               onPressedAtSeeMore: () {
                 _homePageController.onPressedAtSeeMore(context);
-              },
+              }, listCategoriesOutput: _homePageController.listCategoriesOutput,
             ),
             HomePageAnimals(
               onPressedAddNewAnimal: () {

@@ -58,7 +58,6 @@ class MainPageController {
     return pages[index]!;
   }
 
-
   //?constructor
   MainPageController(this.context) {
     //?init
@@ -84,6 +83,7 @@ class MainPageController {
     disposeStreams();
     //?dispose other controllers dispose method
     categoryPageController?.dispose();
+    homePageController?.dispose();
   }
 
   void disposeStreams() {
