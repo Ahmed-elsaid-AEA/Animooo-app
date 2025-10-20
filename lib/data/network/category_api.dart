@@ -26,15 +26,8 @@ class CategoryApi {
   ) async {
     try {
       DioService dioService = getIt<DioService>();
-      HiveHelper<String> hiveHelper = HiveHelper(
-        ConstsValuesManager.tokenBoxName,
-      );
-      //TODO :: Change that way to put token
-      String token =
-          (await hiveHelper.getValue(key: ConstsValuesManager.accessToken)) ??
-          "";
-       var response = await dioService.post(
-        headers: {ApiConstants.authorization: "Bearer $token"},
+
+      var response = await dioService.post(
         path: ApiConstants.createNewCategoryEndpoint,
         body: FormData.fromMap({
           ApiConstants.name: category.name,
@@ -45,7 +38,7 @@ class CategoryApi {
           ),
         }),
       );
-       return Right(CategoryResponse.fromJson(response));
+      return Right(CategoryResponse.fromJson(response));
     } on ServerException catch (e) {
       return left(handleServerExceptionError(e));
     } catch (e) {

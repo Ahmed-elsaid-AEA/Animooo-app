@@ -4,6 +4,8 @@ import 'package:animooo/core/error/server_exception.dart';
 import 'package:animooo/core/resources/conts_values.dart';
 import 'package:dio/dio.dart';
 
+import '../hive/hive_helper.dart';
+
 class DioService extends ApiConsumer {
   Dio dio;
 
@@ -12,6 +14,23 @@ class DioService extends ApiConsumer {
     dio.options.connectTimeout = Duration(seconds: 10);
     dio.options.receiveTimeout = Duration(seconds: 5);
     dio.options.sendTimeout = Duration(seconds: 10);
+    dio.interceptors.addAll([
+      InterceptorsWrapper(
+        onRequest:
+            (RequestOptions options, RequestInterceptorHandler handler) async {
+              HiveHelper<String> hiveHelper = HiveHelper(
+                ConstsValuesManager.tokenBoxName,
+              );
+              String token =
+                  (await hiveHelper.getValue(
+                    key: ConstsValuesManager.accessToken,
+                  )) ??
+                  "";
+              options.headers[ApiConstants.authorization] = "Bearer $token";
+              return handler.next(options);
+            },
+      ),
+    ]);
     //TODO.. add token and headers
   }
 
@@ -66,7 +85,6 @@ class DioService extends ApiConsumer {
         queryParameters: queryParameters,
         options: Options(headers: headers),
       );
-
 
       if (response.statusCode! >= 200 && response.statusCode! < 300) {
         //?success
