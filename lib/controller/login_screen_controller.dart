@@ -268,7 +268,7 @@ class LoginScreenController {
     //?store access token
     await hiveHelper.addValue(
       key: ConstsValuesManager.accessToken,
-      value: accessToken,
+      value: "accessToken",
     );
     //?store refresh token
     await hiveHelper.addValue(

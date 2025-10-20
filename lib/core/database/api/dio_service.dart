@@ -2,38 +2,105 @@ import 'package:animooo/core/database/api/api_constants.dart';
 import 'package:animooo/core/database/api/api_consumer.dart';
 import 'package:animooo/core/error/server_exception.dart';
 import 'package:animooo/core/resources/conts_values.dart';
+import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 
 import '../hive/hive_helper.dart';
 
 class DioService extends ApiConsumer {
-  Dio dio;
+  final Dio _dio;
 
-  DioService(this.dio) {
+  DioService(this._dio) {
     _initDio();
   }
 
   void _initDio() async {
-    dio.options.baseUrl = ApiConstants.baseUrl;
-    dio.options.connectTimeout = Duration(seconds: 10);
-    dio.options.receiveTimeout = Duration(seconds: 5);
-    dio.options.sendTimeout = Duration(seconds: 10);
+    _dio.options.baseUrl = ApiConstants.baseUrl;
+    _dio.options.connectTimeout = Duration(seconds: 10);
+    _dio.options.receiveTimeout = Duration(seconds: 5);
+    _dio.options.sendTimeout = Duration(seconds: 10);
+
+    _dio.interceptors.addAll([
+      InterceptorsWrapper(
+        onRequest: _onRequest,
+        onError: _onError,
+        onResponse: _onResponse,
+      ),
+    ]);
+  }
+
+  _onResponse(Response response, ResponseInterceptorHandler handler) async {
+    return handler.next(response);
+  }
+
+  _onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
     HiveHelper<String> hiveHelper = HiveHelper(
       ConstsValuesManager.tokenBoxName,
     );
     String token =
         (await hiveHelper.getValue(key: ConstsValuesManager.accessToken)) ?? "";
-    print(token);
-    dio.interceptors.addAll([
-      InterceptorsWrapper(
-        onRequest:
-            (RequestOptions options, RequestInterceptorHandler handler) async {
-          //hive
-              options.headers[ApiConstants.authorization] = "Bearer $token";
-              return handler.next(options);
-            },
-      ),
-    ]);
+    options.headers[ApiConstants.authorization] = "Bearer $token";
+    return handler.next(options);
+  }
+
+  _onError(DioException e, ErrorInterceptorHandler handler) async {
+    if (e.response?.statusCode == 401 || e.response?.statusCode == 400) {
+       String? accessToken = await _generateNewAccessToken();
+      if (accessToken != null) {
+        //update token
+        HiveHelper hiveHelper = HiveHelper(ConstsValuesManager.tokenBoxName);
+        await hiveHelper.addValue(
+          key: ConstsValuesManager.accessToken,
+          value: accessToken,
+        );
+        e.requestOptions.headers[ApiConstants.authorization] =
+            "Bearer $accessToken";
+        e.requestOptions.headers["retry"] = true;
+        if (e.requestOptions.data is FormData) {
+          FormData oldFormData = e.requestOptions.data as FormData;
+          final newFormData = FormData();
+          for (var field in oldFormData.fields) {
+            newFormData.fields.add(MapEntry(field.key, field.value));
+          }
+          for (var file in oldFormData.files) {
+            newFormData.files.add(MapEntry(file.key, file.value.clone()));
+          }
+          e.requestOptions.data = newFormData;
+        }
+        Response res = await _dio.fetch(e.requestOptions);
+        return handler.resolve(res);
+      } else {
+        //logout ( go to login )
+      }
+    }
+  }
+
+  Future<String?> _generateNewAccessToken() async {
+    try {
+      Dio dio = Dio();
+      dio.options.baseUrl = ApiConstants.baseUrl;
+      dio.options.connectTimeout = Duration(seconds: 10);
+      dio.options.receiveTimeout = Duration(seconds: 5);
+      dio.options.sendTimeout = Duration(seconds: 10);
+      HiveHelper<String> hiveHelper = HiveHelper(
+        ConstsValuesManager.tokenBoxName,
+      );
+      String refreshToken =
+          (await hiveHelper.getValue(key: ConstsValuesManager.refreshToken)) ??
+          "";
+      var response = await dio.post(
+        ApiConstants.refreshTokenEndPoint,
+        options: Options(headers: {ApiConstants.refreshToken: refreshToken}),
+      );
+      if (response.statusCode! >= 200 && response.statusCode! < 300) {
+        //?success
+        return response.data["access_token"];
+      } else {
+        return null;
+      }
+    } catch (e) {
+      return null;
+    }
   }
 
   @override
@@ -50,7 +117,7 @@ class DioService extends ApiConsumer {
   }) async {
     // TODO: implement get
     try {
-      Response response = await dio.get(
+      Response response = await _dio.get(
         path,
         data: body,
         queryParameters: queryParameters,
@@ -81,7 +148,7 @@ class DioService extends ApiConsumer {
     required Object body,
   }) async {
     try {
-      Response response = await dio.post(
+      Response response = await _dio.post(
         path,
         data: body,
         queryParameters: queryParameters,

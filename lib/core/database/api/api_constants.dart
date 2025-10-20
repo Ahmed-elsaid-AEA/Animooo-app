@@ -29,4 +29,8 @@ class ApiConstants {
   static const String confirmPassword = 'confirmPassword';
 
   static const String authorization = "Authorization";
+
+  static const String refreshTokenEndPoint = "/api/generateAccessToken";
+
+  static const String refreshToken = "refresh_token";
 }
