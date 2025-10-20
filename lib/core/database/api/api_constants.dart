@@ -33,4 +33,6 @@ class ApiConstants {
   static const String refreshTokenEndPoint = "/api/generateAccessToken";
 
   static const String refreshToken = "refresh_token";
+
+  static const String  getAllCategoriesEndpoint = "/api/allCategories";
 }

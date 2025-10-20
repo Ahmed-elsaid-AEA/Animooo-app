@@ -1,8 +1,10 @@
 import 'package:animooo/controller/main_page_controller.dart';
+import 'package:animooo/core/database/api/dio_service.dart';
 import 'package:animooo/core/di/get_it.dart';
 import 'package:animooo/core/functions/app_navigations.dart';
 import 'package:animooo/core/resources/conts_values.dart';
 import 'package:animooo/core/resources/routes_manager.dart';
+import 'package:animooo/data/network/category_api.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../view/main_page/screen/main_page.dart';
@@ -14,6 +16,7 @@ class HomePageController {
     //?
     print("HomePageController");
     // init();
+    getAllCategories();
   }
 
   factory HomePageController() {
@@ -45,5 +48,11 @@ class HomePageController {
     mainPageKey.currentState?.mainPageController.onTapBottomNavigationBarItem(
       3,
     );
+  }
+
+  void getAllCategories() async {
+    print("hello");
+    var result = await CategoryApi.getAllCategoriesRequest();
+    result.fold((l) => print(l), (r) => print(r));
   }
 }

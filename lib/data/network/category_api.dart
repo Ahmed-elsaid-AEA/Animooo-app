@@ -7,8 +7,9 @@ import 'package:animooo/models/auth/auth_response.dart';
 import 'package:animooo/models/auth/create_new_password_response.dart';
 import 'package:animooo/models/auth/login_response.dart';
 import 'package:animooo/models/auth/user_model.dart';
-import 'package:animooo/models/category_model.dart';
-import 'package:animooo/models/category_response.dart';
+import 'package:animooo/models/gategory/categories_model_response.dart';
+import 'package:animooo/models/gategory/category_model.dart';
+import 'package:animooo/models/gategory/category_response.dart';
 import 'package:dio/dio.dart';
 import 'package:dartz/dartz.dart';
 
@@ -39,6 +40,26 @@ class CategoryApi {
         }),
       );
       return Right(CategoryResponse.fromJson(response));
+    } on ServerException catch (e) {
+      return left(handleServerExceptionError(e));
+    } catch (e) {
+      return Left(
+        FailureModel.fromJson({
+          ApiConstants.errors: [e.toString()],
+          ApiConstants.statusCode: ApiConstants.s500,
+        }),
+      );
+    }
+  }
+
+  static Future<Either<FailureModel, CategoriesModelResponse>>
+  getAllCategoriesRequest() async {
+    try {
+      DioService dioService = getIt<DioService>();
+      var response = await dioService.get(
+        path: ApiConstants.getAllCategoriesEndpoint,
+      );
+      return Right(CategoriesModelResponse.fromJson(response));
     } on ServerException catch (e) {
       return left(handleServerExceptionError(e));
     } catch (e) {

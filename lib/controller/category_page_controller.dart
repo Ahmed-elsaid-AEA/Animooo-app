@@ -3,8 +3,8 @@ import 'dart:io';
 
 import 'package:animooo/core/error/failure_model.dart';
 import 'package:animooo/data/network/category_api.dart';
-import 'package:animooo/models/category_model.dart';
-import 'package:animooo/models/category_response.dart';
+import 'package:animooo/models/gategory/category_model.dart';
+import 'package:animooo/models/gategory/category_response.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
