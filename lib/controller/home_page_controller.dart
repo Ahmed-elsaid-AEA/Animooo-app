@@ -82,18 +82,20 @@ class HomePageController {
   void getAllCategories() async {
     var result = await CategoryApi.getAllCategoriesRequest();
     result.fold(
-      (l) => _onFailureRequestAllCategories(l),
-      (r) => _onSuccessRequestAllCategories(r),
+          (l) => _onFailureRequestAllCategories(l),
+          (r) => _onSuccessRequestAllCategories(r),
     );
   }
 
   void _onFailureRequestAllCategories(FailureModel failureModel) {}
 
   void _onSuccessRequestAllCategories(
-    CategoriesModelResponse categoriesModelResponse,
-  ) {
+      CategoriesModelResponse categoriesModelResponse,) {
     listCategories = categoriesModelResponse.categories;
-    print(listCategories);
+    updateListCategories();
+  }
+
+  void updateListCategories() {
     listCategoriesInput.add(listCategories);
   }
 }

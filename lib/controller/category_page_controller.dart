@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:animooo/controller/home_page_controller.dart';
+import 'package:animooo/core/di/get_it.dart';
 import 'package:animooo/core/error/failure_model.dart';
 import 'package:animooo/data/network/category_api.dart';
 import 'package:animooo/models/gategory/category_model.dart';
@@ -20,6 +22,7 @@ import '../core/functions/show_select_image_model_bottom_sheet.dart';
 import '../core/resources/conts_values.dart';
 
 class CategoryPageController {
+  CategoryInfoModel? _categoryInfoModel;
   //?category image
   File? categoryFileImage;
 
@@ -192,18 +195,18 @@ class CategoryPageController {
     changeScreenStateLoading(ScreensStatusState.loading);
     changeSaveButtonStatus(ButtonStatusEnum.loading);
     Either<FailureModel, CategoryResponse> result =
-        await CategoryApi.createNewCategory(
-          CategoryModel(
-            name: categoryNameController.text,
-            description: categoryDescriptionController.text,
-            image: categoryFileImage!,
-          ),
-        );
+    await CategoryApi.createNewCategory(
+      CategoryModel(
+        name: categoryNameController.text,
+        description: categoryDescriptionController.text,
+        image: categoryFileImage!,
+      ),
+    );
     result.fold(
-      (l) {
+          (l) {
         _onFailureCreateNewCategory(l);
       },
-      (r) {
+          (r) {
         _onSuccessCreateNewCategory(r);
       },
     );
@@ -212,13 +215,21 @@ class CategoryPageController {
 
   void _onSuccessCreateNewCategory(CategoryResponse r) {
     changeScreenStateLoading(ScreensStatusState.success);
+    _categoryInfoModel = r.category;
+    _clearForm();
     showAppSnackBar(context, r.message);
     _goToHomeTap();
+  }
+  void _clearForm() {
+    categoryNameController.clear();
+    categoryDescriptionController.clear();
+    categoryFileImageInput.add(null);
+    changeSaveButtonStatus(ButtonStatusEnum.disabled);
   }
 
   void _onFailureCreateNewCategory(FailureModel l) {
     changeScreenStateLoading(ScreensStatusState.failure);
-    String message = _filterErrors(l.errors);
+     String message = _filterErrors(l.errors);
     showAppSnackBar(
       context,
       message,
@@ -270,7 +281,10 @@ class CategoryPageController {
     mainPageKey.currentState?.mainPageController.onTapBottomNavigationBarItem(
       0,
     );
-    //TODO :: don't forget to update categories list
+    HomePageController homePageController = HomePageController();
+    homePageController.listCategories.add(_categoryInfoModel!);
+    homePageController.updateListCategories();
+
 
   }
 }

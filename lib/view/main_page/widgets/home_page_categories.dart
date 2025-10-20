@@ -46,7 +46,6 @@ class HomePageCategories extends StatelessWidget {
             builder: (context, snapshot) => ListView.separated(
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) {
-                print(snapshot.data![index].imagePath);
                 return snapshot.connectionState == ConnectionState.waiting
                     ? Center(child: CircularProgressIndicator())
                     : snapshot.data == null
@@ -96,10 +95,7 @@ class HomePageCategories extends StatelessWidget {
                                   radius: 32,
                                   backgroundImage: NetworkImage(
                                     //TODO :: add cashNetworkImage
-                                    snapshot.data![index].imagePath.replaceAll(
-                                      "localhost",
-                                      "192.168.1.100",
-                                    ),
+                                    snapshot.data![index].imagePath,
                                   ),
                                 ),
                               ),
