@@ -1,77 +1,73 @@
 import 'package:hive_flutter/hive_flutter.dart';
+
 class HiveHelper<T> {
   String boxName;
+  bool _isLocked = false;
 
   HiveHelper(this.boxName);
 
+  Future<R> _runSafely<R>(Future<R> Function(Box<T>) action) async {
+    while (_isLocked) {
+      //block code
+      await Future.delayed(const Duration(milliseconds: 100));
+    }
+    _isLocked = true;
+    late Box<T> box;
+    try {
+      box = await _openBox();
+      final result = await action(box);
+      return result;
+    } catch (e) {
+      rethrow;
+    } finally {
+      await _closeBox(box);
+      _isLocked = false;
+    }
+  }
+
   //?OPEN BOX
   Future<Box<T>> _openBox() async {
+    if (Hive.isBoxOpen(boxName)) {
+      return Hive.box<T>(boxName);
+    }
     return await Hive.openBox<T>(boxName);
   } //?OPEN BOX
 
   Future<void> _closeBox(Box<T> box) async {
-    return await box.close();
+    if (Hive.isBoxOpen(boxName)) {
+      return await box.close();
+    }
   }
 
   Future<void> addValue({required String key, required T value}) async {
-    Box<T> box = await _openBox();
-    try {
-      await box.put(key, value);
-    } finally {
-      await _closeBox(box);
-    }
+    await _runSafely((box) async => await box.put(key, value));
   }
 
   Future<bool> updateValue({required String key, required T value}) async {
-    Box<T> box = await _openBox();
-    bool founded;
-    try {
-      founded = box.containsKey(key);
-      if (founded == true) {
+    return await _runSafely((box) async {
+      if (box.containsKey(key)) {
         await box.put(key, value);
+        return true;
       }
-    } finally {
-      await _closeBox(box);
-    }
-    return founded;
+      return false;
+    });
   }
 
   Future<bool> deleteValue({required String key}) async {
-    Box<T> box = await _openBox();
-    bool founded;
-    try {
-      founded = box.containsKey(key);
-      if (founded == true) {
+    return await _runSafely((box) async {
+      if (box.containsKey(key)) {
         await box.delete(key);
+        return true;
       }
-    } finally {
-      await _closeBox(box);
-    }
-    return founded;
+      return false;
+    });
   }
 
   Future<T?> getValue({required String key}) async {
-    Box<T> box = await _openBox();
-    T? data;
-
-    try {
-      data = box.get(key);
-    } finally {
-      await _closeBox(box);
-    }
-    return data;
+    return await _runSafely((box) async => box.get(key));
   }
 
   Future<Map<dynamic, T>> getAllData() async {
-    Box<T> box = await _openBox();
-
-    Map<dynamic, T> data;
-
-    try {
-      data = box.toMap();
-    } finally {
-      await _closeBox(box);
-    }
-    return data;
+    return await _runSafely((box) async => box.toMap());
   }
 }

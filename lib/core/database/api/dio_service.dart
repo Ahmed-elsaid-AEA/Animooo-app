@@ -10,28 +10,30 @@ class DioService extends ApiConsumer {
   Dio dio;
 
   DioService(this.dio) {
+    _initDio();
+  }
+
+  void _initDio() async {
     dio.options.baseUrl = ApiConstants.baseUrl;
     dio.options.connectTimeout = Duration(seconds: 10);
     dio.options.receiveTimeout = Duration(seconds: 5);
     dio.options.sendTimeout = Duration(seconds: 10);
+    HiveHelper<String> hiveHelper = HiveHelper(
+      ConstsValuesManager.tokenBoxName,
+    );
+    String token =
+        (await hiveHelper.getValue(key: ConstsValuesManager.accessToken)) ?? "";
+    print(token);
     dio.interceptors.addAll([
       InterceptorsWrapper(
         onRequest:
             (RequestOptions options, RequestInterceptorHandler handler) async {
-              HiveHelper<String> hiveHelper = HiveHelper(
-                ConstsValuesManager.tokenBoxName,
-              );
-              String token =
-                  (await hiveHelper.getValue(
-                    key: ConstsValuesManager.accessToken,
-                  )) ??
-                  "";
+          //hive
               options.headers[ApiConstants.authorization] = "Bearer $token";
               return handler.next(options);
             },
       ),
     ]);
-    //TODO.. add token and headers
   }
 
   @override
