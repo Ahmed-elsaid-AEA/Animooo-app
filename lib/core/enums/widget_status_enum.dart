@@ -1,4 +1,4 @@
-enum ButtonStatusEnum {
+enum WidgetStatusEnum {
   enabled,
   disabled,
   loading,

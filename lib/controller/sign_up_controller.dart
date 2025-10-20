@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:animooo/core/di/services/internet_checker_service.dart';
-import 'package:animooo/core/enums/button_status_enum.dart';
+import 'package:animooo/core/enums/widget_status_enum.dart';
 import 'package:animooo/core/enums/select_image_status.dart';
 import 'package:animooo/core/error/failure_model.dart';
 import 'package:animooo/core/functions/app_navigations.dart';
@@ -27,7 +27,7 @@ class SignUpController {
   File? fileImage;
   SelectImageStatus selectImageStatus = SelectImageStatus.normal;
 
-  ButtonStatusEnum signUpButtonStatus = ButtonStatusEnum.disabled;
+  WidgetStatusEnum signUpButtonStatus = WidgetStatusEnum.disabled;
   ScreensStatusState screenState = ScreensStatusState.initial;
 
   late GlobalKey<FormState> formKey;
@@ -55,9 +55,9 @@ class SignUpController {
   late StreamController<bool> visibleConfirmPasswordController;
 
   //? button status stream
-  late Stream<ButtonStatusEnum?> signUpButtonStatusOutPutStream;
-  late Sink<ButtonStatusEnum?> signUpButtonStatusInput;
-  late StreamController<ButtonStatusEnum?> signUpButtonStatusController;
+  late Stream<WidgetStatusEnum?> signUpButtonStatusOutPutStream;
+  late Sink<WidgetStatusEnum?> signUpButtonStatusInput;
+  late StreamController<WidgetStatusEnum?> signUpButtonStatusController;
 
   //?stream list of password rules
   late Stream<List<PasswordRulesModel>> listPasswordRulesOutPutStream;
@@ -117,7 +117,7 @@ class SignUpController {
         visibleConfirmPasswordController.stream;
     visibleConfirmPasswordInput = visibleConfirmPasswordController.sink;
     //?init stream of sign up button status
-    signUpButtonStatusController = StreamController<ButtonStatusEnum?>();
+    signUpButtonStatusController = StreamController<WidgetStatusEnum?>();
     signUpButtonStatusOutPutStream = signUpButtonStatusController.stream;
     signUpButtonStatusInput = signUpButtonStatusController.sink;
 
@@ -291,9 +291,9 @@ class SignUpController {
     if (formKey.currentState!.validate() &&
         selectImageStatus == SelectImageStatus.imageSelected) {
       //? make api
-      signUpButtonStatus = ButtonStatusEnum.enabled;
+      signUpButtonStatus = WidgetStatusEnum.enabled;
     } else {
-      signUpButtonStatus = ButtonStatusEnum.disabled;
+      signUpButtonStatus = WidgetStatusEnum.disabled;
     }
     changeSignUpButtonStatus();
   }

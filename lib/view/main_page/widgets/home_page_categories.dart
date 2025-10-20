@@ -1,3 +1,4 @@
+import 'package:animooo/core/enums/widget_status_enum.dart';
 import 'package:animooo/core/resources/assets_values_manager.dart';
 import 'package:animooo/core/resources/border_radius_manager.dart';
 import 'package:animooo/core/resources/colors_manager.dart';
@@ -18,11 +19,13 @@ class HomePageCategories extends StatelessWidget {
     required this.onPressedAddNewCategory,
     required this.onPressedAtSeeMore,
     required this.listCategoriesOutput,
+    required this.sectionCategoriesStatusOutput,
   });
 
   final VoidCallback onPressedAddNewCategory;
   final VoidCallback onPressedAtSeeMore;
   final Stream<List<CategoryInfoModel>> listCategoriesOutput;
+  final Stream<WidgetStatusEnum> sectionCategoriesStatusOutput;
 
   @override
   Widget build(BuildContext context) {
@@ -40,100 +43,120 @@ class HomePageCategories extends StatelessWidget {
         VerticalSpace(HeightsManager.h22),
         SizedBox(
           height: HeightsManager.h82,
-          child: StreamBuilder<List<CategoryInfoModel>>(
-            stream: listCategoriesOutput,
-            initialData: [],
-            builder: (context, snapshot) => ListView.separated(
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) {
-                return snapshot.connectionState == ConnectionState.waiting
-                    ? Center(child: CircularProgressIndicator())
-                    : snapshot.data == null
-                    ? SizedBox()
-                    // : index == 0
-                    // ? HorizontalSpace(WidthManager.w16)
-                    // : index == snapshot.data!.length - 1
-                    // ? Container(
-                    //     alignment: Alignment.center,
-                    //     margin: EdgeInsets.only(right: 30, bottom: 20),
-                    //     child: MaterialButton(
-                    //       onPressed: onPressedAtSeeMore,
-                    //       color: ColorManager.kGreenColor,
-                    //       padding: EdgeInsets.zero,
-                    //       shape: RoundedRectangleBorder(
-                    //         borderRadius: BorderRadius.all(
-                    //           Radius.circular(BorderRadiusManager.br10),
-                    //         ),
-                    //       ),
-                    //       child: Text(
-                    //         ConstsValuesManager.seeMore,
-                    //         style: TextStyle(
-                    //           fontSize: FontSizeManager.s12,
-                    //           fontFamily: FontsManager.otamaEpFontFamily,
-                    //           color: ColorManager.kWhiteColor,
-                    //         ),
-                    //       ),
-                    //     ),
-                    //   )
-                    : Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        //TODO ::Solve the problem of the overflow
-                        /*
-                                *
-                  A RenderFlex overflowed by 30 pixels on the bottom.
-
-                  The relevant error-causing widget was:
-                    Column Column:file:///G:/udemy/flutter%20Intermediate%20%20level/animooo/lib/view/main_page/widgets/home_page_categories.dart:46:19
-                  */
-                        children: [
-                          Stack(
-                            clipBehavior: Clip.none,
-                            children: [
-                              Container(
-                                color: Colors.red,
-                                child: CircleAvatar(
-                                  radius: 32,
-                                  backgroundImage: NetworkImage(
-                                    //TODO :: add cashNetworkImage
-                                    snapshot.data![index].imagePath,
-                                  ),
-                                ),
-                              ),
-                              Positioned(
-                                top: 0,
-                                right: -3,
-                                child: Badge.count(
-                                  maxCount: 9,
-                                  count: 10,
-                                  textStyle: TextStyle(
-                                    fontSize: FontSizeManager.s12,
-                                    fontFamily: FontsManager.poppinsFontFamily,
-                                  ),
-                                  padding: EdgeInsets.all(4),
-                                  backgroundColor: ColorManager.kPrimaryColor,
-                                ),
-                              ),
-                            ],
-                          ),
-                          Text(
-                            snapshot.data![index].name,
-                            style: TextStyle(
-                              fontSize: FontSizeManager.s16,
-                              fontWeight: FontWeight.w600,
-                              fontFamily: FontsManager.otamaEpFontFamily,
-                            ),
-                          ),
-                        ],
-                      );
-              },
-              separatorBuilder: (context, index) =>
-                  HorizontalSpace(WidthManager.w20),
-              itemCount: snapshot.data!.length, //+ 2,
-            ),
+          child: StreamBuilder<WidgetStatusEnum>(
+            stream: sectionCategoriesStatusOutput,
+            builder: (context, snapShotStatus) {
+              print(snapShotStatus.data);
+              return snapShotStatus.data == WidgetStatusEnum.loading
+                  ? FlutterLogo()
+                  : Container(
+                color: Colors.red,
+                    child: HaveItemCategories(
+                        listCategoriesOutput: listCategoriesOutput,
+                      ),
+                  );
+            },
           ),
         ),
         VerticalSpace(HeightsManager.h22),
       ],
+    );
+  }
+}
+
+class HaveItemCategories extends StatelessWidget {
+  const HaveItemCategories({super.key, required this.listCategoriesOutput});
+
+  final Stream<List<CategoryInfoModel>> listCategoriesOutput;
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<List<CategoryInfoModel>>(
+      stream: listCategoriesOutput,
+      initialData: [],
+      builder: (context, snapshot) => ListView.separated(
+        scrollDirection: Axis.horizontal,
+        itemBuilder: (context, index) {
+          return snapshot.connectionState == ConnectionState.waiting
+              ? Center(child: CircularProgressIndicator())
+              : snapshot.data == null
+              ? SizedBox()
+              // : index == 0
+              // ? HorizontalSpace(WidthManager.w16)
+              // : index == snapshot.data!.length - 1
+              // ? Container(
+              //     alignment: Alignment.center,
+              //     margin: EdgeInsets.only(right: 30, bottom: 20),
+              //     child: MaterialButton(
+              //       onPressed: onPressedAtSeeMore,
+              //       color: ColorManager.kGreenColor,
+              //       padding: EdgeInsets.zero,
+              //       shape: RoundedRectangleBorder(
+              //         borderRadius: BorderRadius.all(
+              //           Radius.circular(BorderRadiusManager.br10),
+              //         ),
+              //       ),
+              //       child: Text(
+              //         ConstsValuesManager.seeMore,
+              //         style: TextStyle(
+              //           fontSize: FontSizeManager.s12,
+              //           fontFamily: FontsManager.otamaEpFontFamily,
+              //           color: ColorManager.kWhiteColor,
+              //         ),
+              //       ),
+              //     ),
+              //   )
+              : Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  //TODO ::Solve the problem of the overflow
+                  /*
+                    *
+      A RenderFlex overflowed by 30 pixels on the bottom.
+
+      The relevant error-causing widget was:
+        Column Column:file:///G:/udemy/flutter%20Intermediate%20%20level/animooo/lib/view/main_page/widgets/home_page_categories.dart:46:19
+      */
+                  children: [
+                    Stack(
+                      clipBehavior: Clip.none,
+                      children: [
+                        CircleAvatar(
+                          radius: 32,
+                          backgroundImage: NetworkImage(
+                            //TODO :: add cashNetworkImage
+                            snapshot.data![index].imagePath,
+                          ),
+                        ),
+                        Positioned(
+                          top: 0,
+                          right: -3,
+                          child: Badge.count(
+                            maxCount: 9,
+                            count: 10,
+                            textStyle: TextStyle(
+                              fontSize: FontSizeManager.s12,
+                              fontFamily: FontsManager.poppinsFontFamily,
+                            ),
+                            padding: EdgeInsets.all(4),
+                            backgroundColor: ColorManager.kPrimaryColor,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Text(
+                      snapshot.data![index].name,
+                      style: TextStyle(
+                        fontSize: FontSizeManager.s16,
+                        fontWeight: FontWeight.w600,
+                        fontFamily: FontsManager.otamaEpFontFamily,
+                      ),
+                    ),
+                  ],
+                );
+        },
+        separatorBuilder: (context, index) => HorizontalSpace(WidthManager.w20),
+        itemCount: snapshot.data!.length, //+ 2,
+      ),
     );
   }
 }

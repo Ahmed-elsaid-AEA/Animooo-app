@@ -11,7 +11,7 @@ import 'package:animooo/models/auth/login_response.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/cupertino.dart';
 
-import '../core/enums/button_status_enum.dart';
+import '../core/enums/widget_status_enum.dart';
 import '../core/enums/screen_status_state.dart';
 import '../core/functions/app_scaffold_massanger.dart';
 import '../core/resources/routes_manager.dart';
@@ -19,7 +19,7 @@ import '../core/resources/routes_manager.dart';
 class LoginScreenController {
   GlobalKey<FormState> loginFormKey = GlobalKey<FormState>();
   bool rememberMe = false;
-  ButtonStatusEnum loginButtonStatus = ButtonStatusEnum.disabled;
+  WidgetStatusEnum loginButtonStatus = WidgetStatusEnum.disabled;
   ScreensStatusState screenState = ScreensStatusState.initial;
   bool eyeVisible = false;
 
@@ -36,9 +36,9 @@ class LoginScreenController {
   late Stream<bool> eyeVisibleOutPutStream;
 
   //? button status stream
-  late Stream<ButtonStatusEnum> loginButtonStatusOutPutStream;
-  late Sink<ButtonStatusEnum> loginButtonStatusInput;
-  late StreamController<ButtonStatusEnum> loginButtonStatusController;
+  late Stream<WidgetStatusEnum> loginButtonStatusOutPutStream;
+  late Sink<WidgetStatusEnum> loginButtonStatusInput;
+  late StreamController<WidgetStatusEnum> loginButtonStatusController;
 
   //? screen state stream
   late Stream<bool> loadingScreenStateOutPutStream;
@@ -64,7 +64,7 @@ class LoginScreenController {
     //?init textControllers
     initTextControllers();
     //?change button status
-    changeLoginButtonStatus(ButtonStatusEnum.disabled);
+    changeLoginButtonStatus(WidgetStatusEnum.disabled);
     //?change remember me
     changeRememberMe();
   }
@@ -73,7 +73,7 @@ class LoginScreenController {
     rememberMeInput.add(rememberMe);
   }
 
-  void changeLoginButtonStatus(ButtonStatusEnum status) {
+  void changeLoginButtonStatus(WidgetStatusEnum status) {
     loginButtonStatusInput.add(status);
   }
 
@@ -90,7 +90,7 @@ class LoginScreenController {
     eyeInput = eyeStreamController.sink;
     eyeVisibleOutPutStream = eyeStreamController.stream;
     //button status stream
-    loginButtonStatusController = StreamController<ButtonStatusEnum>();
+    loginButtonStatusController = StreamController<WidgetStatusEnum>();
     loginButtonStatusInput = loginButtonStatusController.sink;
     loginButtonStatusOutPutStream = loginButtonStatusController.stream
         .asBroadcastStream();
@@ -154,9 +154,9 @@ class LoginScreenController {
 
   void onChangeTextFiled(String value) {
     if (loginFormKey.currentState!.validate()) {
-      changeLoginButtonStatus(ButtonStatusEnum.enabled);
+      changeLoginButtonStatus(WidgetStatusEnum.enabled);
     } else {
-      changeLoginButtonStatus(ButtonStatusEnum.disabled);
+      changeLoginButtonStatus(WidgetStatusEnum.disabled);
     }
   }
 

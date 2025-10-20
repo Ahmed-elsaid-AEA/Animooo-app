@@ -1,4 +1,4 @@
-import 'package:animooo/core/enums/button_status_enum.dart';
+import 'package:animooo/core/enums/widget_status_enum.dart';
 import 'package:animooo/core/resources/heights_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -28,16 +28,16 @@ class AppButton extends StatelessWidget {
   final double? height;
   final double? fontSize;
   final BorderRadius? borderRadius;
-  final Stream<ButtonStatusEnum?>? buttonStatusOutputStream;
+  final Stream<WidgetStatusEnum?>? buttonStatusOutputStream;
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<ButtonStatusEnum?>(
+    return StreamBuilder<WidgetStatusEnum?>(
       stream: buttonStatusOutputStream,
       builder: (context, snapshot) => ElevatedButton(
         onPressed:
-            snapshot.data == ButtonStatusEnum.loading ||
-                snapshot.data == ButtonStatusEnum.disabled
+            snapshot.data == WidgetStatusEnum.loading ||
+                snapshot.data == WidgetStatusEnum.disabled
             ? null
             : onTap,
         style: ElevatedButton.styleFrom(
@@ -49,7 +49,7 @@ class AppButton extends StatelessWidget {
                 borderRadius ?? BorderRadius.circular(BorderRadiusManager.br5),
           ),
         ),
-        child: snapshot.data == ButtonStatusEnum.loading
+        child: snapshot.data == WidgetStatusEnum.loading
             ? Center(
                 child: CupertinoActivityIndicator(
                   color: ColorManager.kPrimaryColor,

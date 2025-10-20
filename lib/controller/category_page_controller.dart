@@ -13,7 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../core/di/services/internet_checker_service.dart';
-import '../core/enums/button_status_enum.dart';
+import '../core/enums/widget_status_enum.dart';
 import '../core/enums/screen_status_state.dart';
 import '../core/enums/select_image_status.dart';
 import '../core/functions/app_scaffold_massanger.dart';
@@ -27,7 +27,7 @@ class CategoryPageController {
   File? categoryFileImage;
 
   //?save button status
-  ButtonStatusEnum saveButtonStatus = ButtonStatusEnum.disabled;
+  WidgetStatusEnum saveButtonStatus = WidgetStatusEnum.disabled;
 
   //?screen state
   ScreensStatusState screenState = ScreensStatusState.initial;
@@ -51,9 +51,9 @@ class CategoryPageController {
   late StreamController<File?> categoryFileImageController;
 
   //? save button status stream
-  late Stream<ButtonStatusEnum?> saveButtonStatusOutPutStream;
-  late Sink<ButtonStatusEnum?> saveButtonStatusInput;
-  late StreamController<ButtonStatusEnum?> saveButtonStatusController;
+  late Stream<WidgetStatusEnum?> saveButtonStatusOutPutStream;
+  late Sink<WidgetStatusEnum?> saveButtonStatusInput;
+  late StreamController<WidgetStatusEnum?> saveButtonStatusController;
 
   //?stream of loading screen state
   late Stream<bool> loadingScreenStateOutPutStream;
@@ -77,7 +77,7 @@ class CategoryPageController {
   //   init();
   // }
 
-  void changeSaveButtonStatus(ButtonStatusEnum status) {
+  void changeSaveButtonStatus(WidgetStatusEnum status) {
     saveButtonStatus = status;
     saveButtonStatusInput.add(status);
   }
@@ -89,7 +89,7 @@ class CategoryPageController {
     initStreams();
     //?change save button status
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      changeSaveButtonStatus(ButtonStatusEnum.disabled);
+      changeSaveButtonStatus(WidgetStatusEnum.disabled);
     });
   }
 
@@ -106,7 +106,7 @@ class CategoryPageController {
         .asBroadcastStream();
     categoryFileImageInput = categoryFileImageController.sink;
     //?init save button status stream
-    saveButtonStatusController = StreamController<ButtonStatusEnum?>();
+    saveButtonStatusController = StreamController<WidgetStatusEnum?>();
     saveButtonStatusOutPutStream = saveButtonStatusController.stream
         .asBroadcastStream();
     saveButtonStatusInput = saveButtonStatusController.sink;
@@ -138,9 +138,9 @@ class CategoryPageController {
 
   void checkValidateForm() {
     if (categoryFormKey.currentState!.validate()) {
-      changeSaveButtonStatus(ButtonStatusEnum.enabled);
+      changeSaveButtonStatus(WidgetStatusEnum.enabled);
     } else {
-      changeSaveButtonStatus(ButtonStatusEnum.disabled);
+      changeSaveButtonStatus(WidgetStatusEnum.disabled);
     }
   }
 
@@ -193,7 +193,7 @@ class CategoryPageController {
   Future<void> _requestCreateNewCategory() async {
     //loading
     changeScreenStateLoading(ScreensStatusState.loading);
-    changeSaveButtonStatus(ButtonStatusEnum.loading);
+    changeSaveButtonStatus(WidgetStatusEnum.loading);
     Either<FailureModel, CategoryResponse> result =
     await CategoryApi.createNewCategory(
       CategoryModel(
@@ -210,7 +210,7 @@ class CategoryPageController {
         _onSuccessCreateNewCategory(r);
       },
     );
-    changeSaveButtonStatus(ButtonStatusEnum.enabled);
+    changeSaveButtonStatus(WidgetStatusEnum.enabled);
   }
 
   void _onSuccessCreateNewCategory(CategoryResponse r) {
@@ -224,7 +224,7 @@ class CategoryPageController {
     categoryNameController.clear();
     categoryDescriptionController.clear();
     categoryFileImageInput.add(null);
-    changeSaveButtonStatus(ButtonStatusEnum.disabled);
+    changeSaveButtonStatus(WidgetStatusEnum.disabled);
   }
 
   void _onFailureCreateNewCategory(FailureModel l) {

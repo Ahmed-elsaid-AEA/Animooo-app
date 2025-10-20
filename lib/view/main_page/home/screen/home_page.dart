@@ -27,27 +27,33 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            HomePageAppBar(),
-            VerticalSpace(HeightsManager.h18),
-            HomePageCategories(
-              onPressedAddNewCategory: () {
-                _homePageController.goToCategoryTapPage();
-              },
-              onPressedAtSeeMore: () {
-                _homePageController.onPressedAtSeeMore(context);
-              }, listCategoriesOutput: _homePageController.listCategoriesOutput,
-            ),
-            HomePageAnimals(
-              onPressedAddNewAnimal: () {
-                _homePageController.goToAnimalTapPage();
-              },
-              onPressedAtSeeMore: () {},
-            ),
-          ],
+      child: RefreshIndicator.adaptive(
+        onRefresh: _homePageController.onRefresh,
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              HomePageAppBar(),
+              VerticalSpace(HeightsManager.h18),
+              HomePageCategories(
+                sectionCategoriesStatusOutput:
+                    _homePageController.sectionCategoriesStatusOutput,
+                onPressedAddNewCategory: () {
+                  _homePageController.goToCategoryTapPage();
+                },
+                onPressedAtSeeMore: () {
+                  _homePageController.onPressedAtSeeMore(context);
+                },
+                listCategoriesOutput: _homePageController.listCategoriesOutput,
+              ),
+              HomePageAnimals(
+                onPressedAddNewAnimal: () {
+                  _homePageController.goToAnimalTapPage();
+                },
+                onPressedAtSeeMore: () {},
+              ),
+            ],
+          ),
         ),
       ),
     );

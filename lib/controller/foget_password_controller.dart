@@ -3,21 +3,21 @@ import 'dart:async';
 import 'package:animooo/core/functions/app_navigations.dart';
 import 'package:flutter/material.dart';
 
-import '../core/enums/button_status_enum.dart';
+import '../core/enums/widget_status_enum.dart';
 import '../core/resources/conts_values.dart';
 import '../core/resources/routes_manager.dart';
 
 class ForgetPasswordController {
   GlobalKey<FormState> forgetPasswordFormKey = GlobalKey<FormState>();
-  ButtonStatusEnum loginButtonStatus = ButtonStatusEnum.disabled;
+  WidgetStatusEnum loginButtonStatus = WidgetStatusEnum.disabled;
 
   //?textControllers
   late TextEditingController emailController;
 
   //? button status stream
-  late Stream<ButtonStatusEnum> sendCodeButtonStatusOutPutStream;
-  late Sink<ButtonStatusEnum> sendCodeButtonStatusInput;
-  late StreamController<ButtonStatusEnum> sendCodeButtonStatusController;
+  late Stream<WidgetStatusEnum> sendCodeButtonStatusOutPutStream;
+  late Sink<WidgetStatusEnum> sendCodeButtonStatusInput;
+  late StreamController<WidgetStatusEnum> sendCodeButtonStatusController;
 
   ForgetPasswordController() {
     init();
@@ -29,12 +29,12 @@ class ForgetPasswordController {
     //?init textControllers
     initTextControllers();
     //?change button status
-    changeSendCodeButtonStatus(ButtonStatusEnum.disabled);
+    changeSendCodeButtonStatus(WidgetStatusEnum.disabled);
   }
 
   void initControllers() {
     //send code button status stream
-    sendCodeButtonStatusController = StreamController<ButtonStatusEnum>();
+    sendCodeButtonStatusController = StreamController<WidgetStatusEnum>();
     sendCodeButtonStatusInput = sendCodeButtonStatusController.sink;
     sendCodeButtonStatusOutPutStream = sendCodeButtonStatusController.stream;
   }
@@ -44,7 +44,7 @@ class ForgetPasswordController {
     emailController = TextEditingController();
   }
 
-  void changeSendCodeButtonStatus(ButtonStatusEnum status) {
+  void changeSendCodeButtonStatus(WidgetStatusEnum status) {
     sendCodeButtonStatusInput.add(status);
   }
 
@@ -61,9 +61,9 @@ class ForgetPasswordController {
 
   void onChangedTextField(String value) {
     if (forgetPasswordFormKey.currentState!.validate()) {
-      changeSendCodeButtonStatus(ButtonStatusEnum.enabled);
+      changeSendCodeButtonStatus(WidgetStatusEnum.enabled);
     } else {
-      changeSendCodeButtonStatus(ButtonStatusEnum.disabled);
+      changeSendCodeButtonStatus(WidgetStatusEnum.disabled);
     }
   }
 

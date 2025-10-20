@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:animooo/core/di/services/internet_checker_service.dart';
-import 'package:animooo/core/enums/button_status_enum.dart';
+import 'package:animooo/core/enums/widget_status_enum.dart';
 import 'package:animooo/core/error/failure_model.dart';
 import 'package:animooo/core/functions/app_navigations.dart';
 import 'package:animooo/core/functions/app_scaffold_massanger.dart';
@@ -43,9 +43,9 @@ class CreateNewPasswordController {
   late Stream<bool> visibleConfirmPasswordOutPutStream;
 
   //?create new password button
-  late StreamController<ButtonStatusEnum> submitButtonStreamController;
-  late Sink<ButtonStatusEnum> submitButtonInput;
-  late Stream<ButtonStatusEnum> submitButtonOutPutStream;
+  late StreamController<WidgetStatusEnum> submitButtonStreamController;
+  late Sink<WidgetStatusEnum> submitButtonInput;
+  late Stream<WidgetStatusEnum> submitButtonOutPutStream;
 
   //?loading screen
   late StreamController<bool> loadingScreenOutputStream;
@@ -76,7 +76,7 @@ class CreateNewPasswordController {
     //?init controller of streams
     initStreams();
     //?change button status
-    changeSubmitButtonStatus(ButtonStatusEnum.disabled);
+    changeSubmitButtonStatus(WidgetStatusEnum.disabled);
   }
 
   void initTextControllers() {
@@ -96,7 +96,7 @@ class CreateNewPasswordController {
         visibleConfirmPasswordStreamController.stream;
     visibleConfirmPasswordInput = visibleConfirmPasswordStreamController.sink;
     //?init stream of submit button
-    submitButtonStreamController = StreamController<ButtonStatusEnum>();
+    submitButtonStreamController = StreamController<WidgetStatusEnum>();
     submitButtonOutPutStream = submitButtonStreamController.stream;
     submitButtonInput = submitButtonStreamController.sink;
     //?init stream of loading screen
@@ -143,15 +143,15 @@ class CreateNewPasswordController {
     visibleConfirmPasswordInput.add(eyeVisibleConfirmPassword);
   }
 
-  void changeSubmitButtonStatus(ButtonStatusEnum status) {
+  void changeSubmitButtonStatus(WidgetStatusEnum status) {
     submitButtonInput.add(status);
   }
 
   void onChangedTextField(String value) {
     if (formKey.currentState!.validate()) {
-      changeSubmitButtonStatus(ButtonStatusEnum.enabled);
+      changeSubmitButtonStatus(WidgetStatusEnum.enabled);
     } else {
-      changeSubmitButtonStatus(ButtonStatusEnum.disabled);
+      changeSubmitButtonStatus(WidgetStatusEnum.disabled);
     }
   }
 

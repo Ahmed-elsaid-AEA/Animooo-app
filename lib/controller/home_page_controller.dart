@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:animooo/controller/main_page_controller.dart';
 import 'package:animooo/core/database/api/dio_service.dart';
 import 'package:animooo/core/di/get_it.dart';
+import 'package:animooo/core/enums/widget_status_enum.dart';
 import 'package:animooo/core/error/failure_model.dart';
 import 'package:animooo/core/functions/app_navigations.dart';
 import 'package:animooo/core/resources/conts_values.dart';
@@ -32,6 +33,10 @@ class HomePageController {
   late StreamController<List<CategoryInfoModel>> listCategoriesController;
   List<CategoryInfoModel> listCategories = [];
   late Sink<List<CategoryInfoModel>> listCategoriesInput;
+  WidgetStatusEnum listCategoriesStatus = WidgetStatusEnum.enabled;
+  late Sink<WidgetStatusEnum> sectionCategoriesStatusInput;
+  late Stream<WidgetStatusEnum> sectionCategoriesStatusOutput;
+  late StreamController<WidgetStatusEnum> sectionCategoriesStatusController;
 
   void init() {
     _initStreams();
@@ -40,12 +45,20 @@ class HomePageController {
   void _initStreams() {
     listCategoriesController = StreamController<List<CategoryInfoModel>>();
     listCategoriesInput = listCategoriesController.sink;
-    listCategoriesOutput = listCategoriesController.stream;
+    listCategoriesOutput = listCategoriesController.stream.asBroadcastStream();
+    //?init stream of list categories status
+    sectionCategoriesStatusController = StreamController<WidgetStatusEnum>();
+    sectionCategoriesStatusInput = sectionCategoriesStatusController.sink;
+    sectionCategoriesStatusOutput = sectionCategoriesStatusController.stream
+        .asBroadcastStream();
   }
 
   void _disposeStreams() {
     listCategoriesController.close();
     listCategoriesInput.close();
+    //?dispose stream of list categories status
+    sectionCategoriesStatusController.close();
+    sectionCategoriesStatusInput.close();
   }
 
   void dispose() {
@@ -79,23 +92,37 @@ class HomePageController {
     );
   }
 
-  void getAllCategories() async {
+  Future<void> getAllCategories() async {
+    _updateListCategoriesStatus(WidgetStatusEnum.loading);
     var result = await CategoryApi.getAllCategoriesRequest();
     result.fold(
-          (l) => _onFailureRequestAllCategories(l),
-          (r) => _onSuccessRequestAllCategories(r),
+      (l) => _onFailureRequestAllCategories(l),
+      (r) => _onSuccessRequestAllCategories(r),
     );
+    _updateListCategoriesStatus(WidgetStatusEnum.enabled);
+  }
+
+  void _updateListCategoriesStatus(WidgetStatusEnum widgetStatusEnum) {
+    listCategoriesStatus = widgetStatusEnum;
+    sectionCategoriesStatusInput.add(listCategoriesStatus);
   }
 
   void _onFailureRequestAllCategories(FailureModel failureModel) {}
 
   void _onSuccessRequestAllCategories(
-      CategoriesModelResponse categoriesModelResponse,) {
+    CategoriesModelResponse categoriesModelResponse,
+  ) {
     listCategories = categoriesModelResponse.categories;
     updateListCategories();
   }
 
   void updateListCategories() {
     listCategoriesInput.add(listCategories);
+  }
+
+  Future<void> onRefresh() async {
+    listCategories.clear();
+    updateListCategories();
+    await getAllCategories();
   }
 }
