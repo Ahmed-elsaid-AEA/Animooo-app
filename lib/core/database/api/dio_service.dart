@@ -1,9 +1,13 @@
 import 'package:animooo/core/database/api/api_constants.dart';
 import 'package:animooo/core/database/api/api_consumer.dart';
+import 'package:animooo/core/di/get_it.dart';
 import 'package:animooo/core/error/server_exception.dart';
+import 'package:animooo/core/functions/app_navigations.dart';
+import 'package:animooo/core/functions/app_scaffold_massanger.dart';
 import 'package:animooo/core/resources/conts_values.dart';
-import 'package:dartz/dartz.dart';
+import 'package:animooo/core/resources/routes_manager.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 
 import '../hive/hive_helper.dart';
 
@@ -45,7 +49,8 @@ class DioService extends ApiConsumer {
 
   _onError(DioException e, ErrorInterceptorHandler handler) async {
     if (e.response?.statusCode == 401 || e.response?.statusCode == 400) {
-       String? accessToken = await _generateNewAccessToken();
+      String? accessToken = await _generateNewAccessToken();
+
       if (accessToken != null) {
         //update token
         HiveHelper hiveHelper = HiveHelper(ConstsValuesManager.tokenBoxName);
@@ -53,6 +58,7 @@ class DioService extends ApiConsumer {
           key: ConstsValuesManager.accessToken,
           value: accessToken,
         );
+
         e.requestOptions.headers[ApiConstants.authorization] =
             "Bearer $accessToken";
         e.requestOptions.headers["retry"] = true;
@@ -70,7 +76,30 @@ class DioService extends ApiConsumer {
         Response res = await _dio.fetch(e.requestOptions);
         return handler.resolve(res);
       } else {
-        //logout ( go to login )
+        HiveHelper hiveHelper = HiveHelper(ConstsValuesManager.tokenBoxName);
+        await hiveHelper.deleteValue(key: ConstsValuesManager.accessToken);
+        await hiveHelper.deleteValue(key: ConstsValuesManager.refreshToken);
+
+        GlobalKey<NavigatorState> navigationKey =
+            getIt<GlobalKey<NavigatorState>>(
+              instanceName: ConstsValuesManager.appNavigationState,
+            );
+
+        if (navigationKey.currentState != null) {
+          var context = navigationKey.currentState!.context;
+
+          if (context.mounted) {
+            showAppSnackBar(
+              context,
+              ConstsValuesManager.sectionHasExpiredLoginAgain,
+            );
+
+            AppNavigation.pushNamedAndRemoveUntil(
+              context,
+              RoutesName.loginPage,
+            );
+          }
+        }
       }
     }
   }

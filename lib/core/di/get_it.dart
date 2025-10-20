@@ -9,11 +9,15 @@ final GetIt getIt = GetIt.instance;
 void getItSetup() {
   getIt.registerLazySingleton<GlobalKey<NavigatorState>>(
     () => GlobalKey<NavigatorState>(),
-    instanceName:ConstsValuesManager.homePageNavigationState,
+    instanceName: ConstsValuesManager.homePageNavigationState,
   );
   getIt.registerLazySingleton<GlobalKey<NavigatorState>>(
     () => GlobalKey<NavigatorState>(),
-    instanceName:ConstsValuesManager.searchPageNavigationState,
+    instanceName: ConstsValuesManager.searchPageNavigationState,
+  );
+  getIt.registerLazySingleton<GlobalKey<NavigatorState>>(
+    () => GlobalKey<NavigatorState>(),
+    instanceName: ConstsValuesManager.appNavigationState,
   );
   getIt.registerLazySingleton<Dio>(() => Dio());
   getIt.registerLazySingleton<DioService>(() => DioService(getIt<Dio>()));

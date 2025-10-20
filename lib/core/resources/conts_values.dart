@@ -193,16 +193,20 @@ class ConstsValuesManager {
 
   static const String createNewCategory = 'Create New Category';
 
-  static const String homePageNavigationState =  'homePageNavigationState';
+  static const String homePageNavigationState = 'homePageNavigationState';
 
   static const String searchPageNavigationState = 'searchPageNavigationState';
 
   static const String tokenIsRequired = 'Token is required';
   static const String categoryNameIsRequired = 'Category name is required';
-  static const String categoryDescriptionIsRequired = 'Category description is required';
+  static const String categoryDescriptionIsRequired =
+      'Category description is required';
   static const String invalidOrExpiredToken = 'Invalid or expired token';
   static const String categoryShouldBeUnique = 'Category should be unique';
 
+  static const String appNavigationState = "appNavigationState";
+
+  static const String sectionHasExpiredLoginAgain = 'Section has expired, please login again';
 }
 
 class ConstsListsManager {
