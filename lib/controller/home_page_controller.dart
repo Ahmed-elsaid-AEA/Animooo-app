@@ -100,7 +100,7 @@ class HomePageController {
       (r) => _onSuccessRequestAllCategories(r),
     );
     _updateListCategoriesStatus(WidgetStatusEnum.enabled);
-  }
+   }
 
   void _updateListCategoriesStatus(WidgetStatusEnum widgetStatusEnum) {
     listCategoriesStatus = widgetStatusEnum;

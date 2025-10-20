@@ -10,6 +10,7 @@ import 'package:animooo/core/widgets/spacing/horizontal_space.dart';
 import 'package:animooo/core/widgets/spacing/vertical_space.dart';
 import 'package:animooo/models/gategory/category_response.dart';
 import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../../core/resources/padding_manager.dart';
 
@@ -36,8 +37,15 @@ class HomePageCategories extends StatelessWidget {
           padding: EdgeInsetsGeometry.symmetric(
             horizontal: PaddingManager.pw16,
           ),
-          child: _TitleCategory(
-            onPressedAddNewCategory: onPressedAddNewCategory,
+          child: StreamBuilder<List<CategoryInfoModel>>(
+            stream: listCategoriesOutput,
+            initialData: [],
+            builder: (context, snapshot) {
+              return _TitleCategory(
+                onPressedAddNewCategory: onPressedAddNewCategory,
+                countCategory: snapshot.data!.length,
+              );
+            },
           ),
         ),
         VerticalSpace(HeightsManager.h22),
@@ -46,15 +54,23 @@ class HomePageCategories extends StatelessWidget {
           child: StreamBuilder<WidgetStatusEnum>(
             stream: sectionCategoriesStatusOutput,
             builder: (context, snapShotStatus) {
-              print(snapShotStatus.data);
-              return snapShotStatus.data == WidgetStatusEnum.loading
-                  ? FlutterLogo()
-                  : Container(
-                color: Colors.red,
-                    child: HaveItemCategories(
-                        listCategoriesOutput: listCategoriesOutput,
-                      ),
-                  );
+              return IndexedStack(
+                index: snapShotStatus.data == WidgetStatusEnum.loading ? 0 : 1,
+                children: [
+                  _LoadingItemCategories(),
+                  HaveItemCategories(
+                    listCategoriesOutput: listCategoriesOutput,
+                  ),
+                ],
+              );
+              // return snapShotStatus.data == WidgetStatusEnum.loading
+              //     ? FlutterLogo()
+              //     : Container(
+              //   color: Colors.red,
+              //       child: HaveItemCategories(
+              //           listCategoriesOutput: listCategoriesOutput,
+              //         ),
+              //     );
             },
           ),
         ),
@@ -75,37 +91,13 @@ class HaveItemCategories extends StatelessWidget {
       stream: listCategoriesOutput,
       initialData: [],
       builder: (context, snapshot) => ListView.separated(
+        padding: EdgeInsets.symmetric(horizontal: PaddingManager.ph16),
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
           return snapshot.connectionState == ConnectionState.waiting
               ? Center(child: CircularProgressIndicator())
               : snapshot.data == null
               ? SizedBox()
-              // : index == 0
-              // ? HorizontalSpace(WidthManager.w16)
-              // : index == snapshot.data!.length - 1
-              // ? Container(
-              //     alignment: Alignment.center,
-              //     margin: EdgeInsets.only(right: 30, bottom: 20),
-              //     child: MaterialButton(
-              //       onPressed: onPressedAtSeeMore,
-              //       color: ColorManager.kGreenColor,
-              //       padding: EdgeInsets.zero,
-              //       shape: RoundedRectangleBorder(
-              //         borderRadius: BorderRadius.all(
-              //           Radius.circular(BorderRadiusManager.br10),
-              //         ),
-              //       ),
-              //       child: Text(
-              //         ConstsValuesManager.seeMore,
-              //         style: TextStyle(
-              //           fontSize: FontSizeManager.s12,
-              //           fontFamily: FontsManager.otamaEpFontFamily,
-              //           color: ColorManager.kWhiteColor,
-              //         ),
-              //       ),
-              //     ),
-              //   )
               : Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   //TODO ::Solve the problem of the overflow
@@ -162,9 +154,13 @@ class HaveItemCategories extends StatelessWidget {
 }
 
 class _TitleCategory extends StatelessWidget {
-  const _TitleCategory({required this.onPressedAddNewCategory});
+  const _TitleCategory({
+    required this.onPressedAddNewCategory,
+    required this.countCategory,
+  });
 
   final VoidCallback onPressedAddNewCategory;
+  final int countCategory;
 
   @override
   Widget build(BuildContext context) {
@@ -175,7 +171,7 @@ class _TitleCategory extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
-            "${ConstsValuesManager.categories} ( 20 )",
+            "${ConstsValuesManager.categories} ( $countCategory )",
             //TODO: add count categories
             style: TextStyle(
               fontSize: FontSizeManager.s16,
@@ -197,6 +193,70 @@ class _TitleCategory extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _LoadingItemCategories extends StatelessWidget {
+  const _LoadingItemCategories({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.separated(
+      padding: EdgeInsets.symmetric(horizontal: PaddingManager.ph16),
+      scrollDirection: Axis.horizontal,
+      itemBuilder: (context, index) {
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          //TODO ::Solve the problem of the overflow
+          /*
+              *
+          A RenderFlex overflowed by 30 pixels on the bottom.
+
+          The relevant error-causing widget was:
+            Column Column:file:///G:/udemy/flutter%20Intermediate%20%20level/animooo/lib/view/main_page/widgets/home_page_categories.dart:46:19
+          */
+          children: [
+            Stack(
+              clipBehavior: Clip.none,
+              children: [
+                Shimmer.fromColors(
+                  baseColor: Colors.grey.shade300,
+                  highlightColor: Colors.grey.shade100,
+                  child: CircleAvatar(radius: 32),
+                ),
+                Positioned(
+                  top: 0,
+                  right: -3,
+                  child: Badge.count(
+                    maxCount: 9,
+                    count: 10,
+                    textStyle: TextStyle(
+                      fontSize: FontSizeManager.s12,
+                      fontFamily: FontsManager.poppinsFontFamily,
+                    ),
+                    padding: EdgeInsets.all(4),
+                    backgroundColor: ColorManager.kPrimaryColor,
+                  ),
+                ),
+              ],
+            ),
+
+            Shimmer.fromColors(
+              baseColor: Colors.grey.shade300,
+              highlightColor: Colors.grey.shade100,
+              child: Container(
+                margin: EdgeInsets.only(top: PaddingManager.ph4),
+                color: Colors.red,
+                width: WidthManager.w38,
+                height: HeightsManager.h10,
+              ),
+            ),
+          ],
+        );
+      },
+      separatorBuilder: (context, index) => HorizontalSpace(WidthManager.w20),
+      itemCount: 7,
     );
   }
 }
