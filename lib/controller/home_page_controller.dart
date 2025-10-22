@@ -127,13 +127,17 @@ class HomePageController {
     await getAllCategories();
   }
 
-  void onTapAtCategory(CategoryInfoModel category, BuildContext context) {
+  void onTapAtCategory(CategoryInfoModel category, BuildContext context) async {
     goToCategoryTapPage();
-    CategoryPageController categoryPageController = CategoryPageController(
-      context,
-    );
-    categoryPageController.categoryInfoModel = category;
-    categoryPageController.isEdit = true;
-    categoryPageController.fillForm();
+    await Future.delayed(const Duration(milliseconds: 500), () {
+      if (context.mounted) {
+        CategoryPageController categoryPageController = CategoryPageController(
+          context,
+        );
+        categoryPageController.categoryInfoModel = category;
+        categoryPageController.isEdit = true;
+        categoryPageController.fillForm();
+      }
+    });
   }
 }

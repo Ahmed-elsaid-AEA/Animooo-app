@@ -101,6 +101,11 @@ class MainPageController {
   }
 
   void onTapBottomNavigationBarItem(int value) {
+    if (_currentIndex == 2) {
+
+       //come from category page
+      categoryPageController?.clearForm();
+    }
     changeCurrentIndex(value);
     pageController.animateToPage(
       value,

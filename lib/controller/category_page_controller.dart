@@ -63,6 +63,9 @@ class CategoryPageController {
   late StreamController<bool> loadingScreenStateController;
   final BuildContext context;
   static CategoryPageController? _instance;
+  late Stream<String> saveAndEditButtonTextOutPutStream;
+  late Sink<String> saveAndEditButtonTextInput;
+  late StreamController<String> saveAndEditButtonTextController;
 
   CategoryPageController._internal(this.context) {
     //?
@@ -117,6 +120,11 @@ class CategoryPageController {
     loadingScreenStateOutPutStream = loadingScreenStateController.stream
         .asBroadcastStream();
     loadingScreenStateInput = loadingScreenStateController.sink;
+    //?init save and edit button text stream
+    saveAndEditButtonTextController = StreamController<String>();
+    saveAndEditButtonTextOutPutStream = saveAndEditButtonTextController.stream
+        .asBroadcastStream();
+    saveAndEditButtonTextInput = saveAndEditButtonTextController.sink;
   }
 
   void dispose() {
@@ -132,7 +140,20 @@ class CategoryPageController {
     categoryDescriptionController.dispose();
   }
 
-  void disposeStreams() {}
+  void disposeStreams() {
+    //?dispose stream of category image
+    categoryFileImageController.close();
+    categoryFileImageInput.close();
+    //?dispose stream of save button status
+    saveButtonStatusController.close();
+    saveButtonStatusInput.close();
+    //?dispose stream of loading screen state
+    loadingScreenStateController.close();
+    loadingScreenStateInput.close();
+    //?dispose stream of save and edit button text
+    saveAndEditButtonTextController.close();
+    saveAndEditButtonTextInput.close();
+  }
 
   void onChanged(String value) {
     checkValidateForm();
@@ -218,17 +239,19 @@ class CategoryPageController {
   void _onSuccessCreateNewCategory(CategoryResponse r) {
     changeScreenStateLoading(ScreensStatusState.success);
     categoryInfoModel = r.category;
-    _clearForm();
+    clearForm();
     showAppSnackBar(context, r.message);
     _goToHomeTap();
   }
 
-  void _clearForm() {
+  void clearForm() {
     categoryNameController.clear();
     categoryDescriptionController.clear();
     categoryFileImageInput.add(null);
     changeSaveButtonStatus(WidgetStatusEnum.disabled);
     categoryInfoModel = null;
+    isEdit = false;
+    _changeSaveAndEditButtonText();
   }
 
   void _onFailureCreateNewCategory(FailureModel l) {
@@ -296,7 +319,16 @@ class CategoryPageController {
       categoryDescriptionController.text = categoryInfoModel!.description;
       categoryFileImage = File(categoryInfoModel!.imagePath);
       _updateCategoryFileImage();
+      _changeSaveAndEditButtonText();
+      changeSaveButtonStatus(WidgetStatusEnum.enabled);
+      print(saveButtonStatus);
     }
+  }
+
+  void _changeSaveAndEditButtonText() {
+    saveAndEditButtonTextInput.add(
+      isEdit == true ? ConstsValuesManager.edit : ConstsValuesManager.save,
+    );
   }
 
   void _updateCategoryFileImage() {

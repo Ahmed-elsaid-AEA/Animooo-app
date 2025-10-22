@@ -130,19 +130,24 @@ class _CategoryPageState extends State<CategoryPage>
                         _categoryPageController.categoryDescriptionController,
                   ),
                   VerticalSpace(HeightsManager.h31),
-                  AppButton(
-                    text: ConstsValuesManager.save,
-                    onTap: () {
-                      // HiveHelper h = HiveHelper(
-                      //   ConstsValuesManager.rememberMeBoxName,
-                      // );
-                      // h.deleteValue(
-                      //   key: ConstsValuesManager.rememberMe,
-                      // );
-                      _categoryPageController.onTapSaveButton();
-                    },
-                    buttonStatusOutputStream:
-                        _categoryPageController.saveButtonStatusOutPutStream,
+                  StreamBuilder<String>(
+                    initialData: ConstsValuesManager.save,
+                    stream: _categoryPageController
+                        .saveAndEditButtonTextOutPutStream,
+                    builder: (context, snapshot) => AppButton(
+                      text: snapshot.data!,
+                      onTap: () {
+                        // HiveHelper h = HiveHelper(
+                        //   ConstsValuesManager.rememberMeBoxName,
+                        // );
+                        // h.deleteValue(
+                        //   key: ConstsValuesManager.rememberMe,
+                        // );
+                        _categoryPageController.onTapSaveButton();
+                      },
+                      buttonStatusOutputStream:
+                          _categoryPageController.saveButtonStatusOutPutStream,
+                    ),
                   ),
                 ],
               ),

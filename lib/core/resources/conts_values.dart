@@ -207,6 +207,8 @@ class ConstsValuesManager {
   static const String appNavigationState = "appNavigationState";
 
   static const String sectionHasExpiredLoginAgain = 'Section has expired, please login again';
+
+  static const String edit = "Edit";
 }
 
 class ConstsListsManager {
