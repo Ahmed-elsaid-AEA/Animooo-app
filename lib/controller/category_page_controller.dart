@@ -245,7 +245,6 @@ class CategoryPageController {
   void _onSuccessCreateNewCategory(CategoryResponse r) {
     changeScreenStateLoading(ScreensStatusState.success);
     categoryInfoModel = r.category;
-    clearForm();
     showAppSnackBar(context, r.message);
     _goToHomeTap();
   }
@@ -311,11 +310,22 @@ class CategoryPageController {
   }
 
   void _goToHomeTap() {
+    HomePageController homePageController = HomePageController();
+    if (isEdit == false) {
+      homePageController.listCategories.add(categoryInfoModel!);
+    } else {
+      //update case
+      int index = homePageController.listCategories.indexWhere(
+        (cat) => cat.id == categoryInfoModel!.id,
+      );
+      homePageController.listCategories.removeWhere(
+        (element) => element.id == categoryInfoModel!.id,
+      );
+      homePageController.listCategories.insert(index, categoryInfoModel!);
+    }
     mainPageKey.currentState?.mainPageController.onTapBottomNavigationBarItem(
       0,
     );
-    HomePageController homePageController = HomePageController();
-    homePageController.listCategories.add(categoryInfoModel!);
     homePageController.updateListCategories();
   }
 
@@ -360,7 +370,6 @@ class CategoryPageController {
         _onFailureCreateNewCategory(l);
       },
       (r) {
-
         _onSuccessCreateNewCategory(r);
       },
     );
