@@ -22,7 +22,9 @@ import '../core/functions/show_select_image_model_bottom_sheet.dart';
 import '../core/resources/conts_values.dart';
 
 class CategoryPageController {
-  CategoryInfoModel? _categoryInfoModel;
+  bool isEdit = false;
+  CategoryInfoModel? categoryInfoModel;
+
   //?category image
   File? categoryFileImage;
 
@@ -195,18 +197,18 @@ class CategoryPageController {
     changeScreenStateLoading(ScreensStatusState.loading);
     changeSaveButtonStatus(WidgetStatusEnum.loading);
     Either<FailureModel, CategoryResponse> result =
-    await CategoryApi.createNewCategory(
-      CategoryModel(
-        name: categoryNameController.text,
-        description: categoryDescriptionController.text,
-        image: categoryFileImage!,
-      ),
-    );
+        await CategoryApi.createNewCategory(
+          CategoryModel(
+            name: categoryNameController.text,
+            description: categoryDescriptionController.text,
+            image: categoryFileImage!,
+          ),
+        );
     result.fold(
-          (l) {
+      (l) {
         _onFailureCreateNewCategory(l);
       },
-          (r) {
+      (r) {
         _onSuccessCreateNewCategory(r);
       },
     );
@@ -215,21 +217,23 @@ class CategoryPageController {
 
   void _onSuccessCreateNewCategory(CategoryResponse r) {
     changeScreenStateLoading(ScreensStatusState.success);
-    _categoryInfoModel = r.category;
+    categoryInfoModel = r.category;
     _clearForm();
     showAppSnackBar(context, r.message);
     _goToHomeTap();
   }
+
   void _clearForm() {
     categoryNameController.clear();
     categoryDescriptionController.clear();
     categoryFileImageInput.add(null);
     changeSaveButtonStatus(WidgetStatusEnum.disabled);
+    categoryInfoModel = null;
   }
 
   void _onFailureCreateNewCategory(FailureModel l) {
     changeScreenStateLoading(ScreensStatusState.failure);
-     String message = _filterErrors(l.errors);
+    String message = _filterErrors(l.errors);
     showAppSnackBar(
       context,
       message,
@@ -282,9 +286,20 @@ class CategoryPageController {
       0,
     );
     HomePageController homePageController = HomePageController();
-    homePageController.listCategories.add(_categoryInfoModel!);
+    homePageController.listCategories.add(categoryInfoModel!);
     homePageController.updateListCategories();
+  }
 
+  void fillForm() {
+    if (categoryInfoModel != null) {
+      categoryNameController.text = categoryInfoModel!.name;
+      categoryDescriptionController.text = categoryInfoModel!.description;
+      categoryFileImage = File(categoryInfoModel!.imagePath);
+      _updateCategoryFileImage();
+    }
+  }
 
+  void _updateCategoryFileImage() {
+    categoryFileImageInput.add(categoryFileImage);
   }
 }

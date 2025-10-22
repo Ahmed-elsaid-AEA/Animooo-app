@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../../../../controller/home_page_controller.dart';
 import '../../../../core/resources/heights_manager.dart';
 import '../../../../core/widgets/spacing/vertical_space.dart';
+import '../../../../models/gategory/category_response.dart';
 import '../../widgets/home_page_animals.dart';
 import '../../widgets/home_page_app_bar.dart';
 import '../../widgets/home_page_categories.dart';
@@ -45,6 +46,9 @@ class _HomePageState extends State<HomePage> {
                   _homePageController.onPressedAtSeeMore(context);
                 },
                 listCategoriesOutput: _homePageController.listCategoriesOutput,
+                onTapAtCategory: (CategoryInfoModel category) {
+                  _homePageController.onTapAtCategory(category, context);
+                },
               ),
               HomePageAnimals(
                 onPressedAddNewAnimal: () {

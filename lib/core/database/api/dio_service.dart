@@ -53,53 +53,68 @@ class DioService extends ApiConsumer {
 
       if (accessToken != null) {
         //update token
-        HiveHelper hiveHelper = HiveHelper(ConstsValuesManager.tokenBoxName);
-        await hiveHelper.addValue(
-          key: ConstsValuesManager.accessToken,
-          value: accessToken,
+        return await _updateAccessToken(accessToken, e, handler);
+      } else {
+
+        await _logout();
+      }
+    }
+  }
+
+  _updateAccessToken(String accessToken, DioException e, ErrorInterceptorHandler handler) async {
+    HiveHelper hiveHelper = HiveHelper(ConstsValuesManager.tokenBoxName);
+    await hiveHelper.addValue(
+      key: ConstsValuesManager.accessToken,
+      value: accessToken,
+    );
+
+    e.requestOptions.headers[ApiConstants.authorization] =
+        "Bearer $accessToken";
+    e.requestOptions.headers["retry"] = true;
+    if (e.requestOptions.data is FormData) {
+      _createNewFormData(e);
+    }
+    Response res = await _dio.fetch(e.requestOptions);
+    return handler.resolve(res);
+  }
+
+  void _createNewFormData(DioException e) {
+    FormData oldFormData = e.requestOptions.data as FormData;
+    final newFormData = FormData();
+    for (var field in oldFormData.fields) {
+      newFormData.fields.add(MapEntry(field.key, field.value));
+    }
+    for (var file in oldFormData.files) {
+      newFormData.files.add(MapEntry(file.key, file.value.clone()));
+    }
+    e.requestOptions.data = newFormData;
+  }
+
+  Future<void> _logout() async {
+     HiveHelper hiveHelper = HiveHelper(ConstsValuesManager.tokenBoxName);
+    await hiveHelper.deleteValue(key: ConstsValuesManager.accessToken);
+    await hiveHelper.deleteValue(key: ConstsValuesManager.refreshToken);
+     HiveHelper hiveHelper2 = HiveHelper(ConstsValuesManager.rememberMeBoxName);
+     await hiveHelper2.deleteValue(key: ConstsValuesManager.rememberMe);
+
+    GlobalKey<NavigatorState> navigationKey =
+        getIt<GlobalKey<NavigatorState>>(
+          instanceName: ConstsValuesManager.appNavigationState,
         );
 
-        e.requestOptions.headers[ApiConstants.authorization] =
-            "Bearer $accessToken";
-        e.requestOptions.headers["retry"] = true;
-        if (e.requestOptions.data is FormData) {
-          FormData oldFormData = e.requestOptions.data as FormData;
-          final newFormData = FormData();
-          for (var field in oldFormData.fields) {
-            newFormData.fields.add(MapEntry(field.key, field.value));
-          }
-          for (var file in oldFormData.files) {
-            newFormData.files.add(MapEntry(file.key, file.value.clone()));
-          }
-          e.requestOptions.data = newFormData;
-        }
-        Response res = await _dio.fetch(e.requestOptions);
-        return handler.resolve(res);
-      } else {
-        HiveHelper hiveHelper = HiveHelper(ConstsValuesManager.tokenBoxName);
-        await hiveHelper.deleteValue(key: ConstsValuesManager.accessToken);
-        await hiveHelper.deleteValue(key: ConstsValuesManager.refreshToken);
+    if (navigationKey.currentState != null) {
+      var context = navigationKey.currentState!.context;
 
-        GlobalKey<NavigatorState> navigationKey =
-            getIt<GlobalKey<NavigatorState>>(
-              instanceName: ConstsValuesManager.appNavigationState,
-            );
+      if (context.mounted) {
+        showAppSnackBar(
+          context,
+          ConstsValuesManager.sectionHasExpiredLoginAgain,
+        );
 
-        if (navigationKey.currentState != null) {
-          var context = navigationKey.currentState!.context;
-
-          if (context.mounted) {
-            showAppSnackBar(
-              context,
-              ConstsValuesManager.sectionHasExpiredLoginAgain,
-            );
-
-            AppNavigation.pushNamedAndRemoveUntil(
-              context,
-              RoutesName.loginPage,
-            );
-          }
-        }
+        AppNavigation.pushNamedAndRemoveUntil(
+          context,
+          RoutesName.loginPage,
+        );
       }
     }
   }

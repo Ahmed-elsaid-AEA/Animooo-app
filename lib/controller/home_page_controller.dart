@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:animooo/controller/category_page_controller.dart';
 import 'package:animooo/controller/main_page_controller.dart';
 import 'package:animooo/core/database/api/dio_service.dart';
 import 'package:animooo/core/di/get_it.dart';
@@ -100,7 +101,7 @@ class HomePageController {
       (r) => _onSuccessRequestAllCategories(r),
     );
     _updateListCategoriesStatus(WidgetStatusEnum.enabled);
-   }
+  }
 
   void _updateListCategoriesStatus(WidgetStatusEnum widgetStatusEnum) {
     listCategoriesStatus = widgetStatusEnum;
@@ -124,5 +125,15 @@ class HomePageController {
     listCategories.clear();
     updateListCategories();
     await getAllCategories();
+  }
+
+  void onTapAtCategory(CategoryInfoModel category, BuildContext context) {
+    goToCategoryTapPage();
+    CategoryPageController categoryPageController = CategoryPageController(
+      context,
+    );
+    categoryPageController.categoryInfoModel = category;
+    categoryPageController.isEdit = true;
+    categoryPageController.fillForm();
   }
 }

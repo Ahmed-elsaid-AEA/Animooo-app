@@ -21,12 +21,14 @@ class HomePageCategories extends StatelessWidget {
     required this.onPressedAtSeeMore,
     required this.listCategoriesOutput,
     required this.sectionCategoriesStatusOutput,
+    required this.onTapAtCategory,
   });
 
   final VoidCallback onPressedAddNewCategory;
   final VoidCallback onPressedAtSeeMore;
   final Stream<List<CategoryInfoModel>> listCategoriesOutput;
   final Stream<WidgetStatusEnum> sectionCategoriesStatusOutput;
+  final void Function(CategoryInfoModel category) onTapAtCategory;
 
   @override
   Widget build(BuildContext context) {
@@ -60,6 +62,7 @@ class HomePageCategories extends StatelessWidget {
                   _LoadingItemCategories(),
                   HaveItemCategories(
                     listCategoriesOutput: listCategoriesOutput,
+                    onTapAtCategory: onTapAtCategory,
                   ),
                 ],
               );
@@ -74,6 +77,7 @@ class HomePageCategories extends StatelessWidget {
             },
           ),
         ),
+
         VerticalSpace(HeightsManager.h22),
       ],
     );
@@ -81,9 +85,14 @@ class HomePageCategories extends StatelessWidget {
 }
 
 class HaveItemCategories extends StatelessWidget {
-  const HaveItemCategories({super.key, required this.listCategoriesOutput});
+  const HaveItemCategories({
+    super.key,
+    required this.listCategoriesOutput,
+    required this.onTapAtCategory,
+  });
 
   final Stream<List<CategoryInfoModel>> listCategoriesOutput;
+  final void Function(CategoryInfoModel category) onTapAtCategory;
 
   @override
   Widget build(BuildContext context) {
@@ -98,52 +107,57 @@ class HaveItemCategories extends StatelessWidget {
               ? Center(child: CircularProgressIndicator())
               : snapshot.data == null
               ? SizedBox()
-              : Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  //TODO ::Solve the problem of the overflow
-                  /*
-                    *
-      A RenderFlex overflowed by 30 pixels on the bottom.
+              : InkWell(
+                  onTap: () {
+                    onTapAtCategory(snapshot.data![index]);
+                  },
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    //TODO ::Solve the problem of the overflow
+                    /*
+                      *
+                      A RenderFlex overflowed by 30 pixels on the bottom.
 
-      The relevant error-causing widget was:
-        Column Column:file:///G:/udemy/flutter%20Intermediate%20%20level/animooo/lib/view/main_page/widgets/home_page_categories.dart:46:19
-      */
-                  children: [
-                    Stack(
-                      clipBehavior: Clip.none,
-                      children: [
-                        CircleAvatar(
-                          radius: 32,
-                          backgroundImage: NetworkImage(
-                            //TODO :: add cashNetworkImage
-                            snapshot.data![index].imagePath,
-                          ),
-                        ),
-                        Positioned(
-                          top: 0,
-                          right: -3,
-                          child: Badge.count(
-                            maxCount: 9,
-                            count: 10,
-                            textStyle: TextStyle(
-                              fontSize: FontSizeManager.s12,
-                              fontFamily: FontsManager.poppinsFontFamily,
+                      The relevant error-causing widget was:
+                        Column Column:file:///G:/udemy/flutter%20Intermediate%20%20level/animooo/lib/view/main_page/widgets/home_page_categories.dart:46:19
+                      */
+                    children: [
+                      Stack(
+                        clipBehavior: Clip.none,
+                        children: [
+                          CircleAvatar(
+                            radius: 32,
+                            backgroundImage: NetworkImage(
+                              //TODO :: add cashNetworkImage
+                              snapshot.data![index].imagePath,
                             ),
-                            padding: EdgeInsets.all(4),
-                            backgroundColor: ColorManager.kPrimaryColor,
                           ),
-                        ),
-                      ],
-                    ),
-                    Text(
-                      snapshot.data![index].name,
-                      style: TextStyle(
-                        fontSize: FontSizeManager.s16,
-                        fontWeight: FontWeight.w600,
-                        fontFamily: FontsManager.otamaEpFontFamily,
+                          Positioned(
+                            top: 0,
+                            right: -3,
+                            child: Badge.count(
+                              maxCount: 9,
+                              count: 10,
+                              textStyle: TextStyle(
+                                fontSize: FontSizeManager.s12,
+                                fontFamily: FontsManager.poppinsFontFamily,
+                              ),
+                              padding: EdgeInsets.all(4),
+                              backgroundColor: ColorManager.kPrimaryColor,
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                  ],
+                      Text(
+                        snapshot.data![index].name,
+                        style: TextStyle(
+                          fontSize: FontSizeManager.s16,
+                          fontWeight: FontWeight.w600,
+                          fontFamily: FontsManager.otamaEpFontFamily,
+                        ),
+                      ),
+                    ],
+                  ),
                 );
         },
         separatorBuilder: (context, index) => HorizontalSpace(WidthManager.w20),

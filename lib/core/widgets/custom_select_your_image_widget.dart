@@ -4,7 +4,7 @@ import 'package:animooo/core/enums/select_image_status.dart';
 import 'package:animooo/core/resources/border_radius_manager.dart';
 import 'package:animooo/core/widgets/spacing/vertical_space.dart';
 import 'package:dotted_border/dotted_border.dart';
- import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 
 import '../resources/assets_values_manager.dart';
 import '../resources/colors_manager.dart';
@@ -96,7 +96,12 @@ class FoundImage extends StatelessWidget {
         ),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(BorderRadiusManager.br10),
-          child: SizedBox(width: double.infinity, child: Image.file(file)),
+          child: SizedBox(
+            width: double.infinity,
+            child: file.path.startsWith("http")
+                ? Image.network(file.path)
+                : Image.file(file),
+          ),
         ),
       ),
     );
