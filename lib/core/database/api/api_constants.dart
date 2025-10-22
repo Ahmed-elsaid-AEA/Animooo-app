@@ -9,6 +9,7 @@ class ApiConstants {
   static const String createNewPasswordEndpoint = '/api/create_new_possword';
   static const String resendNewOtpCodeEndpoint = '/api/create_new_verfication_code';
   static const String createNewCategoryEndpoint = '/api/createNewCategory';
+  static const String updateCategoryEndpoint = '/api/updateCategory';
   static const String firstName = 'firstName';
   static const String name = 'name';
   static const String description = 'description';
@@ -35,4 +36,6 @@ class ApiConstants {
   static const String refreshToken = "refresh_token";
 
   static const String  getAllCategoriesEndpoint = "/api/allCategories";
+
+  static const String id = "id";
 }

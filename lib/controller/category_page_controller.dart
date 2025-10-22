@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:animooo/controller/home_page_controller.dart';
 import 'package:animooo/core/di/get_it.dart';
 import 'package:animooo/core/error/failure_model.dart';
+import 'package:animooo/core/widgets/custom_select_your_image_widget.dart';
 import 'package:animooo/data/network/category_api.dart';
 import 'package:animooo/models/gategory/category_model.dart';
 import 'package:animooo/models/gategory/category_response.dart';
@@ -198,13 +199,18 @@ class CategoryPageController {
     if (context.mounted) Navigator.pop(context);
   }
 
-  void onTapSaveButton() async {
+  void onTapSaveAndUpdateButton() async {
     if (categoryFormKey.currentState!.validate()) {
       InternetCheckerService isInternetConnected = InternetCheckerService();
       bool result = await isInternetConnected();
       if (result == true) {
         //?make api
-        await _requestCreateNewCategory();
+        if (isEdit == true) {
+          //request update
+          await _inUpdateMethod();
+        } else {
+          await _requestCreateNewCategory();
+        }
       } else {
         if (context.mounted) {
           showAppSnackBar(context, ConstsValuesManager.noInternetConnection);
@@ -261,7 +267,7 @@ class CategoryPageController {
       context,
       message,
       onPressedAtRetry: () {
-        onTapSaveButton();
+        onTapSaveAndUpdateButton();
       },
     );
   }
@@ -318,20 +324,56 @@ class CategoryPageController {
       categoryNameController.text = categoryInfoModel!.name;
       categoryDescriptionController.text = categoryInfoModel!.description;
       categoryFileImage = File(categoryInfoModel!.imagePath);
+      imageKey.currentState?.updateState(categoryFileImage!);
       _updateCategoryFileImage();
       _changeSaveAndEditButtonText();
       changeSaveButtonStatus(WidgetStatusEnum.enabled);
-      print(saveButtonStatus);
     }
   }
 
   void _changeSaveAndEditButtonText() {
     saveAndEditButtonTextInput.add(
-      isEdit == true ? ConstsValuesManager.edit : ConstsValuesManager.save,
+      isEdit == true ? ConstsValuesManager.update : ConstsValuesManager.save,
     );
   }
 
   void _updateCategoryFileImage() {
     categoryFileImageInput.add(categoryFileImage);
+  }
+
+  Future<void> _requestUpdateCategory() async {
+    //loading
+    changeScreenStateLoading(ScreensStatusState.loading);
+    changeSaveButtonStatus(WidgetStatusEnum.loading);
+    Either<FailureModel, CategoryResponse> result =
+        await CategoryApi.updateCategory(
+          CategoryModel(
+            name: categoryNameController.text,
+            description: categoryDescriptionController.text,
+            image: categoryFileImage!,
+          ),
+          categoryInfoModel!.id.toString(),
+        );
+    result.fold(
+      (l) {
+        print(l);
+        _onFailureCreateNewCategory(l);
+      },
+      (r) {
+
+        _onSuccessCreateNewCategory(r);
+      },
+    );
+    changeSaveButtonStatus(WidgetStatusEnum.enabled);
+  }
+
+  Future<void> _inUpdateMethod() async {
+    if (categoryInfoModel!.name != categoryNameController.text ||
+        categoryInfoModel!.description != categoryDescriptionController.text ||
+        categoryInfoModel!.imagePath != categoryFileImage!.path) {
+      await _requestUpdateCategory();
+    } else {
+      showAppSnackBar(context, ConstsValuesManager.noChanges);
+    }
   }
 }

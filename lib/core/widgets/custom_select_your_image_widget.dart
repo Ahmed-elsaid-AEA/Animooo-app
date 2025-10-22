@@ -13,17 +13,30 @@ import '../resources/fonts_size_manager.dart';
 import '../resources/heights_manager.dart';
 import '../resources/padding_manager.dart';
 
-class CustomSelectImageWidget extends StatelessWidget {
-  const CustomSelectImageWidget({
-    super.key,
+final imageKey = GlobalKey<_CustomSelectImageWidgetState>();
+
+class CustomSelectImageWidget extends StatefulWidget {
+  CustomSelectImageWidget({
     this.file,
     required this.onTapAtSelectImage,
     required this.selectImageStatus,
-  });
+  }) : super(key: imageKey);
 
   final File? file;
   final SelectImageStatus selectImageStatus;
   final void Function(FormFieldState<File>) onTapAtSelectImage;
+
+  @override
+  State<CustomSelectImageWidget> createState() =>
+      _CustomSelectImageWidgetState();
+}
+
+class _CustomSelectImageWidgetState extends State<CustomSelectImageWidget> {
+  FormFieldState<File>? _formFieldState;
+
+  void updateState(File newFile) {
+    _formFieldState?.didChange(newFile);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,19 +49,19 @@ class CustomSelectImageWidget extends StatelessWidget {
         }
       },
       builder: (state) {
-        print(state.errorText);
+        _formFieldState = state;
         return InkWell(
           onTap: () {
-            onTapAtSelectImage(state);
+            widget.onTapAtSelectImage(state);
           },
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              file == null
-                  ? NotFoundImage(selectImageStatus: selectImageStatus)
+              widget.file == null
+                  ? NotFoundImage(selectImageStatus: widget.selectImageStatus)
                   : FoundImage(
-                      file: file!,
-                      selectImageStatus: selectImageStatus,
+                      file: widget.file!,
+                      selectImageStatus: widget.selectImageStatus,
                     ),
               if (state.errorText != null)
                 Text(

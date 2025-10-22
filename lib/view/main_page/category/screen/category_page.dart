@@ -143,7 +143,7 @@ class _CategoryPageState extends State<CategoryPage>
                         // h.deleteValue(
                         //   key: ConstsValuesManager.rememberMe,
                         // );
-                        _categoryPageController.onTapSaveButton();
+                        _categoryPageController.onTapSaveAndUpdateButton();
                       },
                       buttonStatusOutputStream:
                           _categoryPageController.saveButtonStatusOutPutStream,

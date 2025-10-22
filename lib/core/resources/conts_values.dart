@@ -209,6 +209,9 @@ class ConstsValuesManager {
   static const String sectionHasExpiredLoginAgain = 'Section has expired, please login again';
 
   static const String edit = "Edit";
+  static const String update = "Update";
+
+  static const String noChanges = "No Changes";
 }
 
 class ConstsListsManager {

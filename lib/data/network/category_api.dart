@@ -52,6 +52,40 @@ class CategoryApi {
     }
   }
 
+  static Future<Either<FailureModel, CategoryResponse>> updateCategory(
+    CategoryModel category,
+    String id,
+  ) async {
+    try {
+      DioService dioService = getIt<DioService>();
+      Map<String, dynamic> body = {
+        ApiConstants.name: category.name,
+        ApiConstants.id: id,
+        ApiConstants.description: category.description,
+      };
+      if (!category.image.path.startsWith("http")) {
+        body[ApiConstants.image] = await MultipartFile.fromFile(
+          category.image.path,
+          filename: category.image.path.split("/").last,
+        );
+      }
+      var response = await dioService.post(
+        path: ApiConstants.updateCategoryEndpoint,
+        body: FormData.fromMap(body),
+      );
+      return Right(CategoryResponse.fromJson(response));
+    } on ServerException catch (e) {
+      return left(handleServerExceptionError(e));
+    } catch (e) {
+      return Left(
+        FailureModel.fromJson({
+          ApiConstants.errors: [e.toString()],
+          ApiConstants.statusCode: ApiConstants.s500,
+        }),
+      );
+    }
+  }
+
   static Future<Either<FailureModel, CategoriesModelResponse>>
   getAllCategoriesRequest() async {
     try {
