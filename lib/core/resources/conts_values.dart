@@ -3,6 +3,23 @@ import 'package:animooo/models/password_rules_model.dart';
 class ConstsValuesManager {
   ConstsValuesManager._();
 
+  static const String animalPrice = 'Animal price';
+  static const String animalDescriptionMustBeBetween20And200 =
+      'animal description must be between 20 and 200 characters';
+  static const String enterYourPrice = 'Enter your price';
+  static const String animalPriceRequired = 'Animal price is required';
+  static const String animalPriceMustBeGreaterThanZero =
+      'animal price must be greater than zero';
+  static const String animalNameIsRequired = 'Animal name is required';
+  static const String animalName = 'Animal name';
+  static const String uploadImageForYourAnimal =
+      'Upload Image For Your Animal';
+  static const String animalDescription = 'Animal description';
+  static const String animalNameMustBeBetween3And20 =
+      'Animal name must be between 3 and 20 characters';
+  static const String enterYourAnimalName = 'Enter your animal name';
+  static const String animalDescriptionIsRequired =
+      'animal description is required';
   static const String animooo = 'Animooo';
   static const String login = 'Log in';
   static const String firstName = 'First name';
@@ -206,12 +223,15 @@ class ConstsValuesManager {
 
   static const String appNavigationState = "appNavigationState";
 
-  static const String sectionHasExpiredLoginAgain = 'Section has expired, please login again';
+  static const String sectionHasExpiredLoginAgain =
+      'Section has expired, please login again';
 
   static const String edit = "Edit";
   static const String update = "Update";
 
   static const String noChanges = "No Changes";
+
+  static const String createNewAnimal = 'Create New Animal';
 }
 
 class ConstsListsManager {

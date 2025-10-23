@@ -85,8 +85,12 @@ class MainPageController {
   void dispose() {
     //?dispose streams
     disposeStreams();
-    //?dispose other controllers dispose method
+    //!dispose other controllers dispose method
+    //?dispose category page controller dispose method
     categoryPageController?.dispose();
+    //?dispose animal page controller dispose method
+    animalPageController?.dispose();
+    //?dispose home page controller dispose method
     homePageController?.dispose();
   }
 

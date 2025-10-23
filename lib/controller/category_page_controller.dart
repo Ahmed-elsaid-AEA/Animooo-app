@@ -67,6 +67,7 @@ class CategoryPageController {
   late StreamController<bool> loadingScreenStateController;
   final BuildContext context;
   static CategoryPageController? _instance;
+  //?save and edit button text stream
   late Stream<String> saveAndEditButtonTextOutPutStream;
   late Sink<String> saveAndEditButtonTextInput;
   late StreamController<String> saveAndEditButtonTextController;

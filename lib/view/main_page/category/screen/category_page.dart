@@ -7,6 +7,7 @@ import 'package:animooo/core/resources/width_manager.dart';
 import 'package:animooo/core/widgets/buttons/app_button.dart';
 import 'package:animooo/core/widgets/loading/app_model_progress_hud.dart';
 import 'package:animooo/core/widgets/spacing/horizontal_space.dart';
+import 'package:animooo/core/widgets/user_small_info.dart';
 import 'package:animooo/view/main_page/category/widget/category_form_field.dart';
 import 'package:flutter/material.dart';
 import '../../../../controller/category_page_controller.dart';
@@ -61,60 +62,7 @@ class _CategoryPageState extends State<CategoryPage>
                     ),
                   ),
                   VerticalSpace(HeightsManager.h12),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      CircleAvatar(
-                        radius: BorderRadiusManager.br18,
-                        backgroundImage: AssetImage(
-                          AssetsValuesManager.backgroundSplashScreenUnder12,
-                        ),
-                      ),
-                      HorizontalSpace(WidthManager.w6),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Ahmed Elsaid",
-                            style: TextStyle(
-                              fontFamily: FontsManager.otamaEpFontFamily,
-                              fontSize: FontSizeManager.s12,
-                              color: ColorManager.kBlackColor,
-                            ),
-                          ),
-                          VerticalSpace(HeightsManager.h4),
-                          Container(
-                            padding: EdgeInsets.all(PaddingManager.ph5),
-                            decoration: BoxDecoration(
-                              color: ColorManager.kLightGreenColor.withValues(
-                                alpha: .1,
-                              ),
-                              borderRadius: BorderRadius.circular(
-                                BorderRadiusManager.br32,
-                              ),
-                            ),
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.public,
-                                  size: 10,
-                                  color: ColorManager.kLightGreenColor,
-                                ),
-                                HorizontalSpace(WidthManager.w3),
-                                Text(
-                                  ConstsValuesManager.public,
-                                  style: TextStyle(
-                                    fontSize: FontSizeManager.s10,
-                                    color: ColorManager.kLightGreenColor,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+                  UserSmallINfo(),
                   VerticalSpace(HeightsManager.h22),
                   CategoryFormField(
                     categoryFormKey: _categoryPageController.categoryFormKey,
@@ -129,6 +77,7 @@ class _CategoryPageState extends State<CategoryPage>
                         _categoryPageController.categoryNameController,
                     categoryDescriptionController:
                         _categoryPageController.categoryDescriptionController,
+
                   ),
                   VerticalSpace(HeightsManager.h31),
                   StreamBuilder<String>(
@@ -151,22 +100,21 @@ class _CategoryPageState extends State<CategoryPage>
                     ),
                   ),
                   VerticalSpace(HeightsManager.h5),
-                    StreamBuilder<String>(
-                      stream: _categoryPageController
-                          .saveAndEditButtonTextOutPutStream,
-                      builder: (context, snapshot) =>
-                          snapshot.data == ConstsValuesManager.update
-                          ? AppButton(
-                              text: ApiConstants.delete,
-                              onTap: () {
-                                _categoryPageController
-                                    .onTapDeleteButton();
-                              },
-                              buttonStatusOutputStream: _categoryPageController
-                                  .saveButtonStatusOutPutStream,
-                            )
-                          : SizedBox(),
-                    ),
+                  StreamBuilder<String>(
+                    stream: _categoryPageController
+                        .saveAndEditButtonTextOutPutStream,
+                    builder: (context, snapshot) =>
+                        snapshot.data == ConstsValuesManager.update
+                        ? AppButton(
+                            text: ApiConstants.delete,
+                            onTap: () {
+                              _categoryPageController.onTapDeleteButton();
+                            },
+                            buttonStatusOutputStream: _categoryPageController
+                                .saveButtonStatusOutPutStream,
+                          )
+                        : SizedBox(),
+                  ),
                 ],
               ),
             ),
