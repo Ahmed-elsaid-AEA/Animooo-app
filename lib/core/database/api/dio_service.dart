@@ -55,13 +55,16 @@ class DioService extends ApiConsumer {
         //update token
         return await _updateAccessToken(accessToken, e, handler);
       } else {
-
         await _logout();
       }
     }
   }
 
-  _updateAccessToken(String accessToken, DioException e, ErrorInterceptorHandler handler) async {
+  _updateAccessToken(
+    String accessToken,
+    DioException e,
+    ErrorInterceptorHandler handler,
+  ) async {
     HiveHelper hiveHelper = HiveHelper(ConstsValuesManager.tokenBoxName);
     await hiveHelper.addValue(
       key: ConstsValuesManager.accessToken,
@@ -91,16 +94,15 @@ class DioService extends ApiConsumer {
   }
 
   Future<void> _logout() async {
-     HiveHelper hiveHelper = HiveHelper(ConstsValuesManager.tokenBoxName);
+    HiveHelper hiveHelper = HiveHelper(ConstsValuesManager.tokenBoxName);
     await hiveHelper.deleteValue(key: ConstsValuesManager.accessToken);
     await hiveHelper.deleteValue(key: ConstsValuesManager.refreshToken);
-     HiveHelper hiveHelper2 = HiveHelper(ConstsValuesManager.rememberMeBoxName);
-     await hiveHelper2.deleteValue(key: ConstsValuesManager.rememberMe);
+    HiveHelper hiveHelper2 = HiveHelper(ConstsValuesManager.rememberMeBoxName);
+    await hiveHelper2.deleteValue(key: ConstsValuesManager.rememberMe);
 
-    GlobalKey<NavigatorState> navigationKey =
-        getIt<GlobalKey<NavigatorState>>(
-          instanceName: ConstsValuesManager.appNavigationState,
-        );
+    GlobalKey<NavigatorState> navigationKey = getIt<GlobalKey<NavigatorState>>(
+      instanceName: ConstsValuesManager.appNavigationState,
+    );
 
     if (navigationKey.currentState != null) {
       var context = navigationKey.currentState!.context;
@@ -111,10 +113,7 @@ class DioService extends ApiConsumer {
           ConstsValuesManager.sectionHasExpiredLoginAgain,
         );
 
-        AppNavigation.pushNamedAndRemoveUntil(
-          context,
-          RoutesName.loginPage,
-        );
+        AppNavigation.pushNamedAndRemoveUntil(context, RoutesName.loginPage);
       }
     }
   }
@@ -148,9 +147,32 @@ class DioService extends ApiConsumer {
   }
 
   @override
-  Future delete({required String path, Map<String, dynamic>? queryParameters}) {
-    // TODO: implement delete
-    throw UnimplementedError();
+  Future delete({
+    required String path,
+    Map<String, dynamic>? queryParameters,
+  }) async {
+    // TODO: implement get
+    try {
+      Response response = await _dio.delete(
+        path,
+        queryParameters: queryParameters,
+      );
+
+      if (response.statusCode! >= 200 && response.statusCode! < 300) {
+        //?success
+        return response.data;
+      } else {
+        //?failure
+        throw ServerException(
+          data: response.data as Map<String, dynamic>,
+          statusCode: response.statusCode!,
+          message: '',
+        );
+      }
+    } catch (e) {
+      //?exception
+      await handleDioException(e);
+    }
   }
 
   @override

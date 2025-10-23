@@ -52,6 +52,30 @@ class CategoryApi {
     }
   }
 
+  static Future<Either<FailureModel, String>> deleteCategory(
+    String id,
+  ) async {
+    try {
+      DioService dioService = getIt<DioService>();
+
+      var response = await dioService.delete(
+        path: ApiConstants.deleteCategoryEndpoint,
+        queryParameters: {ApiConstants.id: id},
+      );
+      print(response);
+      return Right(response["message"]);
+    } on ServerException catch (e) {
+      return left(handleServerExceptionError(e));
+    } catch (e) {
+      return Left(
+        FailureModel.fromJson({
+          ApiConstants.errors: [e.toString()],
+          ApiConstants.statusCode: ApiConstants.s500,
+        }),
+      );
+    }
+  }
+
   static Future<Either<FailureModel, CategoryResponse>> updateCategory(
     CategoryModel category,
     String id,

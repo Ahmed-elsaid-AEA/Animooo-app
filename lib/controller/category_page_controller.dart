@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:animooo/controller/home_page_controller.dart';
+import 'package:animooo/core/database/api/api_constants.dart';
 import 'package:animooo/core/di/get_it.dart';
 import 'package:animooo/core/error/failure_model.dart';
 import 'package:animooo/core/widgets/custom_select_your_image_widget.dart';
@@ -24,6 +25,8 @@ import '../core/resources/conts_values.dart';
 
 class CategoryPageController {
   bool isEdit = false;
+  bool isDeleteNow = false;
+
   CategoryInfoModel? categoryInfoModel;
 
   //?category image
@@ -256,6 +259,7 @@ class CategoryPageController {
     changeSaveButtonStatus(WidgetStatusEnum.disabled);
     categoryInfoModel = null;
     isEdit = false;
+    isDeleteNow = false;
     _changeSaveAndEditButtonText();
   }
 
@@ -311,7 +315,12 @@ class CategoryPageController {
 
   void _goToHomeTap() {
     HomePageController homePageController = HomePageController();
-    if (isEdit == false) {
+    if (isDeleteNow == true) {
+      print("delete");
+      homePageController.listCategories.removeWhere(
+        (element) => element.id == categoryInfoModel!.id,
+      );
+    } else if (isEdit == false) {
       homePageController.listCategories.add(categoryInfoModel!);
     } else {
       //update case
@@ -384,5 +393,57 @@ class CategoryPageController {
     } else {
       showAppSnackBar(context, ConstsValuesManager.noChanges);
     }
+  }
+
+  void onTapDeleteButton() {
+    isDeleteNow = true;
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text(ApiConstants.delete),
+        content: const Text(ApiConstants.areYouSureYouWantToDeleteThisCategory),
+        actions: [
+          TextButton(
+            child: const Text(ConstsValuesManager.cancel),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+          TextButton(
+            child: const Text(ApiConstants.delete),
+            onPressed: () {
+              _requestDeleteCategory();
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _requestDeleteCategory() async {
+    Navigator.pop(context);
+    //loading
+    changeScreenStateLoading(ScreensStatusState.loading);
+    changeSaveButtonStatus(WidgetStatusEnum.loading);
+    Either<FailureModel, String> result = await CategoryApi.deleteCategory(
+      categoryInfoModel!.id.toString(),
+    );
+    result.fold(
+      (l) {
+        print(l);
+        _onFailureCreateNewCategory(l);
+      },
+      (r) {
+        _onSuccessDeleteNewCategory(r);
+      },
+    );
+    changeSaveButtonStatus(WidgetStatusEnum.enabled);
+  }
+
+  _onSuccessDeleteNewCategory(String r) {
+    changeScreenStateLoading(ScreensStatusState.success);
+    showAppSnackBar(context, r);
+    _goToHomeTap();
   }
 }

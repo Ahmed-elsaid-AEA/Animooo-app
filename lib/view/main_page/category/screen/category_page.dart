@@ -1,3 +1,4 @@
+import 'package:animooo/core/database/api/api_constants.dart';
 import 'package:animooo/core/database/hive/hive_helper.dart';
 import 'package:animooo/core/resources/border_radius_manager.dart';
 import 'package:animooo/core/resources/conts_values.dart';
@@ -149,6 +150,23 @@ class _CategoryPageState extends State<CategoryPage>
                           _categoryPageController.saveButtonStatusOutPutStream,
                     ),
                   ),
+                  VerticalSpace(HeightsManager.h5),
+                    StreamBuilder<String>(
+                      stream: _categoryPageController
+                          .saveAndEditButtonTextOutPutStream,
+                      builder: (context, snapshot) =>
+                          snapshot.data == ConstsValuesManager.update
+                          ? AppButton(
+                              text: ApiConstants.delete,
+                              onTap: () {
+                                _categoryPageController
+                                    .onTapDeleteButton();
+                              },
+                              buttonStatusOutputStream: _categoryPageController
+                                  .saveButtonStatusOutPutStream,
+                            )
+                          : SizedBox(),
+                    ),
                 ],
               ),
             ),

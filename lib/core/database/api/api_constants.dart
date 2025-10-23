@@ -38,4 +38,10 @@ class ApiConstants {
   static const String  getAllCategoriesEndpoint = "/api/allCategories";
 
   static const String id = "id";
+
+  static const String delete = "Delete";
+
+  static const String areYouSureYouWantToDeleteThisCategory = "Are you sure you want to delete this category?";
+
+  static const String deleteCategoryEndpoint = "/api/deleteCategory";
 }
