@@ -1,7 +1,9 @@
 import 'dart:async';
 
+import 'package:animooo/controller/animal_page_controller.dart';
 import 'package:animooo/controller/category_page_controller.dart';
 import 'package:animooo/controller/home_page_controller.dart';
+import 'package:animooo/view/main_page/animal_page/animal_page.dart';
 import 'package:animooo/view/main_page/home/screen/home_tab.dart';
 import 'package:flutter/material.dart';
 
@@ -10,6 +12,7 @@ import '../core/resources/conts_values.dart';
 import '../view/main_page/category/screen/category_page.dart';
 
 class MainPageController {
+  bool isAnimatedByUser = false;
   BuildContext context;
 
   int _currentIndex = 0;
@@ -25,6 +28,7 @@ class MainPageController {
   List<bool> hasVisited = List.filled(5, false);
   CategoryPageController? categoryPageController;
   HomePageController? homePageController;
+  AnimalPageController? animalPageController;
 
   //?page controller
   late final PageController pageController;
@@ -47,8 +51,8 @@ class MainPageController {
           pages[index] = CategoryPage();
 
         case 3:
-          // categoryPageController ??= CategoryPageController(context);
-          pages[index] = Scaffold(body: Center(child: Text("Animal")));
+          animalPageController ??= AnimalPageController(context);
+          pages[index] = AnimalPage();
         case 4:
           // categoryPageController ??= CategoryPageController(context);
           pages[index] = Scaffold(body: Center(child: Text("Me")));
@@ -97,21 +101,24 @@ class MainPageController {
   }
 
   void onPageChangedOfPageView(int value) {
-    changeCurrentIndex(value);
+    if (isAnimatedByUser == false) {
+      changeCurrentIndex(value);
+    }
   }
 
-  void onTapBottomNavigationBarItem(int value) {
+  void onTapBottomNavigationBarItem(int value)async {
+    isAnimatedByUser = true;
     if (_currentIndex == 2) {
-
-       //come from category page
+      //come from category page
       categoryPageController?.clearForm();
     }
     changeCurrentIndex(value);
-    pageController.animateToPage(
+    await pageController.animateToPage(
       value,
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeInOut,
     );
+    isAnimatedByUser = false;
     if (_currentIndex == 0) {
       getIt<GlobalKey<NavigatorState>>(
         instanceName: ConstsValuesManager.homePageNavigationState,
