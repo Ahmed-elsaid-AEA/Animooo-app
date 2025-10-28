@@ -57,6 +57,28 @@ class AnimalApi {
     }
   }
 
+  static Future<Either<FailureModel, String>> deleteAnimal(int id) async {
+    try {
+      DioService dioService = getIt<DioService>();
+
+      var response = await dioService.delete(
+        path: ApiConstants.deleteAnimalEndpoint,
+        queryParameters: {ApiConstants.id: id},
+      );
+      print(response);
+      return Right(response["message"]);
+    } on ServerException catch (e) {
+      return left(handleServerExceptionError(e));
+    } catch (e) {
+      return Left(
+        FailureModel.fromJson({
+          ApiConstants.errors: [e.toString()],
+          ApiConstants.statusCode: ApiConstants.s500,
+        }),
+      );
+    }
+  }
+
   static Future<Either<FailureModel, List<AnimalInfoResponseModel>>>
   getAllAnimalRequest() async {
     try {

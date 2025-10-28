@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../../../../controller/home_page_controller.dart';
 import '../../../../core/resources/heights_manager.dart';
 import '../../../../core/widgets/spacing/vertical_space.dart';
+import '../../../../models/animal/animal_response_model.dart';
 import '../../../../models/gategory/category_response.dart';
 import '../../widgets/home_page_animals.dart';
 import '../../widgets/home_page_app_bar.dart';
@@ -51,15 +52,17 @@ class _HomePageState extends State<HomePage> {
                 },
               ),
               HomePageAnimals(
-                onTapAtItemAnimal: (animal){
-
-                },
-                sectionAnimalStatusOutput: _homePageController.sectionAnimalStatusOutput,
+                onTapAtItemAnimal: (animal) {},
+                sectionAnimalStatusOutput:
+                    _homePageController.sectionAnimalStatusOutput,
                 onPressedAddNewAnimal: () {
                   _homePageController.goToAnimalTapPage();
                 },
                 onPressedAtSeeMore: () {},
                 listAnimalOutPut: _homePageController.listAnimalOutput,
+                onTapAtMore: (AnimalInfoResponseModel animalModel) {
+                  _homePageController.onTapAtMoreOfAnimal(animalModel, context);
+                },
               ),
             ],
           ),

@@ -21,7 +21,7 @@ class HomePageAnimals extends StatelessWidget {
     required this.onPressedAtSeeMore,
     required this.listAnimalOutPut,
     required this.sectionAnimalStatusOutput,
-    required this.onTapAtItemAnimal,
+    required this.onTapAtItemAnimal, required this.onTapAtMore,
   });
 
   final VoidCallback onPressedAddNewAnimal;
@@ -30,6 +30,7 @@ class HomePageAnimals extends StatelessWidget {
 
   final Stream<WidgetStatusEnum> sectionAnimalStatusOutput;
   final void Function(AnimalInfoResponseModel category) onTapAtItemAnimal;
+  final void Function(AnimalInfoResponseModel animalModel) onTapAtMore;
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +58,7 @@ class HomePageAnimals extends StatelessWidget {
               index: snapShotStatus.data == WidgetStatusEnum.loading ? 0 : 1,
               children: [
                 _LoadingItemAnimal(),
-                HaveItemAnimal(listAnimalOutPut: listAnimalOutPut),
+                HaveItemAnimal(listAnimalOutPut: listAnimalOutPut, onTapAtMore:  onTapAtMore,),
               ],
             );
             // return snapShotStatus.data == WidgetStatusEnum.loading
@@ -76,9 +77,10 @@ class HomePageAnimals extends StatelessWidget {
 }
 
 class HaveItemAnimal extends StatelessWidget {
-  const HaveItemAnimal({super.key, required this.listAnimalOutPut});
+  const HaveItemAnimal({super.key, required this.listAnimalOutPut, required this.onTapAtMore});
 
   final Stream<List<AnimalInfoResponseModel>> listAnimalOutPut;
+  final void Function(AnimalInfoResponseModel animalModel) onTapAtMore;
 
   @override
   Widget build(BuildContext context) {
@@ -89,8 +91,10 @@ class HaveItemAnimal extends StatelessWidget {
         return ListView.separated(
           physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
-          itemBuilder: (context, index) =>
-              _AnimalCard(animal: asyncSnapshot.data![index]),
+          itemBuilder: (context, index) => _AnimalCard(
+            animal: asyncSnapshot.data![index],
+            onTapAtMore: onTapAtMore,
+          ),
           separatorBuilder: (context, index) =>
               VerticalSpace(HeightsManager.h17),
           itemCount: asyncSnapshot.data!.length,
@@ -116,9 +120,10 @@ class _LoadingItemAnimal extends StatelessWidget {
 }
 
 class _AnimalCard extends StatelessWidget {
-  const _AnimalCard({required this.animal});
+  const _AnimalCard({required this.animal, required this.onTapAtMore});
 
   final AnimalInfoResponseModel animal;
+  final void Function(AnimalInfoResponseModel animalModel) onTapAtMore;
 
   @override
   Widget build(BuildContext context) {
@@ -170,7 +175,9 @@ class _AnimalCard extends StatelessWidget {
                       WidgetSpan(
                         alignment: PlaceholderAlignment.middle,
                         child: InkWell(
-                          onTap: () {},
+                          onTap: () {
+                            onTapAtMore(animal);
+                          },
                           child: Icon(Icons.more_vert_rounded),
                         ),
                       ),

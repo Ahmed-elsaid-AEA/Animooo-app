@@ -24,6 +24,7 @@ import 'home_page_controller.dart';
 
 class AnimalPageController {
   //?animal image
+  AnimalResponseModel? animalResponseModel;
   File? animalFileImage;
   bool isEdit = false;
   bool isDeleteNow = false;
@@ -349,7 +350,7 @@ class AnimalPageController {
 
   void _onSuccessCreateNewAnimal(AnimalResponseModel r) {
     _changeScreenStateLoading(ScreensStatusState.success);
-    // categoryInfoModel = r.category;
+    animalResponseModel = r;
     showAppSnackBar(context, r.message);
     _goToHomeTap();
   }
@@ -362,7 +363,7 @@ class AnimalPageController {
       //       (element) => element.id == categoryInfoModel!.id,
       // );
     } else if (isEdit == false) {
-      // homePageController.listCategories.add(categoryInfoModel!);
+      homePageController.listAnimal.add(animalResponseModel!.animal);
     } else {
       //update case
       // int index = homePageController.listCategories.indexWhere(
@@ -376,7 +377,7 @@ class AnimalPageController {
     mainPageKey.currentState?.mainPageController.onTapBottomNavigationBarItem(
       0,
     );
-    // homePageController.updateListCategories();
+    homePageController.updateListAnimal();
   }
 
   void clearForm() {

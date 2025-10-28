@@ -7,6 +7,7 @@ import 'package:animooo/core/di/get_it.dart';
 import 'package:animooo/core/enums/widget_status_enum.dart';
 import 'package:animooo/core/error/failure_model.dart';
 import 'package:animooo/core/functions/app_navigations.dart';
+import 'package:animooo/core/functions/show_edit_or_delete_item_bottom_sheet.dart';
 import 'package:animooo/core/resources/conts_values.dart';
 import 'package:animooo/core/resources/routes_manager.dart';
 import 'package:animooo/data/network/animal_api.dart';
@@ -15,6 +16,7 @@ import 'package:animooo/models/animal/animal_response_model.dart';
 import 'package:animooo/models/gategory/categories_model_response.dart';
 import 'package:animooo/models/gategory/category_response.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 import '../view/main_page/screen/main_page.dart';
 
@@ -143,12 +145,12 @@ class HomePageController {
   Future<void> getAllAnimal() async {
     _updateListAnimalStatus(WidgetStatusEnum.loading);
     var result = await AnimalApi.getAllAnimalRequest();
-     result.fold(
+    result.fold(
       (l) => _onFailureRequestAllAnimal(l),
       (r) => _onSuccessRequestAllAnimal(r),
     );
     _updateListAnimalStatus(WidgetStatusEnum.enabled);
-   }
+  }
 
   void _updateListAnimalStatus(WidgetStatusEnum widgetStatusEnum) {
     listAnimalStatus = widgetStatusEnum;
@@ -170,7 +172,7 @@ class HomePageController {
   }
 
   void _onSuccessRequestAllAnimal(List<AnimalInfoResponseModel> r) {
-     listAnimal = r;
+    listAnimal = r;
     updateListAnimal();
   }
 
@@ -187,8 +189,8 @@ class HomePageController {
     listAnimal.clear();
     updateListCategories();
     updateListAnimal();
-      getAllCategories();
-      getAllAnimal();
+    getAllCategories();
+    getAllAnimal();
   }
 
   void onTapAtCategory(CategoryInfoModel category, BuildContext context) async {
@@ -206,4 +208,65 @@ class HomePageController {
   }
 
   void _onFailureRequestAllAnimal(FailureModel l) {}
+
+  void onTapAtMoreOfAnimal(
+    AnimalInfoResponseModel animalModel,
+    BuildContext context,
+  ) {
+    showEditOrDeleteItemBottomSheet(
+      context: context,
+      onTapEdit: () => onTapEditItemAnimal(context),
+      onTapAtDelete: () =>
+          onTapAtDeleteItemAnimal(context, animalModel.animalId),
+    );
+  }
+
+  void onTapAtDeleteItemAnimal(BuildContext context, int id) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Delete Animal'),
+        content: const Text('Are you sure you want to delete this animal?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () => _requestDeleteAnimal(context, id),
+            child: const Text('Delete'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _requestDeleteAnimal(BuildContext context, int id) async {
+    AppNavigation.pop(context);
+    print(id);
+
+    _updateListCategoriesStatus(WidgetStatusEnum.loading);
+    var result = await AnimalApi.deleteAnimal(id);
+    result.fold(
+      (l) => _onFailureRequestDeleteAnimal(l),
+      (r) {
+
+        _onSuccessRequestDeleteAnimal(r, id);
+      },
+    );
+    _updateListCategoriesStatus(WidgetStatusEnum.enabled);
+  }
+
+  void onTapEditItemAnimal(BuildContext context) {}
+
+  void _onFailureRequestDeleteAnimal(FailureModel l) {
+    print(l);
+  }
+
+  void _onSuccessRequestDeleteAnimal(String r, int id) {
+
+    listAnimal.removeWhere((element) => element.animalId == id);
+    updateListAnimal();
+
+  }
 }

@@ -238,6 +238,8 @@ class ConstsValuesManager {
       "No Category Found Add Category First";
 
   static const String pleaseFillAllFields = "Please Fill All Fields";
+
+  static const  String delete = "Delete";
 }
 
 class ConstsListsManager {
