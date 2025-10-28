@@ -23,7 +23,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    _homePageController = HomePageController();
+    _homePageController = HomePageController(context);
   }
 
   @override
@@ -61,7 +61,7 @@ class _HomePageState extends State<HomePage> {
                 onPressedAtSeeMore: () {},
                 listAnimalOutPut: _homePageController.listAnimalOutput,
                 onTapAtMore: (AnimalInfoResponseModel animalModel) {
-                  _homePageController.onTapAtMoreOfAnimal(animalModel, context);
+                  _homePageController.onTapAtMoreOfAnimal(animalModel);
                 },
               ),
             ],

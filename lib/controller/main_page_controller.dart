@@ -40,7 +40,7 @@ class MainPageController {
       switch (index) {
         case 0:
           //?build controller
-          homePageController ??= HomePageController();
+          homePageController ??= HomePageController(context);
           pages[index] = HomeTab();
           break;
         case 1:

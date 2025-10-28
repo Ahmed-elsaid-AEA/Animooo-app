@@ -316,7 +316,7 @@ class CategoryPageController {
   }
 
   void _goToHomeTap() {
-    HomePageController homePageController = HomePageController();
+    HomePageController homePageController = HomePageController(context);
     if (isDeleteNow == true) {
       print("delete");
       homePageController.listCategories.removeWhere(

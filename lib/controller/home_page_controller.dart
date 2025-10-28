@@ -19,11 +19,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../view/main_page/screen/main_page.dart';
+import 'animal_page_controller.dart';
 
 class HomePageController {
   static HomePageController? _instance;
 
-  HomePageController._internal() {
+  HomePageController._internal(this.context) {
     //?
     print("HomePageController");
     init();
@@ -31,9 +32,11 @@ class HomePageController {
     getAllAnimal();
   }
 
-  factory HomePageController() {
-    return _instance ??= HomePageController._internal();
+  factory HomePageController(BuildContext context) {
+    return _instance ??= HomePageController._internal(context);
   }
+
+  BuildContext context;
 
   //? list categories
   List<CategoryInfoModel> listCategories = [];
@@ -209,19 +212,15 @@ class HomePageController {
 
   void _onFailureRequestAllAnimal(FailureModel l) {}
 
-  void onTapAtMoreOfAnimal(
-    AnimalInfoResponseModel animalModel,
-    BuildContext context,
-  ) {
+  void onTapAtMoreOfAnimal(AnimalInfoResponseModel animalModel) {
     showEditOrDeleteItemBottomSheet(
       context: context,
-      onTapEdit: () => onTapEditItemAnimal(context),
-      onTapAtDelete: () =>
-          onTapAtDeleteItemAnimal(context, animalModel.animalId),
+      onTapEdit: () => onTapEditItemAnimal(animalModel),
+      onTapAtDelete: () => onTapAtDeleteItemAnimal(animalModel.animalId),
     );
   }
 
-  void onTapAtDeleteItemAnimal(BuildContext context, int id) {
+  void onTapAtDeleteItemAnimal(int id) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -233,7 +232,7 @@ class HomePageController {
             child: const Text('Cancel'),
           ),
           TextButton(
-            onPressed: () => _requestDeleteAnimal(context, id),
+            onPressed: () => _requestDeleteAnimal(id),
             child: const Text('Delete'),
           ),
         ],
@@ -241,32 +240,37 @@ class HomePageController {
     );
   }
 
-  Future<void> _requestDeleteAnimal(BuildContext context, int id) async {
+  Future<void> _requestDeleteAnimal(int id) async {
     AppNavigation.pop(context);
-    print(id);
+    AppNavigation.pop(context);
 
     _updateListCategoriesStatus(WidgetStatusEnum.loading);
     var result = await AnimalApi.deleteAnimal(id);
-    result.fold(
-      (l) => _onFailureRequestDeleteAnimal(l),
-      (r) {
-
-        _onSuccessRequestDeleteAnimal(r, id);
-      },
-    );
+    result.fold((l) => _onFailureRequestDeleteAnimal(l), (r) {
+      _onSuccessRequestDeleteAnimal("", id);
+    });
     _updateListCategoriesStatus(WidgetStatusEnum.enabled);
   }
 
-  void onTapEditItemAnimal(BuildContext context) {}
+  void onTapEditItemAnimal(AnimalInfoResponseModel animalInfoModel) {
+    mainPageKey.currentState?.mainPageController.onTapBottomNavigationBarItem(
+      3,
+    );
+    AppNavigation.pop(context);
+    AnimalPageController animalPageController = AnimalPageController(context);
+    animalPageController.animalInfoModel = animalInfoModel;
+    animalPageController.isEdit = true;
+    animalPageController.fillForm();
+  }
 
   void _onFailureRequestDeleteAnimal(FailureModel l) {
     print(l);
   }
 
   void _onSuccessRequestDeleteAnimal(String r, int id) {
+    // AppNavigation.pop(context);
 
     listAnimal.removeWhere((element) => element.animalId == id);
     updateListAnimal();
-
   }
 }

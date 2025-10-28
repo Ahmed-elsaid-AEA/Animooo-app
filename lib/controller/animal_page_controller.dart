@@ -24,7 +24,7 @@ import 'home_page_controller.dart';
 
 class AnimalPageController {
   //?animal image
-  AnimalResponseModel? animalResponseModel;
+  AnimalInfoResponseModel? animalInfoModel;
   File? animalFileImage;
   bool isEdit = false;
   bool isDeleteNow = false;
@@ -350,20 +350,20 @@ class AnimalPageController {
 
   void _onSuccessCreateNewAnimal(AnimalResponseModel r) {
     _changeScreenStateLoading(ScreensStatusState.success);
-    animalResponseModel = r;
+    animalInfoModel = r.animal;
     showAppSnackBar(context, r.message);
     _goToHomeTap();
   }
 
   void _goToHomeTap() {
-    HomePageController homePageController = HomePageController();
+    HomePageController homePageController = HomePageController(context);
     if (isDeleteNow == true) {
       // print("delete");
       // homePageController.listCategories.removeWhere(
       //       (element) => element.id == categoryInfoModel!.id,
       // );
     } else if (isEdit == false) {
-      homePageController.listAnimal.add(animalResponseModel!.animal);
+      homePageController.listAnimal.add(animalInfoModel!);
     } else {
       //update case
       // int index = homePageController.listCategories.indexWhere(
@@ -389,5 +389,18 @@ class AnimalPageController {
     selectedIndexCategory = null;
     _updateSelectedIndexCategory();
     changeSaveButtonStatus(WidgetStatusEnum.disabled);
+  }
+
+  void fillForm() {
+    animalNameController.text = animalInfoModel!.animalName;
+    animalDescriptionController.text = animalInfoModel!.animalDescription;
+    animalPriceController.text = animalInfoModel!.animalPrice.toString().replaceAll(".0", "");
+    animalFileImage = File(animalInfoModel!.animalImage);
+    animalImgKey.currentState?.updateState(animalFileImage!);
+    _updateAnimalImage();
+    selectedIndexCategory = listCategory.indexWhere(
+      (element) => element.id == animalInfoModel!.categoryId,
+    );
+    _updateSelectedIndexCategory();
   }
 }

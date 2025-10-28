@@ -112,9 +112,10 @@ class AnimalFormField extends StatelessWidget {
             hintText: ConstsValuesManager.enterYourPrice,
             keyboardType: TextInputType.number,
             validator: (value) {
+
               if (value == null || value.isEmpty) {
                 return ConstsValuesManager.animalPriceRequired;
-              } else if (int.parse(value) <= 0) {
+              } else if ((int.tryParse(value) ?? 0 )<= 0) {
                 return ConstsValuesManager.animalPriceMustBeGreaterThanZero;
               }
               return null;
