@@ -1,3 +1,4 @@
+import 'package:animooo/models/gategory/category_response.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:animooo/core/resources/conts_values.dart';
@@ -21,8 +22,14 @@ class AnimalFormField extends StatelessWidget {
     required this.animalDescriptionController,
     required this.animalFormKey,
     required this.animalPriceController,
+    required this.listCategory,
+    required this.onSelectedCategory,
+    required this.selectedIndexCategory,
   });
 
+  final List<CategoryInfoModel> listCategory;
+  final void Function(int index) onSelectedCategory;
+  final int selectedIndexCategory;
   final void Function(String value) onChanged;
   final void Function(FormFieldState<File>) onTapAtSelectImage;
   final SelectImageStatus selectImageStatus;
@@ -110,8 +117,71 @@ class AnimalFormField extends StatelessWidget {
               return null;
             },
           ),
+          VerticalSpace(HeightsManager.h12),
+
+          ChoiceCategoryName(
+            listCategory: listCategory,
+            onSelectedCategory: onSelectedCategory,
+            selectedIndexCategory: selectedIndexCategory,
+          ),
         ],
       ),
+    );
+  }
+}
+
+class ChoiceCategoryName extends StatelessWidget {
+  const ChoiceCategoryName({
+    super.key,
+    required this.listCategory,
+    required this.onSelectedCategory,
+  });
+
+  final List<CategoryInfoModel> listCategory;
+  final void Function(int index) onSelectedCategory;
+  final int selectedIndexCategory;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Align(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            ConstsValuesManager.categoryName,
+            style: TextStyle(
+              fontSize: FontSizeManager.s16,
+              color: ColorManager.kGreyColor,
+              fontFamily: FontsManager.poppinsFontFamily,
+            ),
+          ),
+        ),
+        Wrap(
+          spacing: 5,
+          children: List.generate(
+            listCategory.length,
+            (index) => ChoiceChip(
+              // disabledColor: ColorManager.kWhite2Color,
+              checkmarkColor: ColorManager.kWhiteColor,
+              onSelected: (value) {
+                onSelectedCategory(index);
+              },
+              selectedColor: ColorManager.kPrimaryColor,
+              backgroundColor: ColorManager.kWhiteColor,
+              labelStyle: TextStyle(
+                fontSize: FontSizeManager.s12,
+                color: selectedIndexCategory == index
+                    ? ColorManager.kWhiteColor
+                    : ColorManager.kGreyColor,
+                fontFamily: FontsManager.poppinsFontFamily,
+              ),
+              label: Text(listCategory[index].name),
+              selected: selectedIndexCategory == index,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

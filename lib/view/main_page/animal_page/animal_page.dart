@@ -74,6 +74,10 @@ class _AnimalPageState extends State<AnimalPage>
                     animalDescriptionController:
                         _animalPageController.animalDescriptionController,
                     animalFormKey: _animalPageController.animalFormKey,
+                    listCategory: _animalPageController.listCategory,
+                    onSelectedCategory: _animalPageController.onSelectedCategory,
+                    selectedIndexCategory:
+                        _animalPageController.selectedIndexCategory,
                   ),
                   VerticalSpace(HeightsManager.h31),
                   // StreamBuilder<String>(
