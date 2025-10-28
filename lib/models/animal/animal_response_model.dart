@@ -6,12 +6,12 @@ part 'animal_response_model.g.dart';
 class AnimalResponseModel {
   final int statusCode;
   final String message;
-  final List<AnimalInfoResponseModel> data;
+  final List<AnimalInfoResponseModel> animal;
 
   const AnimalResponseModel({
     required this.statusCode,
     required this.message,
-    required this.data,
+    required this.animal,
   });
 
   factory AnimalResponseModel.fromJson(Map<String, dynamic> json) =>

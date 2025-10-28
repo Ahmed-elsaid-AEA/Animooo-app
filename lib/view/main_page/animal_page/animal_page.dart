@@ -63,10 +63,13 @@ class _AnimalPageState extends State<AnimalPage>
                   UserSmallINfo(),
                   VerticalSpace(HeightsManager.h22),
                   AnimalFormField(
+                    selectedIndexCategoryOutputStream:
+                        _animalPageController.selectedIndexCategoryOutPutStream,
                     animalPriceController:
                         _animalPageController.animalPriceController,
-                    onChanged: (value) {},
-                    onTapAtSelectImage: (value) {},
+                    onChanged: _animalPageController.onChanged,
+                    onTapAtSelectImage:
+                        _animalPageController.onTapAtSelectImage,
                     selectImageStatus: _animalPageController.selectImageStatus,
                     animalImageOutputStream:
                         _animalPageController.animalFileImageOutPutStream,
@@ -75,7 +78,8 @@ class _AnimalPageState extends State<AnimalPage>
                     animalDescriptionController:
                         _animalPageController.animalDescriptionController,
                     animalFormKey: _animalPageController.animalFormKey,
-                    listCategoryOutPutStream: _animalPageController.listCategoryOutPutStream,
+                    listCategoryOutPutStream:
+                        _animalPageController.listCategoryOutPutStream,
                     onSelectedCategory:
                         _animalPageController.onSelectedCategory,
                     selectedIndexCategory:
@@ -84,15 +88,15 @@ class _AnimalPageState extends State<AnimalPage>
                   VerticalSpace(HeightsManager.h31),
                   StreamBuilder<String>(
                     initialData: ConstsValuesManager.save,
-                    stream: _animalPageController
-                        .saveAndEditButtonTextOutPutStream,
+                    stream:
+                        _animalPageController.saveAndEditButtonTextOutPutStream,
                     builder: (context, snapshot) => AppButton(
                       text: snapshot.data!,
                       onTap: () {
                         _animalPageController.onTapSaveAndUpdateButton();
                       },
                       buttonStatusOutputStream:
-                      _animalPageController.saveButtonStatusOutPutStream,
+                          _animalPageController.saveButtonStatusOutPutStream,
                     ),
                   ),
                   // VerticalSpace(HeightsManager.h5),

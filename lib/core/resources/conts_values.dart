@@ -214,6 +214,8 @@ class ConstsValuesManager {
   static const String searchPageNavigationState = 'searchPageNavigationState';
 
   static const String tokenIsRequired = 'Token is required';
+  static const String animalShouldBeUnique = 'Animal should be unique';
+  static const String thisCategoryNotFound = 'This category not found';
   static const String categoryNameIsRequired = 'Category name is required';
   static const String categoryDescriptionIsRequired =
       'Category description is required';
@@ -234,6 +236,8 @@ class ConstsValuesManager {
 
   static const String noCategoryFoundAddCategoryFirst =
       "No Category Found Add Category First";
+
+  static const String pleaseFillAllFields = "Please Fill All Fields";
 }
 
 class ConstsListsManager {

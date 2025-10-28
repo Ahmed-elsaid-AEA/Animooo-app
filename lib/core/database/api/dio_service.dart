@@ -43,7 +43,7 @@ class DioService extends ApiConsumer {
     );
     String token =
         (await hiveHelper.getValue(key: ConstsValuesManager.accessToken)) ?? "";
-    print(token);
+
     options.headers[ApiConstants.authorization] = "Bearer $token";
     return handler.next(options);
   }

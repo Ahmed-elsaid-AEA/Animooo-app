@@ -14,4 +14,8 @@ class AnimalModel {
     required this.price,
     required this.image,
   });
+  @override
+  String toString() {
+    return 'AnimalModel(categoryId: $categoryId, name: $name, description: $description, price: $price, image: $image)';
+  }
 }

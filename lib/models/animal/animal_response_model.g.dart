@@ -10,7 +10,7 @@ AnimalResponseModel _$AnimalResponseModelFromJson(Map<String, dynamic> json) =>
     AnimalResponseModel(
       statusCode: (json['statusCode'] as num).toInt(),
       message: json['message'] as String,
-      data: (json['data'] as List<dynamic>)
+      animal: (json['animal'] as List<dynamic>)
           .map(
             (e) => AnimalInfoResponseModel.fromJson(e as Map<String, dynamic>),
           )
@@ -22,7 +22,7 @@ Map<String, dynamic> _$AnimalResponseModelToJson(
 ) => <String, dynamic>{
   'statusCode': instance.statusCode,
   'message': instance.message,
-  'data': instance.data,
+  'animal': instance.animal,
 };
 
 AnimalInfoResponseModel _$AnimalInfoResponseModelFromJson(

@@ -25,9 +25,10 @@ class AnimalFormField extends StatelessWidget {
     required this.animalPriceController,
     required this.listCategoryOutPutStream,
     required this.onSelectedCategory,
-    required this.selectedIndexCategory,
+    required this.selectedIndexCategory, required this.selectedIndexCategoryOutputStream,
   });
 
+  final Stream<int?> selectedIndexCategoryOutputStream;
   final Stream<List<CategoryInfoModel>> listCategoryOutPutStream;
   final void Function(int index) onSelectedCategory;
   final int? selectedIndexCategory;
@@ -133,10 +134,16 @@ class AnimalFormField extends StatelessWidget {
                         fontFamily: FontsManager.poppinsFontFamily,
                       ),
                     )
-                  : ChoiceCategoryNameAnimalPage(
-                      listCategory: snapshot.data!,
-                      onSelectedCategory: onSelectedCategory,
-                      selectedIndexCategory: selectedIndexCategory,
+                  : StreamBuilder<int?>(
+                      initialData: null,
+                      stream: selectedIndexCategoryOutputStream,
+                      builder: (context, asyncSnapshot) {
+                        return ChoiceCategoryNameAnimalPage(
+                          listCategory: snapshot.data!,
+                          onSelectedCategory: onSelectedCategory,
+                          selectedIndexCategory: asyncSnapshot.data,
+                        );
+                      },
                     );
             },
           ),
