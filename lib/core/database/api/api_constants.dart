@@ -9,6 +9,7 @@ class ApiConstants {
   static const String createNewPasswordEndpoint = '/api/create_new_possword';
   static const String resendNewOtpCodeEndpoint = '/api/create_new_verfication_code';
   static const String createNewCategoryEndpoint = '/api/createNewCategory';
+  static const String addNewAnimalEndpoint = '/api/addNewAnimal';
   static const String updateCategoryEndpoint = '/api/updateCategory';
   static const String firstName = 'firstName';
   static const String name = 'name';
@@ -44,4 +45,8 @@ class ApiConstants {
   static const String areYouSureYouWantToDeleteThisCategory = "Are you sure you want to delete this category?";
 
   static const String deleteCategoryEndpoint = "/api/deleteCategory";
+
+  static const String categoryId = "category_id";
+
+  static const String price = "price";
 }

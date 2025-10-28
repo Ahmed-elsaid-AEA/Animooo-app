@@ -11,6 +11,7 @@ import '../../../core/resources/fonts_size_manager.dart';
 import '../../../core/resources/heights_manager.dart';
 import '../../../core/resources/padding_manager.dart';
 import '../../../core/resources/width_manager.dart';
+import '../../../core/widgets/buttons/app_button.dart';
 import '../../../core/widgets/loading/app_model_progress_hud.dart';
 import '../../../core/widgets/spacing/horizontal_space.dart';
 import '../../../core/widgets/spacing/vertical_space.dart';
@@ -81,25 +82,19 @@ class _AnimalPageState extends State<AnimalPage>
                         _animalPageController.selectedIndexCategory,
                   ),
                   VerticalSpace(HeightsManager.h31),
-                  // StreamBuilder<String>(
-                  //   initialData: ConstsValuesManager.save,
-                  //   stream: _categoryPageController
-                  //       .saveAndEditButtonTextOutPutStream,
-                  //   builder: (context, snapshot) => AppButton(
-                  //     text: snapshot.data!,
-                  //     onTap: () {
-                  //       // HiveHelper h = HiveHelper(
-                  //       //   ConstsValuesManager.rememberMeBoxName,
-                  //       // );
-                  //       // h.deleteValue(
-                  //       //   key: ConstsValuesManager.rememberMe,
-                  //       // );
-                  //       _categoryPageController.onTapSaveAndUpdateButton();
-                  //     },
-                  //     buttonStatusOutputStream:
-                  //     _categoryPageController.saveButtonStatusOutPutStream,
-                  //   ),
-                  // ),
+                  StreamBuilder<String>(
+                    initialData: ConstsValuesManager.save,
+                    stream: _animalPageController
+                        .saveAndEditButtonTextOutPutStream,
+                    builder: (context, snapshot) => AppButton(
+                      text: snapshot.data!,
+                      onTap: () {
+                        _animalPageController.onTapSaveAndUpdateButton();
+                      },
+                      buttonStatusOutputStream:
+                      _animalPageController.saveButtonStatusOutPutStream,
+                    ),
+                  ),
                   // VerticalSpace(HeightsManager.h5),
                   // StreamBuilder<String>(
                   //   stream: _categoryPageController
