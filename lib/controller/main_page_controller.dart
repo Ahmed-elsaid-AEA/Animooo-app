@@ -110,13 +110,19 @@ class MainPageController {
     }
   }
 
-  void onTapBottomNavigationBarItem(int value)async {
+  void onTapBottomNavigationBarItem(int value) async {
     isAnimatedByUser = true;
     if (_currentIndex == 2) {
       //come from category page
       categoryPageController?.clearForm();
     }
     changeCurrentIndex(value);
+    //after change current index
+    if (_currentIndex == 3) {
+      AnimalPageController animalPageController = AnimalPageController(context);
+      animalPageController.listCategory = homePageController!.listCategories;
+      animalPageController.updateListCategory();
+    }
     await pageController.animateToPage(
       value,
       duration: const Duration(milliseconds: 300),
@@ -130,3 +136,4 @@ class MainPageController {
     }
   }
 }
+//TODO :: show image selected widget in animal page

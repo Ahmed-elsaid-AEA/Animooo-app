@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:animooo/models/gategory/category_response.dart';
 import 'package:flutter/material.dart';
 
 import '../core/enums/screen_status_state.dart';
@@ -10,6 +11,7 @@ class AnimalPageController {
   BuildContext context;
 
   static AnimalPageController? _instance;
+  List<CategoryInfoModel> listCategory = [];
 
   AnimalPageController._internal(this.context) {
     print("animal page controller");
@@ -32,7 +34,7 @@ class AnimalPageController {
   SelectImageStatus selectImageStatus = SelectImageStatus.normal;
 
   //?streams
-  //?category image stream
+  //?animal image stream
   late Stream<File?> animalFileImageOutPutStream;
   late Sink<File?> animalFileImageInput;
   late StreamController<File?> animalFileImageController;
@@ -45,8 +47,16 @@ class AnimalPageController {
 
   //?animal description controller
   late TextEditingController animalDescriptionController;
+
   //?animal price controller
   late TextEditingController animalPriceController;
+
+  //?list category stream
+  late Stream<List<CategoryInfoModel>> listCategoryOutPutStream;
+  late Sink<List<CategoryInfoModel>> listCategoryInput;
+  late StreamController<List<CategoryInfoModel>> listCategoryController;
+
+  int? selectedIndexCategory;
 
   void init() {
     _initStreams();
@@ -62,6 +72,10 @@ class AnimalPageController {
     animalFileImageController = StreamController<File?>();
     animalFileImageOutPutStream = animalFileImageController.stream;
     animalFileImageInput = animalFileImageController.sink;
+    //?init list category stream
+    listCategoryController = StreamController<List<CategoryInfoModel>>();
+    listCategoryOutPutStream = listCategoryController.stream;
+    listCategoryInput = listCategoryController.sink;
   }
 
   void _initControllers() {
@@ -88,6 +102,9 @@ class AnimalPageController {
     //?animal image dispose
     animalFileImageController.close();
     animalFileImageInput.close();
+    //?list category dispose
+    listCategoryController.close();
+    listCategoryInput.close();
   }
 
   void dispose() {
@@ -98,5 +115,11 @@ class AnimalPageController {
 
   void _disposeFormKey() {
     animalFormKey.currentState?.dispose();
+  }
+
+  void onSelectedCategory(int index) {}
+
+  void updateListCategory() {
+    listCategoryInput.add(listCategory);
   }
 }

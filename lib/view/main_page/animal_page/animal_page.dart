@@ -75,7 +75,8 @@ class _AnimalPageState extends State<AnimalPage>
                         _animalPageController.animalDescriptionController,
                     animalFormKey: _animalPageController.animalFormKey,
                     listCategory: _animalPageController.listCategory,
-                    onSelectedCategory: _animalPageController.onSelectedCategory,
+                    onSelectedCategory:
+                        _animalPageController.onSelectedCategory,
                     selectedIndexCategory:
                         _animalPageController.selectedIndexCategory,
                   ),

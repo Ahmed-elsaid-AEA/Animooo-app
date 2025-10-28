@@ -12,8 +12,7 @@ class ConstsValuesManager {
       'animal price must be greater than zero';
   static const String animalNameIsRequired = 'Animal name is required';
   static const String animalName = 'Animal name';
-  static const String uploadImageForYourAnimal =
-      'Upload Image For Your Animal';
+  static const String uploadImageForYourAnimal = 'Upload Image For Your Animal';
   static const String animalDescription = 'Animal description';
   static const String animalNameMustBeBetween3And20 =
       'Animal name must be between 3 and 20 characters';
@@ -232,6 +231,9 @@ class ConstsValuesManager {
   static const String noChanges = "No Changes";
 
   static const String createNewAnimal = 'Create New Animal';
+
+  static const String noCategoryFoundAddCategoryFirst =
+      "No Category Found Add Category First";
 }
 
 class ConstsListsManager {
