@@ -1,12 +1,11 @@
-
-
 import 'package:flutter/material.dart';
 
 import '../../../../core/resources/assets_values_manager.dart';
 import '../../../../core/resources/colors_manager.dart';
 import '../../../../core/resources/conts_values.dart';
 import '../../../../core/resources/fonts_size_manager.dart';
-import '../../../../models/gategory/category_response.dart' show CategoryInfoModel;
+import '../../../../models/gategory/category_response.dart'
+    show CategoryInfoModel;
 
 class ChoiceCategoryNameAnimalPage extends StatelessWidget {
   const ChoiceCategoryNameAnimalPage({
@@ -28,7 +27,7 @@ class ChoiceCategoryNameAnimalPage extends StatelessWidget {
         Align(
           alignment: Alignment.centerLeft,
           child: Text(
-            ConstsValuesManager.categoryName,
+            "${ConstsValuesManager.categoryName} ( ${listCategory.length} )",
             style: TextStyle(
               fontSize: FontSizeManager.s16,
               color: ColorManager.kGreyColor,
@@ -40,7 +39,7 @@ class ChoiceCategoryNameAnimalPage extends StatelessWidget {
           spacing: 5,
           children: List.generate(
             listCategory.length,
-                (index) => ChoiceChip(
+            (index) => ChoiceChip(
               // disabledColor: ColorManager.kWhite2Color,
               checkmarkColor: ColorManager.kWhiteColor,
               onSelected: (value) {

@@ -86,6 +86,7 @@ class CategoryFormField extends StatelessWidget {
             stream: categoryImageOutputStream,
             initialData: null,
             builder: (context, snapshot) => CustomSelectImageWidget(
+              key: categoryImgKey,
               file: snapshot.data,
               onTapAtSelectImage: onTapAtSelectImage,
               selectImageStatus: selectImageStatus,

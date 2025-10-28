@@ -23,12 +23,12 @@ class AnimalFormField extends StatelessWidget {
     required this.animalDescriptionController,
     required this.animalFormKey,
     required this.animalPriceController,
-    required this.listCategory,
+    required this.listCategoryOutPutStream,
     required this.onSelectedCategory,
     required this.selectedIndexCategory,
   });
 
-  final List<CategoryInfoModel> listCategory;
+  final Stream<List<CategoryInfoModel>> listCategoryOutPutStream;
   final void Function(int index) onSelectedCategory;
   final int? selectedIndexCategory;
   final void Function(String value) onChanged;
@@ -96,6 +96,7 @@ class AnimalFormField extends StatelessWidget {
             stream: animalImageOutputStream,
             initialData: null,
             builder: (context, snapshot) => CustomSelectImageWidget(
+              key: animalImgKey,
               file: snapshot.data,
               onTapAtSelectImage: onTapAtSelectImage,
               selectImageStatus: selectImageStatus,
@@ -119,18 +120,25 @@ class AnimalFormField extends StatelessWidget {
             },
           ),
           VerticalSpace(HeightsManager.h12),
-
-          listCategory.isEmpty ?
-          Text(ConstsValuesManager.noCategoryFoundAddCategoryFirst,
-          style: TextStyle(
-            fontSize: FontSizeManager.s16,
-            color: ColorManager.kRedColor,
-            fontFamily: FontsManager.poppinsFontFamily,
-          ),):
-          ChoiceCategoryNameAnimalPage(
-            listCategory: listCategory,
-            onSelectedCategory: onSelectedCategory,
-            selectedIndexCategory: selectedIndexCategory,
+          StreamBuilder<List<CategoryInfoModel>>(
+            initialData: [],
+            stream: listCategoryOutPutStream,
+            builder: (context, snapshot) {
+              return snapshot.data!.isEmpty
+                  ? Text(
+                      ConstsValuesManager.noCategoryFoundAddCategoryFirst,
+                      style: TextStyle(
+                        fontSize: FontSizeManager.s16,
+                        color: ColorManager.kRedColor,
+                        fontFamily: FontsManager.poppinsFontFamily,
+                      ),
+                    )
+                  : ChoiceCategoryNameAnimalPage(
+                      listCategory: snapshot.data!,
+                      onSelectedCategory: onSelectedCategory,
+                      selectedIndexCategory: selectedIndexCategory,
+                    );
+            },
           ),
         ],
       ),

@@ -27,6 +27,7 @@ class CategoryPageController {
   bool isEdit = false;
   bool isDeleteNow = false;
 
+
   CategoryInfoModel? categoryInfoModel;
 
   //?category image
@@ -344,7 +345,7 @@ class CategoryPageController {
       categoryNameController.text = categoryInfoModel!.name;
       categoryDescriptionController.text = categoryInfoModel!.description;
       categoryFileImage = File(categoryInfoModel!.imagePath);
-      imageKey.currentState?.updateState(categoryFileImage!);
+      categoryImgKey.currentState?.updateState(categoryFileImage!);
       _updateCategoryFileImage();
       _changeSaveAndEditButtonText();
       changeSaveButtonStatus(WidgetStatusEnum.enabled);

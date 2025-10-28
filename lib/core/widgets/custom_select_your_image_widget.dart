@@ -12,15 +12,16 @@ import '../resources/conts_values.dart';
 import '../resources/fonts_size_manager.dart';
 import '../resources/heights_manager.dart';
 import '../resources/padding_manager.dart';
-
-final imageKey = GlobalKey<_CustomSelectImageWidgetState>();
+final categoryImgKey = GlobalKey<_CustomSelectImageWidgetState>();
+final animalImgKey = GlobalKey<_CustomSelectImageWidgetState>();
 
 class CustomSelectImageWidget extends StatefulWidget {
-  CustomSelectImageWidget({
+  const CustomSelectImageWidget({
+      super.key,
     this.file,
     required this.onTapAtSelectImage,
     required this.selectImageStatus,
-  }) : super(key: imageKey);
+  });
 
   final File? file;
   final SelectImageStatus selectImageStatus;

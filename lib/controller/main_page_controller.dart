@@ -107,6 +107,8 @@ class MainPageController {
   void onPageChangedOfPageView(int value) {
     if (isAnimatedByUser == false) {
       changeCurrentIndex(value);
+      _whileNavigateToAnimalTap();
+
     }
   }
 
@@ -118,11 +120,7 @@ class MainPageController {
     }
     changeCurrentIndex(value);
     //after change current index
-    if (_currentIndex == 3) {
-      AnimalPageController animalPageController = AnimalPageController(context);
-      animalPageController.listCategory = homePageController!.listCategories;
-      animalPageController.updateListCategory();
-    }
+    _whileNavigateToAnimalTap();
     await pageController.animateToPage(
       value,
       duration: const Duration(milliseconds: 300),
@@ -133,6 +131,14 @@ class MainPageController {
       getIt<GlobalKey<NavigatorState>>(
         instanceName: ConstsValuesManager.homePageNavigationState,
       ).currentState?.popUntil((route) => route.isFirst);
+    }
+  }
+
+  void _whileNavigateToAnimalTap() {
+    if (_currentIndex == 3) {
+      AnimalPageController animalPageController = AnimalPageController(context);
+      animalPageController.listCategory = homePageController!.listCategories;
+      animalPageController.updateListCategory();
     }
   }
 }
