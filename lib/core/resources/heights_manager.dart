@@ -34,4 +34,8 @@ class HeightsManager {
 
   static double h22 = 22.h;
 
+  static double h286 = 286.h;
+
+  static double h14 = 14.h;
+
 }

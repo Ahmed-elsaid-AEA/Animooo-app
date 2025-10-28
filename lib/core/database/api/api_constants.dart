@@ -49,4 +49,6 @@ class ApiConstants {
   static const String categoryId = "category_id";
 
   static const String price = "price";
+
+  static const String getAllAnimalEndpoint = "/api/allAnimal";
 }

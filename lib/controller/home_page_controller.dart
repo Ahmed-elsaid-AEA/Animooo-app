@@ -9,7 +9,9 @@ import 'package:animooo/core/error/failure_model.dart';
 import 'package:animooo/core/functions/app_navigations.dart';
 import 'package:animooo/core/resources/conts_values.dart';
 import 'package:animooo/core/resources/routes_manager.dart';
+import 'package:animooo/data/network/animal_api.dart';
 import 'package:animooo/data/network/category_api.dart';
+import 'package:animooo/models/animal/animal_response_model.dart';
 import 'package:animooo/models/gategory/categories_model_response.dart';
 import 'package:animooo/models/gategory/category_response.dart';
 import 'package:flutter/cupertino.dart';
@@ -24,20 +26,40 @@ class HomePageController {
     print("HomePageController");
     init();
     getAllCategories();
+    getAllAnimal();
   }
 
   factory HomePageController() {
     return _instance ??= HomePageController._internal();
   }
 
+  //? list categories
+  List<CategoryInfoModel> listCategories = [];
+
+  //? list animal
+  List<AnimalInfoResponseModel> listAnimal = [];
+
+  //? stream list categories
   late Stream<List<CategoryInfoModel>> listCategoriesOutput;
   late StreamController<List<CategoryInfoModel>> listCategoriesController;
-  List<CategoryInfoModel> listCategories = [];
   late Sink<List<CategoryInfoModel>> listCategoriesInput;
+
+  //? stream list animal
+  late Stream<List<AnimalInfoResponseModel>> listAnimalOutput;
+  late StreamController<List<AnimalInfoResponseModel>> listAnimalController;
+  late Sink<List<AnimalInfoResponseModel>> listAnimalInput;
   WidgetStatusEnum listCategoriesStatus = WidgetStatusEnum.enabled;
+  WidgetStatusEnum listAnimalStatus = WidgetStatusEnum.enabled;
+
+  //? stream section categories status
   late Sink<WidgetStatusEnum> sectionCategoriesStatusInput;
   late Stream<WidgetStatusEnum> sectionCategoriesStatusOutput;
   late StreamController<WidgetStatusEnum> sectionCategoriesStatusController;
+
+  //? stream section animal status
+  late Sink<WidgetStatusEnum> sectionAnimalStatusInput;
+  late Stream<WidgetStatusEnum> sectionAnimalStatusOutput;
+  late StreamController<WidgetStatusEnum> sectionAnimalStatusController;
 
   void init() {
     _initStreams();
@@ -52,6 +74,15 @@ class HomePageController {
     sectionCategoriesStatusInput = sectionCategoriesStatusController.sink;
     sectionCategoriesStatusOutput = sectionCategoriesStatusController.stream
         .asBroadcastStream();
+    //?init stream of list animal
+    listAnimalController = StreamController<List<AnimalInfoResponseModel>>();
+    listAnimalInput = listAnimalController.sink;
+    listAnimalOutput = listAnimalController.stream.asBroadcastStream();
+    //?init stream of list animal status
+    sectionAnimalStatusController = StreamController<WidgetStatusEnum>();
+    sectionAnimalStatusInput = sectionAnimalStatusController.sink;
+    sectionAnimalStatusOutput = sectionAnimalStatusController.stream
+        .asBroadcastStream();
   }
 
   void _disposeStreams() {
@@ -60,6 +91,12 @@ class HomePageController {
     //?dispose stream of list categories status
     sectionCategoriesStatusController.close();
     sectionCategoriesStatusInput.close();
+    //?dispose stream of list animal
+    listAnimalController.close();
+    listAnimalInput.close();
+    //?dispose stream of list animal status
+    sectionAnimalStatusController.close();
+    sectionAnimalStatusInput.close();
   }
 
   void dispose() {
@@ -103,6 +140,21 @@ class HomePageController {
     _updateListCategoriesStatus(WidgetStatusEnum.enabled);
   }
 
+  Future<void> getAllAnimal() async {
+    _updateListAnimalStatus(WidgetStatusEnum.loading);
+    var result = await AnimalApi.getAllAnimalRequest();
+     result.fold(
+      (l) => _onFailureRequestAllAnimal(l),
+      (r) => _onSuccessRequestAllAnimal(r),
+    );
+    _updateListAnimalStatus(WidgetStatusEnum.enabled);
+   }
+
+  void _updateListAnimalStatus(WidgetStatusEnum widgetStatusEnum) {
+    listAnimalStatus = widgetStatusEnum;
+    sectionAnimalStatusInput.add(listAnimalStatus);
+  }
+
   void _updateListCategoriesStatus(WidgetStatusEnum widgetStatusEnum) {
     listCategoriesStatus = widgetStatusEnum;
     sectionCategoriesStatusInput.add(listCategoriesStatus);
@@ -117,14 +169,26 @@ class HomePageController {
     updateListCategories();
   }
 
+  void _onSuccessRequestAllAnimal(List<AnimalInfoResponseModel> r) {
+     listAnimal = r;
+    updateListAnimal();
+  }
+
+  void updateListAnimal() {
+    listAnimalInput.add(listAnimal);
+  }
+
   void updateListCategories() {
     listCategoriesInput.add(listCategories);
   }
 
   Future<void> onRefresh() async {
     listCategories.clear();
+    listAnimal.clear();
     updateListCategories();
-    await getAllCategories();
+    updateListAnimal();
+      getAllCategories();
+      getAllAnimal();
   }
 
   void onTapAtCategory(CategoryInfoModel category, BuildContext context) async {
@@ -140,4 +204,6 @@ class HomePageController {
       }
     });
   }
+
+  void _onFailureRequestAllAnimal(FailureModel l) {}
 }

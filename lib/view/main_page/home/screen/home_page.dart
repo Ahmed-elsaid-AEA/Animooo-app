@@ -51,10 +51,15 @@ class _HomePageState extends State<HomePage> {
                 },
               ),
               HomePageAnimals(
+                onTapAtItemAnimal: (animal){
+
+                },
+                sectionAnimalStatusOutput: _homePageController.sectionAnimalStatusOutput,
                 onPressedAddNewAnimal: () {
                   _homePageController.goToAnimalTapPage();
                 },
                 onPressedAtSeeMore: () {},
+                listAnimalOutPut: _homePageController.listAnimalOutput,
               ),
             ],
           ),

@@ -56,4 +56,27 @@ class AnimalApi {
       );
     }
   }
+
+  static Future<Either<FailureModel, List<AnimalInfoResponseModel>>>
+  getAllAnimalRequest() async {
+    try {
+      DioService dioService = getIt<DioService>();
+      var response = await dioService.get(
+        path: ApiConstants.getAllAnimalEndpoint,
+      );
+      List<AnimalInfoResponseModel> l = (response["Animals"] as List<dynamic>)
+          .map((e) => AnimalInfoResponseModel.fromJson(e))
+          .toList();
+      return Right(l);
+    } on ServerException catch (e) {
+      return left(handleServerExceptionError(e));
+    } catch (e) {
+      return Left(
+        FailureModel.fromJson({
+          ApiConstants.errors: [e.toString()],
+          ApiConstants.statusCode: ApiConstants.s500,
+        }),
+      );
+    }
+  }
 }
