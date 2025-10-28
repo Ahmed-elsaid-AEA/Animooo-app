@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:animooo/core/widgets/custom_select_your_image_widget.dart';
 import 'package:animooo/data/network/animal_api.dart';
 import 'package:animooo/models/animal/animal_model.dart';
 import 'package:animooo/models/animal/animal_response_model.dart';
@@ -56,8 +57,8 @@ class AnimalPageController {
 
   //?stream of save button status
   late Stream<WidgetStatusEnum?> saveButtonStatusOutPutStream;
-  late Sink<WidgetStatusEnum?> saveButtonStatusInput;
-  late StreamController<WidgetStatusEnum?> saveButtonStatusController;
+  late Sink<WidgetStatusEnum?> _saveButtonStatusInput;
+  late StreamController<WidgetStatusEnum?> _saveButtonStatusController;
 
   //?streams
   //?animal image stream
@@ -101,7 +102,7 @@ class AnimalPageController {
   }
 
   void _changeButtonStatus(WidgetStatusEnum statue) {
-    saveButtonStatusInput.add(statue);
+    _saveButtonStatusInput.add(statue);
   }
 
   void _initStreams() {
@@ -122,9 +123,9 @@ class AnimalPageController {
     saveAndEditButtonTextOutPutStream = saveAndEditButtonTextController.stream;
     saveAndEditButtonTextInput = saveAndEditButtonTextController.sink;
     //?init save button status stream
-    saveButtonStatusController = StreamController<WidgetStatusEnum>();
-    saveButtonStatusOutPutStream = saveButtonStatusController.stream;
-    saveButtonStatusInput = saveButtonStatusController.sink;
+    _saveButtonStatusController = StreamController<WidgetStatusEnum>();
+    saveButtonStatusOutPutStream = _saveButtonStatusController.stream;
+    _saveButtonStatusInput = _saveButtonStatusController.sink;
     //?init selected index category stream
     selectedIndexCategoryController = StreamController<int?>();
     selectedIndexCategoryOutPutStream = selectedIndexCategoryController.stream;
@@ -162,8 +163,8 @@ class AnimalPageController {
     saveAndEditButtonTextController.close();
     saveAndEditButtonTextInput.close();
     //?save button status dispose
-    saveButtonStatusController.close();
-    saveButtonStatusInput.close();
+    _saveButtonStatusController.close();
+    _saveButtonStatusInput.close();
     //?selected index category dispose
     selectedIndexCategoryController.close();
     selectedIndexCategoryInput.close();
@@ -273,14 +274,14 @@ class AnimalPageController {
 
   void changeSaveButtonStatus(WidgetStatusEnum status) {
     saveButtonStatus = status;
-    saveButtonStatusInput.add(status);
+    _saveButtonStatusInput.add(status);
   }
 
   Future<void> _requestCreateNewAnimal() async {
     //loading
-    // _changeScreenStateLoading(ScreensStatusState.loading);
-    // changeSaveButtonStatus(WidgetStatusEnum.loading);
-    AnimalModel animalModel =AnimalModel(
+    _changeScreenStateLoading(ScreensStatusState.loading);
+    changeSaveButtonStatus(WidgetStatusEnum.loading);
+    AnimalModel animalModel = AnimalModel(
       name: animalNameController.text,
       description: animalDescriptionController.text,
       image: animalFileImage!,
@@ -288,19 +289,14 @@ class AnimalPageController {
       //?change that
       price: double.tryParse(animalPriceController.text) ?? 0,
     );
-    print(animalModel);
     Either<FailureModel, AnimalResponseModel> result =
-        await AnimalApi.createNewAnimal(
-          animalModel
-        );
+        await AnimalApi.createNewAnimal(animalModel);
     result.fold(
       (l) {
         _onFailureCreateNewAnimal(l);
-        print(l);
       },
       (r) {
         _onSuccessCreateNewAnimal(r);
-        print(r);
       },
     );
     changeSaveButtonStatus(WidgetStatusEnum.enabled);
@@ -381,5 +377,16 @@ class AnimalPageController {
       0,
     );
     // homePageController.updateListCategories();
+  }
+
+  void clearForm() {
+    animalNameController.clear();
+    animalDescriptionController.clear();
+    animalPriceController.clear();
+    animalFileImage = null;
+    _updateAnimalImage();
+    selectedIndexCategory = null;
+    _updateSelectedIndexCategory();
+    changeSaveButtonStatus(WidgetStatusEnum.disabled);
   }
 }

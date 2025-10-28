@@ -10,11 +10,9 @@ AnimalResponseModel _$AnimalResponseModelFromJson(Map<String, dynamic> json) =>
     AnimalResponseModel(
       statusCode: (json['statusCode'] as num).toInt(),
       message: json['message'] as String,
-      animal: (json['animal'] as List<dynamic>)
-          .map(
-            (e) => AnimalInfoResponseModel.fromJson(e as Map<String, dynamic>),
-          )
-          .toList(),
+      animal: AnimalInfoResponseModel.fromJson(
+        json['animal'] as Map<String, dynamic>,
+      ),
     );
 
 Map<String, dynamic> _$AnimalResponseModelToJson(
@@ -28,27 +26,27 @@ Map<String, dynamic> _$AnimalResponseModelToJson(
 AnimalInfoResponseModel _$AnimalInfoResponseModelFromJson(
   Map<String, dynamic> json,
 ) => AnimalInfoResponseModel(
-  animalId: (json['animalId'] as num).toInt(),
-  animalName: json['animalName'] as String,
-  animalDescription: json['animalDescription'] as String,
-  animalImage: json['animalImage'] as String,
-  animalPrice: (json['animalPrice'] as num).toDouble(),
-  categoryId: (json['categoryId'] as num).toInt(),
-  userId: (json['userId'] as num).toInt(),
-  animalCreatedAt: DateTime.parse(json['animalCreatedAt'] as String),
-  animalUpdatedAt: DateTime.parse(json['animalUpdatedAt'] as String),
+  animalId: (json['animal_id'] as num).toInt(),
+  animalName: json['animal_name'] as String,
+  animalDescription: json['animal_description'] as String,
+  animalImage: json['animal_image'] as String,
+  animalPrice: (json['animal_price'] as num).toDouble(),
+  categoryId: (json['category_id'] as num).toInt(),
+  userId: (json['user_id'] as num).toInt(),
+  animalCreatedAt: DateTime.parse(json['animal_created_at'] as String),
+  animalUpdatedAt: DateTime.parse(json['animal_update_at'] as String),
 );
 
 Map<String, dynamic> _$AnimalInfoResponseModelToJson(
   AnimalInfoResponseModel instance,
 ) => <String, dynamic>{
-  'animalId': instance.animalId,
-  'animalName': instance.animalName,
-  'animalDescription': instance.animalDescription,
-  'animalImage': instance.animalImage,
-  'animalPrice': instance.animalPrice,
-  'categoryId': instance.categoryId,
-  'userId': instance.userId,
-  'animalCreatedAt': instance.animalCreatedAt.toIso8601String(),
-  'animalUpdatedAt': instance.animalUpdatedAt.toIso8601String(),
+  'animal_id': instance.animalId,
+  'animal_name': instance.animalName,
+  'animal_description': instance.animalDescription,
+  'animal_image': instance.animalImage,
+  'animal_price': instance.animalPrice,
+  'category_id': instance.categoryId,
+  'user_id': instance.userId,
+  'animal_created_at': instance.animalCreatedAt.toIso8601String(),
+  'animal_update_at': instance.animalUpdatedAt.toIso8601String(),
 };

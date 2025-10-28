@@ -6,7 +6,7 @@ part 'animal_response_model.g.dart';
 class AnimalResponseModel {
   final int statusCode;
   final String message;
-  final List<AnimalInfoResponseModel> animal;
+  final AnimalInfoResponseModel animal;
 
   const AnimalResponseModel({
     required this.statusCode,
@@ -31,14 +31,23 @@ class AnimalInfoResponseModel {
   //         "user_id": 19,
   //         "animal_created_at": "2025-10-28 18:43:30.327104",
   //         "animal_update_at": "2025-10-28 18:43:30.327104"
+  @JsonKey(name: "animal_id")
   final int animalId;
+  @JsonKey(name: "animal_name")
   final String animalName;
+  @JsonKey(name: "animal_description")
   final String animalDescription;
+  @JsonKey(name: "animal_image")
   final String animalImage;
+  @JsonKey(name: "animal_price")
   final double animalPrice;
+  @JsonKey(name: "category_id")
   final int categoryId;
+  @JsonKey(name: "user_id")
   final int userId;
+  @JsonKey(name: "animal_created_at")
   final DateTime animalCreatedAt;
+  @JsonKey(name: "animal_update_at")
   final DateTime animalUpdatedAt;
 
   const AnimalInfoResponseModel({

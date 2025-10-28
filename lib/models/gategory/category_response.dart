@@ -23,6 +23,7 @@ class CategoryResponse {
 
 @JsonSerializable()
 class CategoryInfoModel {
+
   final int id;
   final String name;
   final String description;

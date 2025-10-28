@@ -27,7 +27,7 @@ class AnimalApi {
   static Future<Either<FailureModel, AnimalResponseModel>> createNewAnimal(
     AnimalModel animal,
   ) async {
-    // try {
+    try {
       DioService dioService = getIt<DioService>();
 
       var response = await dioService.post(
@@ -45,15 +45,15 @@ class AnimalApi {
       );
       print(response);
       return Right(AnimalResponseModel.fromJson(response));
-    // } on ServerException catch (e) {
-    //   return left(handleServerExceptionError(e));
-    // } catch (e) {
-    //   return Left(
-    //     FailureModel.fromJson({
-    //       ApiConstants.errors: [e.toString()],
-    //       ApiConstants.statusCode: ApiConstants.s500,
-    //     }),
-    //   );
-    // }
+    } on ServerException catch (e) {
+      return left(handleServerExceptionError(e));
+    } catch (e) {
+      return Left(
+        FailureModel.fromJson({
+          ApiConstants.errors: [e.toString()],
+          ApiConstants.statusCode: ApiConstants.s500,
+        }),
+      );
+    }
   }
 }

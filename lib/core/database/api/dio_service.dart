@@ -49,16 +49,18 @@ class DioService extends ApiConsumer {
   }
 
   _onError(DioException e, ErrorInterceptorHandler handler) async {
-    if (e.response?.statusCode == 401 || e.response?.statusCode == 400) {
-      String? accessToken = await _generateNewAccessToken();
-
-      if (accessToken != null) {
-        //update token
-        return await _updateAccessToken(accessToken, e, handler);
-      } else {
-        await _logout();
+     if (e.response?.statusCode == 401 || e.response?.statusCode == 400) {
+      if (e.response!.data.toString().toLowerCase().contains("token")) {
+        String? accessToken = await _generateNewAccessToken();
+        if (accessToken != null) {
+          //update token
+          return await _updateAccessToken(accessToken, e, handler);
+        } else {
+          await _logout();
+        }
       }
     }
+     return handler.next(e);
   }
 
   _updateAccessToken(
@@ -221,7 +223,6 @@ class DioService extends ApiConsumer {
         queryParameters: queryParameters,
         options: Options(headers: headers),
       );
-
       if (response.statusCode! >= 200 && response.statusCode! < 300) {
         //?success
         return response.data;

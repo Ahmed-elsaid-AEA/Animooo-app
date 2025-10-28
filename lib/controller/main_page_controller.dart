@@ -108,15 +108,18 @@ class MainPageController {
     if (isAnimatedByUser == false) {
       changeCurrentIndex(value);
       _whileNavigateToAnimalTap();
-
     }
   }
 
   void onTapBottomNavigationBarItem(int value) async {
     isAnimatedByUser = true;
     if (_currentIndex == 2) {
-      //come from category page
+      //?come from category page
       categoryPageController?.clearForm();
+    }
+    if (_currentIndex == 3) {
+      //?come from animal page
+      animalPageController?.clearForm();
     }
     changeCurrentIndex(value);
     //after change current index
@@ -142,4 +145,5 @@ class MainPageController {
     }
   }
 }
+
 //TODO :: show image selected widget in animal page
