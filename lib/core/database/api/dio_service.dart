@@ -257,8 +257,8 @@ class DioService extends ApiConsumer {
           );
         case DioExceptionType.receiveTimeout:
           throw ServerException(
-            data: await e.response?.data,
-            statusCode: e.response!.statusCode ?? 408,
+            data: await e.response?.data ?? {},
+            statusCode: e.response?.statusCode ?? 408,
             message: ConstsValuesManager.receiveTimeOut,
           );
         case DioExceptionType.badCertificate:

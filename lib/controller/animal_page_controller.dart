@@ -103,6 +103,7 @@ class AnimalPageController {
   }
 
   void _changeButtonStatus(WidgetStatusEnum statue) {
+    saveButtonStatus = statue;
     _saveButtonStatusInput.add(statue);
   }
 
@@ -199,9 +200,9 @@ class AnimalPageController {
     if (animalFormKey.currentState!.validate() &&
         animalFileImage != null &&
         selectedIndexCategory != null) {
-      changeSaveButtonStatus(WidgetStatusEnum.enabled);
+      _changeButtonStatus(WidgetStatusEnum.enabled);
     } else {
-      changeSaveButtonStatus(WidgetStatusEnum.disabled);
+      _changeButtonStatus(WidgetStatusEnum.disabled);
     }
   }
 
@@ -253,8 +254,9 @@ class AnimalPageController {
       if (result == true) {
         //?make api
         if (isEdit == true) {
+          print("in edit ");
           //request update
-          // await _inUpdateMethod();
+          await _inUpdateAnimalMethod();
         } else {
           await _requestCreateNewAnimal();
         }
@@ -268,20 +270,60 @@ class AnimalPageController {
     }
   }
 
+  Future<void> _inUpdateAnimalMethod() async {
+    if (animalNameController.text != animalInfoModel!.animalName ||
+        animalDescriptionController.text !=
+            animalInfoModel!.animalDescription ||
+        animalPriceController.text != animalInfoModel!.animalPrice.toInt().toString() ||
+        animalFileImage!.path != animalInfoModel!.animalImage) {
+
+      await _requestUpdateAnimal();
+    } else {
+      showAppSnackBar(context, ConstsValuesManager.noChanges);
+    }
+  }
+
+  Future<void> _requestUpdateAnimal() async {
+    //loading
+    _changeScreenStateLoading(ScreensStatusState.loading);
+    _changeButtonStatus(WidgetStatusEnum.loading);
+    AnimalModel animalModel = AnimalModel(
+      name: animalNameController.text,
+      description: animalDescriptionController.text,
+      image: animalFileImage!,
+      categoryId: listCategory[selectedIndexCategory!].id,
+      //?change that
+      price: double.tryParse(animalPriceController.text) ?? 0,
+    );
+    Either<FailureModel, AnimalResponseModel> result =
+        await AnimalApi.updateAnimal(
+          animalModel,
+          animalInfoModel!.animalId.toInt(),
+        );
+    result.fold(
+      (l) {
+        print(l);
+        _onFailureUpdateAnimal(l);
+      },
+      (r) {
+        print(r);
+        _onSuccessUpdateAnimal(r);
+      },
+    );
+    _changeButtonStatus(WidgetStatusEnum.enabled);
+  }
+
   _changeScreenStateLoading(ScreensStatusState state) {
     screenState = state;
     loadingScreenStateInput.add(screenState == ScreensStatusState.loading);
   }
 
-  void changeSaveButtonStatus(WidgetStatusEnum status) {
-    saveButtonStatus = status;
-    _saveButtonStatusInput.add(status);
-  }
+
 
   Future<void> _requestCreateNewAnimal() async {
     //loading
     _changeScreenStateLoading(ScreensStatusState.loading);
-    changeSaveButtonStatus(WidgetStatusEnum.loading);
+    _changeButtonStatus(WidgetStatusEnum.loading);
     AnimalModel animalModel = AnimalModel(
       name: animalNameController.text,
       description: animalDescriptionController.text,
@@ -300,7 +342,7 @@ class AnimalPageController {
         _onSuccessCreateNewAnimal(r);
       },
     );
-    changeSaveButtonStatus(WidgetStatusEnum.enabled);
+    _changeButtonStatus(WidgetStatusEnum.enabled);
   }
 
   void _onFailureCreateNewAnimal(FailureModel l) {
@@ -366,13 +408,13 @@ class AnimalPageController {
       homePageController.listAnimal.add(animalInfoModel!);
     } else {
       //update case
-      // int index = homePageController.listCategories.indexWhere(
-      //       (cat) => cat.id == categoryInfoModel!.id,
-      // );
-      // homePageController.listCategories.removeWhere(
-      //       (element) => element.id == categoryInfoModel!.id,
-      // );
-      // homePageController.listCategories.insert(index, categoryInfoModel!);
+      int index = homePageController.listAnimal.indexWhere(
+            (animal) => animal.animalId == animalInfoModel!.animalId,
+      );
+      homePageController.listAnimal.removeWhere(
+            (animal) =>animal.animalId == animalInfoModel!.animalId,
+      );
+      homePageController.listAnimal.insert(index, animalInfoModel!);
     }
     mainPageKey.currentState?.mainPageController.onTapBottomNavigationBarItem(
       0,
@@ -387,20 +429,55 @@ class AnimalPageController {
     animalFileImage = null;
     _updateAnimalImage();
     selectedIndexCategory = null;
+    isEdit = false;
+    isDeleteNow = false;
+    animalInfoModel = null;
+    _changeSaveAndEditButtonText();
+    _changeButtonStatus(WidgetStatusEnum.disabled);
     _updateSelectedIndexCategory();
-    changeSaveButtonStatus(WidgetStatusEnum.disabled);
+    _changeButtonStatus(WidgetStatusEnum.disabled);
   }
 
   void fillForm() {
     animalNameController.text = animalInfoModel!.animalName;
     animalDescriptionController.text = animalInfoModel!.animalDescription;
-    animalPriceController.text = animalInfoModel!.animalPrice.toString().replaceAll(".0", "");
+    animalPriceController.text = animalInfoModel!.animalPrice
+        .toString()
+        .replaceAll(".0", "");
     animalFileImage = File(animalInfoModel!.animalImage);
     animalImgKey.currentState?.updateState(animalFileImage!);
     _updateAnimalImage();
     selectedIndexCategory = listCategory.indexWhere(
       (element) => element.id == animalInfoModel!.categoryId,
     );
+
     _updateSelectedIndexCategory();
+    _changeSaveAndEditButtonText();
+    _changeButtonStatus(WidgetStatusEnum.enabled);
+  }
+
+  void _changeSaveAndEditButtonText() {
+    saveAndEditButtonTextInput.add(
+      isEdit == true ? ConstsValuesManager.update : ConstsValuesManager.save,
+    );
+  }
+
+  void _onFailureUpdateAnimal(FailureModel l) {
+    _changeScreenStateLoading(ScreensStatusState.failure);
+    String message = _filterErrors(l.errors);
+    showAppSnackBar(
+      context,
+      message,
+      onPressedAtRetry: () {
+        onTapSaveAndUpdateButton();
+      },
+    );
+  }
+
+  void _onSuccessUpdateAnimal(AnimalResponseModel r) {
+    _changeScreenStateLoading(ScreensStatusState.success);
+    animalInfoModel = r.animal;
+    showAppSnackBar(context, r.message);
+    _goToHomeTap();
   }
 }

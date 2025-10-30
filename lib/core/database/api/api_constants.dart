@@ -53,4 +53,7 @@ class ApiConstants {
   static const String getAllAnimalEndpoint = "/api/allAnimal";
 
   static const String deleteAnimalEndpoint = "/api/deleteAnimal";
+  static const String updateAnimalEndpoint = "/api/updateAnimal";
+  static const String animalPrice = "animal_price";
+  static const String animalImage = "animal_image";
 }

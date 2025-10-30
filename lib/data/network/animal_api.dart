@@ -101,4 +101,43 @@ class AnimalApi {
       );
     }
   }
+
+  static Future<Either<FailureModel, AnimalResponseModel>> updateAnimal(
+    AnimalModel animal,
+    int id,
+  ) async {
+    try {
+      DioService dioService = getIt<DioService>();
+      Map<String, dynamic> body = {
+        ApiConstants.id: id,
+        ApiConstants.name: animal.name,
+        ApiConstants.animalPrice: animal.price,
+        ApiConstants.categoryId: animal.categoryId,
+        ApiConstants.description: animal.description,
+
+      };
+      if (!animal.image.path.startsWith("http")) {
+        body[ApiConstants.animalImage] = await MultipartFile.fromFile(
+          animal.image.path,
+          filename: animal.image.path.split("/").last,
+        );
+      }
+
+      var response = await dioService.post(
+        path: ApiConstants.updateAnimalEndpoint,
+        body: FormData.fromMap(body),
+      );
+
+       return Right(AnimalResponseModel.fromJson(response));
+    } on ServerException catch (e) {
+      return left(handleServerExceptionError(e));
+    } catch (e) {
+      return Left(
+        FailureModel.fromJson({
+          ApiConstants.errors: [e.toString()],
+          ApiConstants.statusCode: ApiConstants.s500,
+        }),
+      );
+    }
+  }
 }
