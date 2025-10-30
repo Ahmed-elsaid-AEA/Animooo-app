@@ -49,7 +49,7 @@ class DioService extends ApiConsumer {
   }
 
   _onError(DioException e, ErrorInterceptorHandler handler) async {
-     if (e.response?.statusCode == 401 || e.response?.statusCode == 400) {
+    if (e.response?.statusCode == 401 || e.response?.statusCode == 400) {
       if (e.response!.data.toString().toLowerCase().contains("token")) {
         String? accessToken = await _generateNewAccessToken();
         if (accessToken != null) {
@@ -60,7 +60,7 @@ class DioService extends ApiConsumer {
         }
       }
     }
-     return handler.next(e);
+    return handler.next(e);
   }
 
   _updateAccessToken(
@@ -124,6 +124,7 @@ class DioService extends ApiConsumer {
   Future<String?> _generateNewAccessToken() async {
     try {
       Dio dio = Dio();
+
       dio.options.baseUrl = ApiConstants.baseUrl;
       dio.options.connectTimeout = Duration(seconds: 10);
       dio.options.receiveTimeout = Duration(seconds: 5);
@@ -303,5 +304,37 @@ class DioService extends ApiConsumer {
   }) {
     // TODO: implement put
     throw UnimplementedError();
+  }
+
+  @override
+  Future download({
+    required String path,
+    required String locationToSavedImage,
+  }) async {
+    try {
+    await _dio.download(
+        path,
+        locationToSavedImage,
+        onReceiveProgress: (int count, int total) {
+          print("count $count");
+          print("total $total");
+          print("percentage ${(count / total) * 100}");
+        },
+      );
+      // if (response.statusCode! >= 200 && response.statusCode! < 300) {
+      //   //?success
+      //   // return response.data;
+      // } else {
+      //   //?failure
+      //   throw ServerException(
+      //     data: response.data as Map<String, dynamic>,
+      //     statusCode: response.statusCode!,
+      //     message: '',
+      //   );
+      // }
+    } catch (e) {
+      //?exception
+      await handleDioException(e);
+    }
   }
 }

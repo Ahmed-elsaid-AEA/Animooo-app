@@ -7,6 +7,13 @@ abstract class ApiConsumer {
     required Object body,
     Map<String, dynamic>? headers,
   });
+ Future download({
+    required String path,
+    required String locationToSavedImage,
+    // Map<String, dynamic>? queryParameters,
+    // required Object body,
+    // Map<String, dynamic>? headers,
+  });
 
   Future put({
     required String path,

@@ -274,9 +274,9 @@ class AnimalPageController {
     if (animalNameController.text != animalInfoModel!.animalName ||
         animalDescriptionController.text !=
             animalInfoModel!.animalDescription ||
-        animalPriceController.text != animalInfoModel!.animalPrice.toInt().toString() ||
+        animalPriceController.text !=
+            animalInfoModel!.animalPrice.toInt().toString() ||
         animalFileImage!.path != animalInfoModel!.animalImage) {
-
       await _requestUpdateAnimal();
     } else {
       showAppSnackBar(context, ConstsValuesManager.noChanges);
@@ -317,8 +317,6 @@ class AnimalPageController {
     screenState = state;
     loadingScreenStateInput.add(screenState == ScreensStatusState.loading);
   }
-
-
 
   Future<void> _requestCreateNewAnimal() async {
     //loading
@@ -409,10 +407,10 @@ class AnimalPageController {
     } else {
       //update case
       int index = homePageController.listAnimal.indexWhere(
-            (animal) => animal.animalId == animalInfoModel!.animalId,
+        (animal) => animal.animalId == animalInfoModel!.animalId,
       );
       homePageController.listAnimal.removeWhere(
-            (animal) =>animal.animalId == animalInfoModel!.animalId,
+        (animal) => animal.animalId == animalInfoModel!.animalId,
       );
       homePageController.listAnimal.insert(index, animalInfoModel!);
     }

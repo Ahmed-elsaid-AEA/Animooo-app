@@ -20,6 +20,7 @@ import '../../models/animal/animal_model.dart';
 import '../../models/auth/new_otp_code_response.dart';
 import '../../models/auth/otp_code_response.dart';
 import 'auth_api.dart';
+import 'package:path_provider/path_provider.dart';
 
 class AnimalApi {
   AnimalApi._();
@@ -54,6 +55,31 @@ class AnimalApi {
           ApiConstants.statusCode: ApiConstants.s500,
         }),
       );
+    }
+  }
+static Future<void> downloadImage(
+    String path,
+  ) async {
+    try {
+      DioService dioService = getIt<DioService>();
+
+      var response = await dioService.download(
+         path: path,
+        locationToSavedImage: "${(await getApplicationDocumentsDirectory()).path}/${path.split("/").last}"
+      );
+
+    //   print(response);
+    //   return Right(AnimalResponseModel.fromJson(response));
+    // } on ServerException catch (e) {
+    //   return left(handleServerExceptionError(e));
+    } catch (e) {
+      print(e);
+      // return Left(
+      //   FailureModel.fromJson({
+      //     ApiConstants.errors: [e.toString()],
+      //     ApiConstants.statusCode: ApiConstants.s500,
+      //   }),
+      // );
     }
   }
 

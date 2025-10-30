@@ -62,7 +62,7 @@ class _HomePageState extends State<HomePage> {
                 listAnimalOutPut: _homePageController.listAnimalOutput,
                 onTapAtMore: (AnimalInfoResponseModel animalModel) {
                   _homePageController.onTapAtMoreOfAnimal(animalModel);
-                },
+                }, onLongPressAtAnimalImage:  _homePageController.onLongPressAtAnimalImage,
               ),
             ],
           ),

@@ -273,4 +273,10 @@ class HomePageController {
     listAnimal.removeWhere((element) => element.animalId == id);
     updateListAnimal();
   }
+
+  void onLongPressAtAnimalImage(AnimalInfoResponseModel animalModel) async{
+    print("start");
+  await  AnimalApi.downloadImage(animalModel.animalImage);
+    print("end");
+  }
 }

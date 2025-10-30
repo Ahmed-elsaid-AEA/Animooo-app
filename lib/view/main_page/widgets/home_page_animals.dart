@@ -21,7 +21,9 @@ class HomePageAnimals extends StatelessWidget {
     required this.onPressedAtSeeMore,
     required this.listAnimalOutPut,
     required this.sectionAnimalStatusOutput,
-    required this.onTapAtItemAnimal, required this.onTapAtMore,
+    required this.onTapAtItemAnimal,
+    required this.onTapAtMore,
+    required this.onLongPressAtAnimalImage,
   });
 
   final VoidCallback onPressedAddNewAnimal;
@@ -31,6 +33,8 @@ class HomePageAnimals extends StatelessWidget {
   final Stream<WidgetStatusEnum> sectionAnimalStatusOutput;
   final void Function(AnimalInfoResponseModel category) onTapAtItemAnimal;
   final void Function(AnimalInfoResponseModel animalModel) onTapAtMore;
+  final void Function(AnimalInfoResponseModel animalModel)
+  onLongPressAtAnimalImage;
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +62,11 @@ class HomePageAnimals extends StatelessWidget {
               index: snapShotStatus.data == WidgetStatusEnum.loading ? 0 : 1,
               children: [
                 _LoadingItemAnimal(),
-                HaveItemAnimal(listAnimalOutPut: listAnimalOutPut, onTapAtMore:  onTapAtMore,),
+                HaveItemAnimal(
+                  listAnimalOutPut: listAnimalOutPut,
+                  onTapAtMore: onTapAtMore,
+                  onLongPressAtAnimalImage: onLongPressAtAnimalImage,
+                ),
               ],
             );
             // return snapShotStatus.data == WidgetStatusEnum.loading
@@ -77,10 +85,17 @@ class HomePageAnimals extends StatelessWidget {
 }
 
 class HaveItemAnimal extends StatelessWidget {
-  const HaveItemAnimal({super.key, required this.listAnimalOutPut, required this.onTapAtMore});
+  const HaveItemAnimal({
+    super.key,
+    required this.listAnimalOutPut,
+    required this.onTapAtMore,
+    required this.onLongPressAtAnimalImage,
+  });
 
   final Stream<List<AnimalInfoResponseModel>> listAnimalOutPut;
   final void Function(AnimalInfoResponseModel animalModel) onTapAtMore;
+  final void Function(AnimalInfoResponseModel animalModel)
+  onLongPressAtAnimalImage;
 
   @override
   Widget build(BuildContext context) {
@@ -92,6 +107,7 @@ class HaveItemAnimal extends StatelessWidget {
           physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
           itemBuilder: (context, index) => _AnimalCard(
+            onLongPressAtAnimalImage: onLongPressAtAnimalImage,
             animal: asyncSnapshot.data![index],
             onTapAtMore: onTapAtMore,
           ),
@@ -120,10 +136,16 @@ class _LoadingItemAnimal extends StatelessWidget {
 }
 
 class _AnimalCard extends StatelessWidget {
-  const _AnimalCard({required this.animal, required this.onTapAtMore});
+  const _AnimalCard({
+    required this.animal,
+    required this.onTapAtMore,
+    required this.onLongPressAtAnimalImage,
+  });
 
   final AnimalInfoResponseModel animal;
   final void Function(AnimalInfoResponseModel animalModel) onTapAtMore;
+  final void Function(AnimalInfoResponseModel animalModel)
+  onLongPressAtAnimalImage;
 
   @override
   Widget build(BuildContext context) {
@@ -194,12 +216,17 @@ class _AnimalCard extends StatelessWidget {
               ],
             ),
           ),
-          Image.network(
-            //todo:: use cash network image
-            animal.animalImage,
-            height: HeightsManager.h173,
-            fit: BoxFit.cover,
-            width: double.infinity,
+          InkWell(
+            onLongPress: () {
+              onLongPressAtAnimalImage(animal);
+            },
+            child: Image.network(
+              //todo:: use cash network image
+              animal.animalImage,
+              height: HeightsManager.h173,
+              fit: BoxFit.cover,
+              width: double.infinity,
+            ),
           ),
           Padding(
             padding: EdgeInsetsGeometry.only(
