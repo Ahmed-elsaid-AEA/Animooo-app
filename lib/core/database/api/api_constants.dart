@@ -1,16 +1,40 @@
-class ApiConstants {
-  //TODO :://don't forget secure api constants
+import 'package:envied/envied.dart';
+
+part 'api_constants.g.dart';
+
+@Envied(path: ".env")
+abstract class ApiConstants {
   ApiConstants._();
 
-  static const String baseUrl = 'http://192.168.1.100:8000';
-  static const String signUpEndpoint = '/api/signup';
-  static const String otpCheckEndpoint = '/api/verfication_code';
-  static const String loginEndpoint = '/api/login';
-  static const String createNewPasswordEndpoint = '/api/create_new_possword';
-  static const String resendNewOtpCodeEndpoint = '/api/create_new_verfication_code';
-  static const String createNewCategoryEndpoint = '/api/createNewCategory';
-  static const String addNewAnimalEndpoint = '/api/addNewAnimal';
-  static const String updateCategoryEndpoint = '/api/updateCategory';
+  @EnviedField(varName: 'BASE_URL')
+  static const String baseUrl = _ApiConstants.baseUrl;
+
+  @EnviedField(varName: 'SIGN_UP_ENDPOINT')
+  static const String signUpEndpoint = _ApiConstants.signUpEndpoint;
+
+  @EnviedField(varName: 'LOGIN_ENDPOINT')
+  static const String loginEndpoint = _ApiConstants.loginEndpoint;
+
+  @EnviedField(varName: 'OTP_CHECK_ENDPOINT')
+  static const String otpCheckEndpoint = _ApiConstants.otpCheckEndpoint;
+
+  @EnviedField(varName: 'CREATE_NEW_PASSWORD_ENDPOINT')
+  static const String createNewPasswordEndpoint =
+      _ApiConstants.createNewPasswordEndpoint;
+
+  @EnviedField(varName: 'RESEND_NEW_OTP_CODE_ENDPOINT')
+  static const String resendNewOtpCodeEndpoint =
+      _ApiConstants.resendNewOtpCodeEndpoint;
+  @EnviedField(varName: 'CREATE_NEW_CATEGORY_ENDPOINT')
+  static const String createNewCategoryEndpoint =
+      _ApiConstants.createNewCategoryEndpoint;
+
+  @EnviedField(varName: 'ADD_NEW_ANIMAL_ENDPOINT')
+  static const String addNewAnimalEndpoint = _ApiConstants.addNewAnimalEndpoint;
+
+  @EnviedField(varName: 'UPDATE_CATEGORY_ENDPOINT')
+  static const String updateCategoryEndpoint =
+      _ApiConstants.updateCategoryEndpoint;
   static const String firstName = 'firstName';
   static const String name = 'name';
   static const String description = 'description';
@@ -32,28 +56,38 @@ class ApiConstants {
 
   static const String authorization = "Authorization";
 
-  static const String refreshTokenEndPoint = "/api/generateAccessToken";
+  @EnviedField(varName: 'REFRESH_TOKEN_ENDPOINT')
+  static const String refreshTokenEndPoint = _ApiConstants.refreshTokenEndPoint;
 
   static const String refreshToken = "refresh_token";
 
-  static const String  getAllCategoriesEndpoint = "/api/allCategories";
+  @EnviedField(varName: 'ALL_CATEGORIES_ENDPOINT')
+  static const String getAllCategoriesEndpoint =
+      _ApiConstants.getAllCategoriesEndpoint;
 
   static const String id = "id";
 
   static const String delete = "Delete";
 
-  static const String areYouSureYouWantToDeleteThisCategory = "Are you sure you want to delete this category?";
+  static const String areYouSureYouWantToDeleteThisCategory =
+      "Are you sure you want to delete this category?";
 
-  static const String deleteCategoryEndpoint = "/api/deleteCategory";
+  @EnviedField(varName: 'DELETE_CATEGORY_ENDPOINT')
+  static const String deleteCategoryEndpoint =
+      _ApiConstants.deleteCategoryEndpoint;
 
   static const String categoryId = "category_id";
 
   static const String price = "price";
 
-  static const String getAllAnimalEndpoint = "/api/allAnimal";
+  @EnviedField(varName: 'GET_ALL_ANIMAL_ENDPOINT')
+  static const String getAllAnimalEndpoint = _ApiConstants.getAllAnimalEndpoint;
 
-  static const String deleteAnimalEndpoint = "/api/deleteAnimal";
-  static const String updateAnimalEndpoint = "/api/updateAnimal";
+  @EnviedField(varName: 'DELETE_ANIMAL_ENDPOINT')
+  static const String deleteAnimalEndpoint = _ApiConstants.deleteAnimalEndpoint;
+
+  @EnviedField(varName: 'UPDATE_ANIMAL_ENDPOINT')
+  static const String updateAnimalEndpoint = _ApiConstants.updateAnimalEndpoint;
   static const String animalPrice = "animal_price";
   static const String animalImage = "animal_image";
 }
