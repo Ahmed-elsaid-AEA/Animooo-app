@@ -7,6 +7,8 @@ import 'package:animooo/core/resources/heights_manager.dart';
 import 'package:animooo/core/widgets/spacing/horizontal_space.dart';
 import 'package:animooo/core/widgets/spacing/vertical_space.dart';
 import 'package:animooo/models/animal/animal_response_model.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -21,7 +23,8 @@ class HomePageAnimals extends StatelessWidget {
     required this.onPressedAtSeeMore,
     required this.listAnimalOutPut,
     required this.sectionAnimalStatusOutput,
-    required this.onTapAtItemAnimal, required this.onTapAtMore,
+    required this.onTapAtItemAnimal,
+    required this.onTapAtMore,
   });
 
   final VoidCallback onPressedAddNewAnimal;
@@ -58,7 +61,10 @@ class HomePageAnimals extends StatelessWidget {
               index: snapShotStatus.data == WidgetStatusEnum.loading ? 0 : 1,
               children: [
                 _LoadingItemAnimal(),
-                HaveItemAnimal(listAnimalOutPut: listAnimalOutPut, onTapAtMore:  onTapAtMore,),
+                HaveItemAnimal(
+                  listAnimalOutPut: listAnimalOutPut,
+                  onTapAtMore: onTapAtMore,
+                ),
               ],
             );
             // return snapShotStatus.data == WidgetStatusEnum.loading
@@ -77,7 +83,11 @@ class HomePageAnimals extends StatelessWidget {
 }
 
 class HaveItemAnimal extends StatelessWidget {
-  const HaveItemAnimal({super.key, required this.listAnimalOutPut, required this.onTapAtMore});
+  const HaveItemAnimal({
+    super.key,
+    required this.listAnimalOutPut,
+    required this.onTapAtMore,
+  });
 
   final Stream<List<AnimalInfoResponseModel>> listAnimalOutPut;
   final void Function(AnimalInfoResponseModel animalModel) onTapAtMore;
@@ -194,10 +204,11 @@ class _AnimalCard extends StatelessWidget {
               ],
             ),
           ),
-          Image.network(
-            //todo:: use cash network image
-            animal.animalImage,
+          CachedNetworkImage(
+            imageUrl: animal.animalImage,
             height: HeightsManager.h173,
+            placeholder: (context, url) =>
+            const CupertinoActivityIndicator(),
             fit: BoxFit.cover,
             width: double.infinity,
           ),

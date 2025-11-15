@@ -9,10 +9,13 @@ import 'package:animooo/core/resources/width_manager.dart';
 import 'package:animooo/core/widgets/spacing/horizontal_space.dart';
 import 'package:animooo/core/widgets/spacing/vertical_space.dart';
 import 'package:animooo/models/gategory/category_response.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../core/resources/padding_manager.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class HomePageCategories extends StatelessWidget {
   const HomePageCategories({
@@ -125,11 +128,16 @@ class HaveItemCategories extends StatelessWidget {
                       Stack(
                         clipBehavior: Clip.none,
                         children: [
-                          CircleAvatar(
-                            radius: 32,
-                            backgroundImage: NetworkImage(
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(32),
+
+                            child: CachedNetworkImage(
+                              height: 50.h,
+                              width: 50.w,
+                              placeholder: (context, url) =>
+                                  const CupertinoActivityIndicator(),
                               //TODO :: add cashNetworkImage
-                              snapshot.data![index].imagePath,
+                              imageUrl: snapshot.data![index].imagePath,
                             ),
                           ),
                           Positioned(
