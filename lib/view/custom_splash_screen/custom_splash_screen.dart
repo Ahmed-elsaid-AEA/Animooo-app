@@ -1,3 +1,5 @@
+import 'package:animooo/core/database/shared_pref/shared_pref_manager.dart';
+import 'package:animooo/core/di/get_it.dart';
 import 'package:animooo/core/functions/app_navigations.dart';
 import 'package:animooo/core/resources/colors_manager.dart';
 import 'package:animooo/core/widgets/app_logo_and_title_widget.dart';
@@ -17,11 +19,11 @@ class CustomSplashScreen extends StatefulWidget {
 
 class _CustomSplashScreenState extends State<CustomSplashScreen> {
   Future<void> checkRememberMe() async {
-    HiveHelper<bool> hiveHelper = HiveHelper(
-      ConstsValuesManager.rememberMeBoxName,
-    );
     bool rememberMe =
-        await hiveHelper.getValue(key: ConstsValuesManager.rememberMe) ?? false;
+        await getIt<SharedPrefManager>().readData(
+          ConstsValuesManager.rememberMe,
+        ) ??
+        false;
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       AppNavigation.pushNamedAndRemoveUntil(

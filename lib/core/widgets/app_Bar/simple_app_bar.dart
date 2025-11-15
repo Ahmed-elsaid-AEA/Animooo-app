@@ -52,6 +52,5 @@ class SimpleAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  // TODO: implement preferredSize
-  Size get preferredSize => Size.fromHeight(AppBar().preferredSize.height);
+   Size get preferredSize => Size.fromHeight(AppBar().preferredSize.height);
 }

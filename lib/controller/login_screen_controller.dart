@@ -11,6 +11,8 @@ import 'package:animooo/models/auth/login_response.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/cupertino.dart';
 
+import '../core/database/shared_pref/shared_pref_manager.dart';
+import '../core/di/get_it.dart';
 import '../core/enums/widget_status_enum.dart';
 import '../core/enums/screen_status_state.dart';
 import '../core/functions/app_scaffold_massanger.dart';
@@ -139,14 +141,14 @@ class LoginScreenController {
         //?make api
         await _requestLogin();
       } else {
-        if(context.mounted) {
+        if (context.mounted) {
           showAppSnackBar(
-          context,
-          ConstsValuesManager.noInternetConnection,
-          onPressedAtRetry: () {
-            onPressedAtLoginButton();
-          },
-        );
+            context,
+            ConstsValuesManager.noInternetConnection,
+            onPressedAtRetry: () {
+              onPressedAtLoginButton();
+            },
+          );
         }
       }
     }
@@ -283,16 +285,20 @@ class LoginScreenController {
   }
 
   Future<void> _storeRememberMe() async {
-    HiveHelper<bool> hiveHelper = HiveHelper(
-      ConstsValuesManager.rememberMeBoxName,
+    getIt<SharedPrefManager>().writeData(
+      ConstsValuesManager.rememberMe,
+      rememberMe,
     );
-    await hiveHelper.addValue(
-      key: ConstsValuesManager.rememberMe,
-      value: rememberMe,
-    );
+    // HiveHelper<bool> hiveHelper = HiveHelper(
+    //   ConstsValuesManager.rememberMeBoxName,
+    // );
+    // await hiveHelper.addValue(
+    //   key: ConstsValuesManager.rememberMe,
+    //   value: rememberMe,
+    // );
   }
 }
 
 //sqflite (relation database)
 //hive (non relation database)
-//
+//shared prefences (simple value) => theme , remember me , token

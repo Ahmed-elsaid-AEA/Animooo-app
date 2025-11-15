@@ -7,7 +7,7 @@ import 'app/animooo_app.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
-  getItSetup();
+  await getItSetup();
   runApp(const AnimoooApp());
 }
 

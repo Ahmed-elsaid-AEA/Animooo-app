@@ -136,8 +136,7 @@ class HaveItemCategories extends StatelessWidget {
                               width: 50.w,
                               placeholder: (context, url) =>
                                   const CupertinoActivityIndicator(),
-                              //TODO :: add cashNetworkImage
-                              imageUrl: snapshot.data![index].imagePath,
+                               imageUrl: snapshot.data![index].imagePath,
                             ),
                           ),
                           Positioned(

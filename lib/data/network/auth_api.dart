@@ -16,8 +16,7 @@ import '../../models/auth/otp_code_response.dart';
 class AuthApi {
   AuthApi._();
 
-  //TODO? don't forget generate code model automatically
-  static Future<Either<FailureModel, AuthResponse>> signUp(
+   static Future<Either<FailureModel, AuthResponse>> signUp(
     UserModel user,
   ) async {
     try {

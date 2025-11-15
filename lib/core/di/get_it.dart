@@ -3,10 +3,13 @@ import 'package:animooo/core/resources/conts_values.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../database/shared_pref/shared_pref_manager.dart';
 
 final GetIt getIt = GetIt.instance;
 
-void getItSetup() {
+Future<void> getItSetup() async {
   getIt.registerLazySingleton<GlobalKey<NavigatorState>>(
     () => GlobalKey<NavigatorState>(),
     instanceName: ConstsValuesManager.homePageNavigationState,
@@ -21,4 +24,9 @@ void getItSetup() {
   );
   getIt.registerLazySingleton<Dio>(() => Dio());
   getIt.registerLazySingleton<DioService>(() => DioService(getIt<Dio>()));
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  getIt.registerLazySingleton<SharedPreferences>(() => prefs);
+  getIt.registerLazySingleton<SharedPrefManager>(
+    () => SharedPrefManager(getIt<SharedPreferences>()),
+  );
 }

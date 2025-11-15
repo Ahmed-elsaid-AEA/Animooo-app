@@ -10,6 +10,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../hive/hive_helper.dart';
+import '../shared_pref/shared_pref_manager.dart';
 
 class DioService extends ApiConsumer {
   final Dio _dio;
@@ -49,7 +50,7 @@ class DioService extends ApiConsumer {
   }
 
   _onError(DioException e, ErrorInterceptorHandler handler) async {
-     if (e.response?.statusCode == 401 || e.response?.statusCode == 400) {
+    if (e.response?.statusCode == 401 || e.response?.statusCode == 400) {
       if (e.response!.data.toString().toLowerCase().contains("token")) {
         String? accessToken = await _generateNewAccessToken();
         if (accessToken != null) {
@@ -60,7 +61,7 @@ class DioService extends ApiConsumer {
         }
       }
     }
-     return handler.next(e);
+    return handler.next(e);
   }
 
   _updateAccessToken(
@@ -100,9 +101,7 @@ class DioService extends ApiConsumer {
     HiveHelper hiveHelper = HiveHelper(ConstsValuesManager.tokenBoxName);
     await hiveHelper.deleteValue(key: ConstsValuesManager.accessToken);
     await hiveHelper.deleteValue(key: ConstsValuesManager.refreshToken);
-    HiveHelper hiveHelper2 = HiveHelper(ConstsValuesManager.rememberMeBoxName);
-    await hiveHelper2.deleteValue(key: ConstsValuesManager.rememberMe);
-
+    getIt<SharedPrefManager>().deleteData(ConstsValuesManager.rememberMe);
     GlobalKey<NavigatorState> navigationKey = getIt<GlobalKey<NavigatorState>>(
       instanceName: ConstsValuesManager.appNavigationState,
     );
@@ -154,7 +153,6 @@ class DioService extends ApiConsumer {
     required String path,
     Map<String, dynamic>? queryParameters,
   }) async {
-    // TODO: implement get
     try {
       Response response = await _dio.delete(
         path,
@@ -184,7 +182,6 @@ class DioService extends ApiConsumer {
     Map<String, dynamic>? queryParameters,
     Map<String, dynamic>? body,
   }) async {
-    // TODO: implement get
     try {
       Response response = await _dio.get(
         path,
@@ -301,7 +298,6 @@ class DioService extends ApiConsumer {
     Map<String, dynamic>? queryParameters,
     required Map<String, dynamic> body,
   }) {
-    // TODO: implement put
     throw UnimplementedError();
   }
 }
