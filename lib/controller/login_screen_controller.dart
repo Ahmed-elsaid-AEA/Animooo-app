@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:animooo/core/database/flutter_secure/flutter_scs_manager.dart';
 import 'package:animooo/core/database/hive/hive_helper.dart';
 import 'package:animooo/core/di/services/internet_checker_service.dart';
 import 'package:animooo/core/error/failure_model.dart';
@@ -244,7 +245,6 @@ class LoginScreenController {
   }
 
   void _onSuccessRequest(LoginResponse r, BuildContext context) async {
-    //TODO :: change store token way ( flutter secure storage - shared preferences )
     await _storeToken(accessToken: r.accessToken, refreshToken: r.refreshToken);
     //? store remember me
     await _storeRememberMe();
@@ -264,18 +264,16 @@ class LoginScreenController {
     required String accessToken,
     required String refreshToken,
   }) async {
-    HiveHelper<String> hiveHelper = HiveHelper(
-      ConstsValuesManager.tokenBoxName,
-    );
     //?store access token
-    await hiveHelper.addValue(
-      key: ConstsValuesManager.accessToken,
-      value: accessToken,
+    getIt<FlutterSecureStorageManager>().writeData(
+      ConstsValuesManager.accessToken,
+      accessToken,
     );
+
     //?store refresh token
-    await hiveHelper.addValue(
-      key: ConstsValuesManager.refreshToken,
-      value: refreshToken,
+    getIt<FlutterSecureStorageManager>().writeData(
+      ConstsValuesManager.refreshToken,
+      refreshToken,
     );
   }
 
@@ -289,13 +287,6 @@ class LoginScreenController {
       ConstsValuesManager.rememberMe,
       rememberMe,
     );
-    // HiveHelper<bool> hiveHelper = HiveHelper(
-    //   ConstsValuesManager.rememberMeBoxName,
-    // );
-    // await hiveHelper.addValue(
-    //   key: ConstsValuesManager.rememberMe,
-    //   value: rememberMe,
-    // );
   }
 }
 

@@ -9,7 +9,7 @@ import 'package:animooo/core/resources/routes_manager.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 
-import '../hive/hive_helper.dart';
+import '../flutter_secure/flutter_scs_manager.dart';
 import '../shared_pref/shared_pref_manager.dart';
 
 class DioService extends ApiConsumer {
@@ -39,11 +39,11 @@ class DioService extends ApiConsumer {
   }
 
   _onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
-    HiveHelper<String> hiveHelper = HiveHelper(
-      ConstsValuesManager.tokenBoxName,
-    );
     String token =
-        (await hiveHelper.getValue(key: ConstsValuesManager.accessToken)) ?? "";
+        (await getIt<FlutterSecureStorageManager>().readData(
+          ConstsValuesManager.accessToken,
+        )) ??
+        "";
 
     options.headers[ApiConstants.authorization] = "Bearer $token";
     return handler.next(options);
@@ -69,10 +69,9 @@ class DioService extends ApiConsumer {
     DioException e,
     ErrorInterceptorHandler handler,
   ) async {
-    HiveHelper hiveHelper = HiveHelper(ConstsValuesManager.tokenBoxName);
-    await hiveHelper.addValue(
-      key: ConstsValuesManager.accessToken,
-      value: accessToken,
+    await getIt<FlutterSecureStorageManager>().writeData(
+      ConstsValuesManager.accessToken,
+      accessToken,
     );
 
     e.requestOptions.headers[ApiConstants.authorization] =
@@ -98,9 +97,12 @@ class DioService extends ApiConsumer {
   }
 
   Future<void> _logout() async {
-    HiveHelper hiveHelper = HiveHelper(ConstsValuesManager.tokenBoxName);
-    await hiveHelper.deleteValue(key: ConstsValuesManager.accessToken);
-    await hiveHelper.deleteValue(key: ConstsValuesManager.refreshToken);
+    await getIt<FlutterSecureStorageManager>().deleteData(
+      ConstsValuesManager.accessToken,
+    );
+    await getIt<FlutterSecureStorageManager>().deleteData(
+      ConstsValuesManager.refreshToken,
+    );
     getIt<SharedPrefManager>().deleteData(ConstsValuesManager.rememberMe);
     GlobalKey<NavigatorState> navigationKey = getIt<GlobalKey<NavigatorState>>(
       instanceName: ConstsValuesManager.appNavigationState,
@@ -127,11 +129,11 @@ class DioService extends ApiConsumer {
       dio.options.connectTimeout = Duration(seconds: 10);
       dio.options.receiveTimeout = Duration(seconds: 5);
       dio.options.sendTimeout = Duration(seconds: 10);
-      HiveHelper<String> hiveHelper = HiveHelper(
-        ConstsValuesManager.tokenBoxName,
-      );
+
       String refreshToken =
-          (await hiveHelper.getValue(key: ConstsValuesManager.refreshToken)) ??
+          (await getIt<FlutterSecureStorageManager>().readData(
+            ConstsValuesManager.refreshToken,
+          )) ??
           "";
       var response = await dio.post(
         ApiConstants.refreshTokenEndPoint,
