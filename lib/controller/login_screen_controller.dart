@@ -265,16 +265,10 @@ class LoginScreenController {
     required String refreshToken,
   }) async {
     //?store access token
-    getIt<FlutterSecureStorageManager>().writeData(
-      ConstsValuesManager.accessToken,
-      accessToken,
-    );
+    getIt<FlutterSecureStorageManager>().writeAccessToken(accessToken);
 
     //?store refresh token
-    getIt<FlutterSecureStorageManager>().writeData(
-      ConstsValuesManager.refreshToken,
-      refreshToken,
-    );
+    getIt<FlutterSecureStorageManager>().writeRefreshToken(refreshToken);
   }
 
   void onChangedRememberMe(bool? value) {

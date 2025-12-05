@@ -163,8 +163,6 @@ class ConstsValuesManager {
   static const String notFoundThisEmail = 'Not found this email';
 
   static const String tokenBoxName = 'tokensBox';
-  static const String accessToken = 'accessToken';
-  static const String refreshToken = 'refreshToken';
   static const String isFirstTimeLogin = 'isFirstTimeLogin';
 
   static const String rememberMe = 'Remember Me';
@@ -239,7 +237,19 @@ class ConstsValuesManager {
 
   static const String pleaseFillAllFields = "Please Fill All Fields";
 
-  static const  String delete = "Delete";
+  static const String delete = "Delete";
+
+  static const String accessTokenKeySecured = "accessTokenKeySecured";
+
+  static const String accessTokenBoxName = "accessTokenBoxName";
+
+  static const String accessTokenKeyHive = "accessTokenKeyHive";
+
+  static const String refreshTokenKeyHive = "refreshTokenKeyHive";
+
+  static const String refreshTokenKeySecured = "refreshTokenKeySecured";
+
+  static const String refreshTokenBoxName = "refreshTokenBoxName";
 }
 
 class ConstsListsManager {

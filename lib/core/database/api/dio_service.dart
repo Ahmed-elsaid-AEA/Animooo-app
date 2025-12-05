@@ -40,10 +40,7 @@ class DioService extends ApiConsumer {
 
   _onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
     String token =
-        (await getIt<FlutterSecureStorageManager>().readData(
-          ConstsValuesManager.accessToken,
-        )) ??
-        "";
+        (await getIt<FlutterSecureStorageManager>().getAccessToken()) ?? "";
 
     options.headers[ApiConstants.authorization] = "Bearer $token";
     return handler.next(options);
@@ -69,10 +66,7 @@ class DioService extends ApiConsumer {
     DioException e,
     ErrorInterceptorHandler handler,
   ) async {
-    await getIt<FlutterSecureStorageManager>().writeData(
-      ConstsValuesManager.accessToken,
-      accessToken,
-    );
+    await getIt<FlutterSecureStorageManager>().writeAccessToken(accessToken);
 
     e.requestOptions.headers[ApiConstants.authorization] =
         "Bearer $accessToken";
@@ -97,12 +91,8 @@ class DioService extends ApiConsumer {
   }
 
   Future<void> _logout() async {
-    await getIt<FlutterSecureStorageManager>().deleteData(
-      ConstsValuesManager.accessToken,
-    );
-    await getIt<FlutterSecureStorageManager>().deleteData(
-      ConstsValuesManager.refreshToken,
-    );
+    await getIt<FlutterSecureStorageManager>().deleteAccessToken();
+    await getIt<FlutterSecureStorageManager>().deleteRefreshToken();
     getIt<SharedPrefManager>().deleteData(ConstsValuesManager.rememberMe);
     GlobalKey<NavigatorState> navigationKey = getIt<GlobalKey<NavigatorState>>(
       instanceName: ConstsValuesManager.appNavigationState,
@@ -131,10 +121,7 @@ class DioService extends ApiConsumer {
       dio.options.sendTimeout = Duration(seconds: 10);
 
       String refreshToken =
-          (await getIt<FlutterSecureStorageManager>().readData(
-            ConstsValuesManager.refreshToken,
-          )) ??
-          "";
+          (await getIt<FlutterSecureStorageManager>().getRefreshToken()) ?? "";
       var response = await dio.post(
         ApiConstants.refreshTokenEndPoint,
         options: Options(headers: {ApiConstants.refreshToken: refreshToken}),
